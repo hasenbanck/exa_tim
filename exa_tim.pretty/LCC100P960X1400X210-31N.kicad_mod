@@ -1,4 +1,4 @@
-(module LCC100P960X1400X210-31N (layer F.Cu) (tedit 5B7A9EF6)
+(module LCC100P960X1400X210-31N (layer F.Cu) (tedit 5B802B02)
   (attr smd)
   (fp_text reference LCC100P960X1400X210-31N (at 0 -8) (layer F.SilkS)
     (effects (font (size 1.00151 1.00151) (thickness 0.05)))
@@ -48,4 +48,9 @@
   (pad 15 smd rect (at -4.4 -4.8 180) (size 1.5 0.7) (layers F.Cu F.Paste F.Mask))
   (pad 14 smd rect (at -4.4 -5.95 180) (size 1.5 1) (layers F.Cu F.Paste F.Mask))
   (pad 13 smd rect (at 4.4 -5.95 180) (size 1.5 1) (layers F.Cu F.Paste F.Mask))
+  (model ${KIPRJMOD}/packages3d/CAM-M8C-0.step
+    (at (xyz 0 0 0))
+    (scale (xyz 1 1 1))
+    (rotate (xyz -90 0 0))
+  )
 )

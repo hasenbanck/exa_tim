@@ -1,4 +1,4 @@
-(module SKHLLFA010 (layer F.Cu) (tedit 5B7A98DA)
+(module SKHLLFA010 (layer F.Cu) (tedit 5B802CDB)
   (descr SKHLLFA010)
   (tags Switch)
   (fp_text reference S** (at -0.485 -3.535) (layer F.SilkS)
@@ -28,4 +28,9 @@
   (pad 2 thru_hole circle (at 2.5 -2 90) (size 1.55 1.55) (drill 1) (layers *.Cu *.Mask F.SilkS))
   (pad 3 thru_hole circle (at -3.5 -4.5 90) (size 2 2) (drill 1.3) (layers *.Cu *.Mask F.SilkS))
   (pad 4 thru_hole circle (at 3.5 -4.5 90) (size 2 2) (drill 1.3) (layers *.Cu *.Mask F.SilkS))
+  (model ${KIPRJMOD}/packages3d/SKHLLF.step
+    (offset (xyz 0 0 2.5))
+    (scale (xyz 1 1 1))
+    (rotate (xyz -90 0 0))
+  )
 )

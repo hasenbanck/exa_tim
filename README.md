@@ -15,4 +15,6 @@ Current PCB size is 42x42mm.
 
  # Licence
 
- CERN Open Hardware Licence v1.2
+ This hardware design is licenced under CERN Open Hardware Licence v1.2
+
+ The packages3d files are excluded from this licence.
