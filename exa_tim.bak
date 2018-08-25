@@ -196,13 +196,13 @@ Wire Wire Line
 $Comp
 L Connector_Generic:Conn_01x24 J2
 U 1 1 5B7B0E50
-P 10850 2050
-F 0 "J2" H 10769 625 50  0000 C CNN
-F 1 "FH12A-24S-0.5SH(55)" H 10769 716 50  0000 C CNN
-F 2 "exa_tim:Hirose_FH12-24S-0.5SH_1x24-1MP_P0.50mm_Horizontal" H 10850 2050 50  0001 C CNN
-F 3 "https://www.mouser.de/datasheet/2/185/FH12_catalog-939276.pdf" H 10850 2050 50  0001 C CNN
-	1    10850 2050
-	1    0    0    1   
+P 10850 1950
+F 0 "J2" H 10769 525 50  0000 C CNN
+F 1 "FH12-24S-0.5SH(55)" H 10769 616 50  0000 C CNN
+F 2 "exa_tim:Hirose_FH12-24S-0.5SH_1x24-1MP_P0.50mm_Horizontal" H 10850 1950 50  0001 C CNN
+F 3 "https://www.mouser.de/datasheet/2/185/FH12_catalog-939276.pdf" H 10850 1950 50  0001 C CNN
+	1    10850 1950
+	1    0    0    -1  
 $EndComp
 Text Label 10250 950  0    50   ~ 0
 GDR
