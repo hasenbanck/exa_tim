@@ -743,8 +743,8 @@ L Connector:Conn_ARM_JTAG_SWD_10 J1
 U 1 1 5B8F5704
 P 2350 6450
 F 0 "J1" H 1910 6496 50  0000 R CNN
-F 1 "Conn_ARM_JTAG_SWD_10" H 1910 6405 50  0000 R CNN
-F 2 "Connector_PinHeader_1.27mm:PinHeader_2x05_P1.27mm_Vertical_SMD" H 2400 5900 50  0001 L TNN
+F 1 "20021121-00010C4LF" H 1910 6405 50  0000 R CNN
+F 2 "exa_tim:PinHeader_2x05_P1.27mm_Vertical_SMD" H 2400 5900 50  0001 L TNN
 F 3 "http://infocenter.arm.com/help/topic/com.arm.doc.faqs/attached/13634/cortex_debug_connectors.pdf" V 2000 5200 50  0001 C CNN
 	1    2350 6450
 	1    0    0    -1  
@@ -788,9 +788,9 @@ L Switch:SW_SPST SW4
 U 1 1 5B79FE2A
 P 5650 6050
 F 0 "SW4" H 5650 6285 50  0000 C CNN
-F 1 "SKHLLFA010" H 5650 6194 50  0000 C CNN
-F 2 "exa_tim:SKHLLFA010" H 5650 6050 50  0001 C CNN
-F 3 "https://www.mouser.de/datasheet/2/15/SKHL-1370655.pdf" H 5650 6050 50  0001 C CNN
+F 1 "SKRTLBE010" H 5650 6194 50  0000 C CNN
+F 2 "exa_tim:SKRTLBE010" H 5650 6050 50  0001 C CNN
+F 3 "https://www.alps.com/prod/info/E/PDF/Tact/SurfaceMount/SKRT/SKRTLBE010.pdf" H 5650 6050 50  0001 C CNN
 	1    5650 6050
 	1    0    0    -1  
 $EndComp
@@ -815,9 +815,9 @@ L Switch:SW_SPST SW1
 U 1 1 5B85171C
 P 5650 4450
 F 0 "SW1" H 5650 4685 50  0000 C CNN
-F 1 "SKHLLFA010" H 5650 4594 50  0000 C CNN
-F 2 "exa_tim:SKHLLFA010" H 5650 4450 50  0001 C CNN
-F 3 "https://www.mouser.de/datasheet/2/15/SKHL-1370655.pdf" H 5650 4450 50  0001 C CNN
+F 1 "SKRTLBE010" H 5650 4594 50  0000 C CNN
+F 2 "exa_tim:SKRTLBE010" H 5650 4450 50  0001 C CNN
+F 3 "https://www.alps.com/prod/info/E/PDF/Tact/SurfaceMount/SKRT/SKRTLBE010.pdf" H 5650 4450 50  0001 C CNN
 	1    5650 4450
 	1    0    0    -1  
 $EndComp
@@ -826,9 +826,9 @@ L Switch:SW_SPST SW3
 U 1 1 5B8574B6
 P 5650 5550
 F 0 "SW3" H 5650 5785 50  0000 C CNN
-F 1 "SKHLLFA010" H 5650 5694 50  0000 C CNN
-F 2 "exa_tim:SKHLLFA010" H 5650 5550 50  0001 C CNN
-F 3 "https://www.mouser.de/datasheet/2/15/SKHL-1370655.pdf" H 5650 5550 50  0001 C CNN
+F 1 "SKRTLBE010" H 5650 5694 50  0000 C CNN
+F 2 "exa_tim:SKRTLBE010" H 5650 5550 50  0001 C CNN
+F 3 "https://www.alps.com/prod/info/E/PDF/Tact/SurfaceMount/SKRT/SKRTLBE010.pdf" H 5650 5550 50  0001 C CNN
 	1    5650 5550
 	1    0    0    -1  
 $EndComp
@@ -837,9 +837,9 @@ L Switch:SW_SPST SW2
 U 1 1 5B85D253
 P 5650 5000
 F 0 "SW2" H 5650 5235 50  0000 C CNN
-F 1 "SKHLLFA010" H 5650 5144 50  0000 C CNN
-F 2 "exa_tim:SKHLLFA010" H 5650 5000 50  0001 C CNN
-F 3 "https://www.mouser.de/datasheet/2/15/SKHL-1370655.pdf" H 5650 5000 50  0001 C CNN
+F 1 "SKRTLBE010" H 5650 5144 50  0000 C CNN
+F 2 "exa_tim:SKRTLBE010" H 5650 5000 50  0001 C CNN
+F 3 "https://www.alps.com/prod/info/E/PDF/Tact/SurfaceMount/SKRT/SKRTLBE010.pdf" H 5650 5000 50  0001 C CNN
 	1    5650 5000
 	1    0    0    -1  
 $EndComp
