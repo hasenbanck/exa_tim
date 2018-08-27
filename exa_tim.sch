@@ -312,10 +312,10 @@ L Device:Battery_Cell BT1
 U 1 1 5B7D3EFE
 P 900 4150
 F 0 "BT1" H 1018 4246 50  0000 L CNN
-F 1 "NL5077-LF" H 1018 4155 50  0000 L CNN
-F 2 "exa_tim:NL5077-LF" V 900 4210 50  0001 C CNN
-F 3 "~" V 900 4210 50  0001 C CNN
-F 4 "CR2450 or CR2477" H 900 4150 50  0001 C CNN "Notice"
+F 1 "3034TR" H 1018 4155 50  0000 L CNN
+F 2 "exa_tim:BatteryHolder_Keystone_3034_1x20mm" V 900 4210 50  0001 C CNN
+F 3 "http://www.keyelco.com/product-pdf.cfm?p=798" V 900 4210 50  0001 C CNN
+F 4 "CR2032" H 900 4150 50  0001 C CNN "Notice"
 	1    900  4150
 	1    0    0    -1  
 $EndComp
