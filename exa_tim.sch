@@ -741,8 +741,8 @@ L Connector:Conn_ARM_JTAG_SWD_10 J1
 U 1 1 5B8F5704
 P 2350 6450
 F 0 "J1" H 1910 6496 50  0000 R CNN
-F 1 "20021121-00010C4LF" H 1910 6405 50  0000 R CNN
-F 2 "exa_tim:PinHeader_2x05_P1.27mm_Vertical_SMD" H 2400 5900 50  0001 L TNN
+F 1 "20021112-00010T4LF" H 1910 6405 50  0000 R CNN
+F 2 "Connector_PinHeader_1.27mm:PinHeader_2x06_P1.27mm_Horizontal" H 2400 5900 50  0001 L TNN
 F 3 "http://infocenter.arm.com/help/topic/com.arm.doc.faqs/attached/13634/cortex_debug_connectors.pdf" V 2000 5200 50  0001 C CNN
 	1    2350 6450
 	1    0    0    -1  
