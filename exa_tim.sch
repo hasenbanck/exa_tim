@@ -98,7 +98,7 @@ U 1 1 5B79A698
 P 1700 2450
 F 0 "Y1" V 1900 2450 50  0000 C CNN
 F 1 "9HT11-32.768KDZF-T" V 1450 2450 50  0000 C CNN
-F 2 "Crystal:Crystal_SMD_TXC_9HT11-2Pin_2.0x1.2mm" H 1700 2450 50  0001 C CNN
+F 2 "exa_tim:Crystal_SMD_TXC_9HT11-2Pin_2.0x1.2mm_HandSoldering" H 1700 2450 50  0001 C CNN
 F 3 "http://www.txccrystal.com/images/pdf/9ht11.pdf" H 1700 2450 50  0001 C CNN
 	1    1700 2450
 	0    1    1    0   
@@ -159,14 +159,12 @@ Text Label 1900 2800 0    50   ~ 0
 RESET
 Text Label 4050 2300 2    50   ~ 0
 SCK
-Text Label 4050 2400 2    50   ~ 0
+Text Label 4050 2600 2    50   ~ 0
 CS
 Text Label 4050 2500 2    50   ~ 0
 MOSI
-Text Label 4050 2600 2    50   ~ 0
+Text Label 4050 2400 2    50   ~ 0
 BUSY
-Text Label 4050 2700 2    50   ~ 0
-LED
 Wire Wire Line
 	4050 1800 3400 1800
 Wire Wire Line
@@ -553,10 +551,10 @@ Connection ~ 9400 2450
 Wire Wire Line
 	9400 2450 9400 2200
 $Comp
-L Device:D_Schottky_ALT D6
+L Device:D_Schottky_ALT D5
 U 1 1 5B84CDBF
 P 10300 4000
-F 0 "D6" H 10300 4216 50  0000 C CNN
+F 0 "D5" H 10300 4216 50  0000 C CNN
 F 1 "MBR0530" H 10300 4125 50  0000 C CNN
 F 2 "Diode_SMD:D_SOD-123" H 10300 4000 50  0001 C CNN
 F 3 "https://www.fairchildsemi.com/datasheets/MB/MBR0530.pdf" H 10300 4000 50  0001 C CNN
@@ -564,10 +562,10 @@ F 3 "https://www.fairchildsemi.com/datasheets/MB/MBR0530.pdf" H 10300 4000 50  0
 	-1   0    0    1   
 $EndComp
 $Comp
-L Device:D_Schottky_ALT D7
+L Device:D_Schottky_ALT D6
 U 1 1 5B85311F
 P 10300 4550
-F 0 "D7" H 10300 4766 50  0000 C CNN
+F 0 "D6" H 10300 4766 50  0000 C CNN
 F 1 "MBR0530" H 10300 4675 50  0000 C CNN
 F 2 "Diode_SMD:D_SOD-123" H 10300 4550 50  0001 C CNN
 F 3 "https://www.fairchildsemi.com/datasheets/MB/MBR0530.pdf" H 10300 4550 50  0001 C CNN
@@ -612,10 +610,10 @@ $EndComp
 Text Label 10650 4850 0    50   ~ 0
 PREVGH
 $Comp
-L Device:D_Schottky_ALT D8
+L Device:D_Schottky_ALT D7
 U 1 1 5B86AB68
 P 10300 4850
-F 0 "D8" H 10300 5066 50  0000 C CNN
+F 0 "D7" H 10300 5066 50  0000 C CNN
 F 1 "MBR0530" H 10300 4975 50  0000 C CNN
 F 2 "Diode_SMD:D_SOD-123" H 10300 4850 50  0001 C CNN
 F 3 "https://www.fairchildsemi.com/datasheets/MB/MBR0530.pdf" H 10300 4850 50  0001 C CNN
@@ -689,10 +687,10 @@ $EndComp
 Text Label 9150 5650 0    50   ~ 0
 GDR
 $Comp
-L Device:R R7
+L Device:R R6
 U 1 1 5B8A6DE8
 P 9150 5850
-F 0 "R7" H 9220 5896 50  0000 L CNN
+F 0 "R6" H 9220 5896 50  0000 L CNN
 F 1 "1M" H 9220 5805 50  0000 L CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 9080 5850 50  0001 C CNN
 F 3 "~" H 9150 5850 50  0001 C CNN
@@ -700,10 +698,10 @@ F 3 "~" H 9150 5850 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R8
+L Device:R R7
 U 1 1 5B8AB1E0
 P 9550 5850
-F 0 "R8" H 9620 5896 50  0000 L CNN
+F 0 "R7" H 9620 5896 50  0000 L CNN
 F 1 "3" H 9620 5805 50  0000 L CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 9480 5850 50  0001 C CNN
 F 3 "~" H 9550 5850 50  0001 C CNN
@@ -788,9 +786,9 @@ L Switch:SW_SPST SW4
 U 1 1 5B79FE2A
 P 5650 6050
 F 0 "SW4" H 5650 6285 50  0000 C CNN
-F 1 "SKRTLBE010" H 5650 6194 50  0000 C CNN
-F 2 "exa_tim:SKRTLBE010" H 5650 6050 50  0001 C CNN
-F 3 "https://www.alps.com/prod/info/E/PDF/Tact/SurfaceMount/SKRT/SKRTLBE010.pdf" H 5650 6050 50  0001 C CNN
+F 1 "TL3305CF260QG" H 5650 6194 50  0000 C CNN
+F 2 "exa_tim:TL3305" H 5650 6050 50  0001 C CNN
+F 3 "https://www.mouser.de/datasheet/2/140/TL3305-844809.pdf" H 5650 6050 50  0001 C CNN
 	1    5650 6050
 	1    0    0    -1  
 $EndComp
@@ -815,9 +813,9 @@ L Switch:SW_SPST SW1
 U 1 1 5B85171C
 P 5650 4450
 F 0 "SW1" H 5650 4685 50  0000 C CNN
-F 1 "SKRTLBE010" H 5650 4594 50  0000 C CNN
-F 2 "exa_tim:SKRTLBE010" H 5650 4450 50  0001 C CNN
-F 3 "https://www.alps.com/prod/info/E/PDF/Tact/SurfaceMount/SKRT/SKRTLBE010.pdf" H 5650 4450 50  0001 C CNN
+F 1 "TL3305CF260QG" H 5650 4594 50  0000 C CNN
+F 2 "exa_tim:TL3305" H 5650 4450 50  0001 C CNN
+F 3 "https://www.mouser.de/datasheet/2/140/TL3305-844809.pdf" H 5650 4450 50  0001 C CNN
 	1    5650 4450
 	1    0    0    -1  
 $EndComp
@@ -826,9 +824,9 @@ L Switch:SW_SPST SW3
 U 1 1 5B8574B6
 P 5650 5550
 F 0 "SW3" H 5650 5785 50  0000 C CNN
-F 1 "SKRTLBE010" H 5650 5694 50  0000 C CNN
-F 2 "exa_tim:SKRTLBE010" H 5650 5550 50  0001 C CNN
-F 3 "https://www.alps.com/prod/info/E/PDF/Tact/SurfaceMount/SKRT/SKRTLBE010.pdf" H 5650 5550 50  0001 C CNN
+F 1 "TL3305CF260QG" H 5650 5694 50  0000 C CNN
+F 2 "exa_tim:TL3305" H 5650 5550 50  0001 C CNN
+F 3 "https://www.mouser.de/datasheet/2/140/TL3305-844809.pdf" H 5650 5550 50  0001 C CNN
 	1    5650 5550
 	1    0    0    -1  
 $EndComp
@@ -837,9 +835,9 @@ L Switch:SW_SPST SW2
 U 1 1 5B85D253
 P 5650 5000
 F 0 "SW2" H 5650 5235 50  0000 C CNN
-F 1 "SKRTLBE010" H 5650 5144 50  0000 C CNN
-F 2 "exa_tim:SKRTLBE010" H 5650 5000 50  0001 C CNN
-F 3 "https://www.alps.com/prod/info/E/PDF/Tact/SurfaceMount/SKRT/SKRTLBE010.pdf" H 5650 5000 50  0001 C CNN
+F 1 "TL3305CF260QG" H 5650 5144 50  0000 C CNN
+F 2 "exa_tim:TL3305" H 5650 5000 50  0001 C CNN
+F 3 "https://www.mouser.de/datasheet/2/140/TL3305-844809.pdf" H 5650 5000 50  0001 C CNN
 	1    5650 5000
 	1    0    0    -1  
 $EndComp
@@ -884,10 +882,10 @@ NoConn ~ 5250 2000
 NoConn ~ 5250 2100
 NoConn ~ 5250 2200
 $Comp
-L Device:R R5
+L Device:R R4
 U 1 1 5B819EC8
 P 7050 3000
-F 0 "R5" V 6843 3000 50  0000 C CNN
+F 0 "R4" V 6843 3000 50  0000 C CNN
 F 1 "220" V 6934 3000 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 6980 3000 50  0001 C CNN
 F 3 "~" H 7050 3000 50  0001 C CNN
@@ -895,10 +893,10 @@ F 3 "~" H 7050 3000 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:R R6
+L Device:R R5
 U 1 1 5B81AB2F
 P 7050 3350
-F 0 "R6" V 6843 3350 50  0000 C CNN
+F 0 "R5" V 6843 3350 50  0000 C CNN
 F 1 "220" V 6934 3350 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 6980 3350 50  0001 C CNN
 F 3 "~" H 7050 3350 50  0001 C CNN
@@ -987,10 +985,10 @@ F 3 "https://www.vishay.com/docs/72023/72023.pdf" H 5700 3250 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R4
+L Device:R R3
 U 1 1 5B8F6DF3
 P 5300 2950
-F 0 "R4" H 5370 2996 50  0000 L CNN
+F 0 "R3" H 5370 2996 50  0000 L CNN
 F 1 "1M" H 5370 2905 50  0000 L CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 5230 2950 50  0001 C CNN
 F 3 "~" H 5300 2950 50  0001 C CNN
@@ -1168,8 +1166,6 @@ F 3 "" H 3400 3000 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	4050 2600 3400 2600
-Wire Wire Line
-	3400 2700 4050 2700
 $Comp
 L Device:C C7
 U 1 1 5BC8BB8F
@@ -1192,10 +1188,10 @@ Connection ~ 2700 1400
 Wire Wire Line
 	2500 1400 2700 1400
 $Comp
-L Device:D_Schottky_ALT D5
+L Device:D_Schottky_ALT D4
 U 1 1 5BCC1FAE
 P 6750 6050
-F 0 "D5" H 6750 6266 50  0000 C CNN
+F 0 "D4" H 6750 6266 50  0000 C CNN
 F 1 "MBR0530" H 6750 6175 50  0000 C CNN
 F 2 "Diode_SMD:D_SOD-123" H 6750 6050 50  0001 C CNN
 F 3 "https://www.fairchildsemi.com/datasheets/MB/MBR0530.pdf" H 6750 6050 50  0001 C CNN
@@ -1203,10 +1199,10 @@ F 3 "https://www.fairchildsemi.com/datasheets/MB/MBR0530.pdf" H 6750 6050 50  00
 	-1   0    0    1   
 $EndComp
 $Comp
-L Device:D_Schottky_ALT D2
+L Device:D_Schottky_ALT D1
 U 1 1 5BCCD658
 P 6750 4450
-F 0 "D2" H 6750 4666 50  0000 C CNN
+F 0 "D1" H 6750 4666 50  0000 C CNN
 F 1 "MBR0530" H 6750 4575 50  0000 C CNN
 F 2 "Diode_SMD:D_SOD-123" H 6750 4450 50  0001 C CNN
 F 3 "https://www.fairchildsemi.com/datasheets/MB/MBR0530.pdf" H 6750 4450 50  0001 C CNN
@@ -1214,10 +1210,10 @@ F 3 "https://www.fairchildsemi.com/datasheets/MB/MBR0530.pdf" H 6750 4450 50  00
 	-1   0    0    1   
 $EndComp
 $Comp
-L Device:D_Schottky_ALT D4
+L Device:D_Schottky_ALT D3
 U 1 1 5BCE28FC
 P 6750 5550
-F 0 "D4" H 6750 5766 50  0000 C CNN
+F 0 "D3" H 6750 5766 50  0000 C CNN
 F 1 "MBR0530" H 6750 5675 50  0000 C CNN
 F 2 "Diode_SMD:D_SOD-123" H 6750 5550 50  0001 C CNN
 F 3 "https://www.fairchildsemi.com/datasheets/MB/MBR0530.pdf" H 6750 5550 50  0001 C CNN
@@ -1225,10 +1221,10 @@ F 3 "https://www.fairchildsemi.com/datasheets/MB/MBR0530.pdf" H 6750 5550 50  00
 	-1   0    0    1   
 $EndComp
 $Comp
-L Device:D_Schottky_ALT D3
+L Device:D_Schottky_ALT D2
 U 1 1 5BCED23B
 P 6750 5000
-F 0 "D3" H 6750 5216 50  0000 C CNN
+F 0 "D2" H 6750 5216 50  0000 C CNN
 F 1 "MBR0530" H 6750 5125 50  0000 C CNN
 F 2 "Diode_SMD:D_SOD-123" H 6750 5000 50  0001 C CNN
 F 3 "https://www.fairchildsemi.com/datasheets/MB/MBR0530.pdf" H 6750 5000 50  0001 C CNN
@@ -1290,47 +1286,6 @@ Wire Wire Line
 	4850 6050 5450 6050
 Connection ~ 4850 5550
 $Comp
-L Device:LED_ALT D1
-U 1 1 5BE0EA43
-P 2750 4600
-F 0 "D1" H 2742 4345 50  0000 C CNN
-F 1 "LTST-C194KSKT" H 2742 4436 50  0000 C CNN
-F 2 "LED_SMD:LED_0603_1608Metric" H 2750 4600 50  0001 C CNN
-F 3 "~" H 2750 4600 50  0001 C CNN
-	1    2750 4600
-	-1   0    0    1   
-$EndComp
-Text Label 1900 4600 0    50   ~ 0
-LED
-$Comp
-L Device:R R2
-U 1 1 5BE0FB49
-P 2300 4600
-F 0 "R2" V 2507 4600 50  0000 C CNN
-F 1 "1k" V 2416 4600 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 2230 4600 50  0001 C CNN
-F 3 "~" H 2300 4600 50  0001 C CNN
-	1    2300 4600
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	1900 4600 2150 4600
-Wire Wire Line
-	2450 4600 2600 4600
-$Comp
-L power:GND #PWR09
-U 1 1 5BE34009
-P 3100 4600
-F 0 "#PWR09" H 3100 4350 50  0001 C CNN
-F 1 "GND" H 3105 4427 50  0000 C CNN
-F 2 "" H 3100 4600 50  0001 C CNN
-F 3 "" H 3100 4600 50  0001 C CNN
-	1    3100 4600
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	3100 4600 2900 4600
-$Comp
 L Device:Speaker LS1
 U 1 1 5BEA6795
 P 3000 5150
@@ -1342,10 +1297,10 @@ F 3 "~" H 2990 5100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R3
+L Device:R R2
 U 1 1 5BEA68C0
 P 2450 5150
-F 0 "R3" V 2243 5150 50  0000 C CNN
+F 0 "R2" V 2243 5150 50  0000 C CNN
 F 1 "220" V 2334 5150 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 2380 5150 50  0001 C CNN
 F 3 "~" H 2450 5150 50  0001 C CNN
@@ -1429,6 +1384,17 @@ F 1 "100nF" V 1911 1800 50  0000 C CNN
 F 2 "Capacitor_SMD:C_0603_1608Metric" H 1788 1650 50  0001 C CNN
 F 3 "~" H 1750 1800 50  0001 C CNN
 	1    1750 1800
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:GND #PWR09
+U 1 1 5B8876BC
+P 3400 2700
+F 0 "#PWR09" H 3400 2450 50  0001 C CNN
+F 1 "GND" V 3405 2572 50  0000 R CNN
+F 2 "" H 3400 2700 50  0001 C CNN
+F 3 "" H 3400 2700 50  0001 C CNN
+	1    3400 2700
 	0    -1   -1   0   
 $EndComp
 $EndSCHEMATC
