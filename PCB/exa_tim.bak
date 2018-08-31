@@ -1397,15 +1397,4 @@ F 3 "" H 3400 2700 50  0001 C CNN
 	1    3400 2700
 	0    -1   -1   0   
 $EndComp
-$Comp
-L Graphic:SYM_Flash_Large SYM1
-U 1 1 5B89D71A
-P 6600 7350
-F 0 "SYM1" V 6450 7350 50  0001 C CNN
-F 1 "SYM_Flash_Large" V 6730 7350 50  0001 C CNN
-F 2 "exa_tim:MESSAGE" H 6590 7260 50  0001 C CNN
-F 3 "~" H 7000 7250 50  0001 C CNN
-	1    6600 7350
-	1    0    0    -1  
-$EndComp
 $EndSCHEMATC
