@@ -2,6 +2,8 @@
 
 EXA_tim is a wrist watch that uses GNSS for time synchronization.
 
+![EXA_tim PCB front](images/PCB-front.png?raw=true)
+
 # Features
 
  - 32bit STM32L0 MCU
