@@ -3,3 +3,4 @@ PCB/exa_tim.step
 firmware/Debug/
 firmware/Release/
 firmware/build/
+firmware/*.launch
