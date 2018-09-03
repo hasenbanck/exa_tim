@@ -58,6 +58,7 @@
 								<option id="com.atollic.truestudio.gcc.optimization.prep_data.433180769" name="Prepare dead data removal" superClass="com.atollic.truestudio.gcc.optimization.prep_data" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<option id="com.atollic.truestudio.gcc.warnings.w_switch_default.742768756" name="Warn when switch statement does not have a default case" superClass="com.atollic.truestudio.gcc.warnings.w_switch_default" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<option id="com.atollic.truestudio.gcc.warnings.w_switch_enum.1612337449" name="Warn if switch is used on enum type and switch statement lacks case for some enumerations" superClass="com.atollic.truestudio.gcc.warnings.w_switch_enum" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="com.atollic.truestudio.exe.debug.toolchain.gcc.optimization.level.1529762529" name="Optimization Level" superClass="com.atollic.truestudio.exe.debug.toolchain.gcc.optimization.level" useByScannerDiscovery="false" value="com.atollic.truestudio.gcc.optimization.level.00" valueType="enumerated"/>
 								<inputType id="com.atollic.truestudio.gcc.input.1634517287" superClass="com.atollic.truestudio.gcc.input"/>
 							</tool>
 							<tool id="com.atollic.truestudio.exe.debug.toolchain.ld.1456914248" name="C Linker" superClass="com.atollic.truestudio.exe.debug.toolchain.ld">

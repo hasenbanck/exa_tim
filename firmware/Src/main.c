@@ -114,12 +114,7 @@ static void RTC_Init(void) {
     RTC_DateTypeDef sDate;
     RTC_AlarmTypeDef sAlarm;
 
-    /* USER CODE BEGIN RTC_Init 1 */
-
-    /* USER CODE END RTC_Init 1 */
-
-    /**Initialize RTC Only
-     */
+    /** Initialize RTC Only */
     hrtc.Instance = RTC;
     hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
     hrtc.Init.AsynchPrediv = 127;
@@ -132,7 +127,7 @@ static void RTC_Init(void) {
         _Error_Handler(__FILE__, __LINE__);
     }
 
-    /**Initialize RTC and set the Time and Date */
+    /** Initialize RTC and set the Time and Date */
     sTime.Hours = 0x0;
     sTime.Minutes = 0x0;
     sTime.Seconds = 0x0;
@@ -151,7 +146,7 @@ static void RTC_Init(void) {
         _Error_Handler(__FILE__, __LINE__);
     }
 
-    /**Enable the Alarm A */
+    /** Enable the Alarm A */
     sAlarm.AlarmTime.Hours = 0x0;
     sAlarm.AlarmTime.Minutes = 0x0;
     sAlarm.AlarmTime.Seconds = 0x0;
@@ -167,14 +162,14 @@ static void RTC_Init(void) {
         _Error_Handler(__FILE__, __LINE__);
     }
 
-    /**Enable the Alarm B */
+    /** Enable the Alarm B */
     sAlarm.AlarmDateWeekDay = 0x1;
     sAlarm.Alarm = RTC_ALARM_B;
     if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BCD) != HAL_OK) {
         _Error_Handler(__FILE__, __LINE__);
     }
 
-    /**Enable the WakeUp */
+    /** Enable the WakeUp */
     if (HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 0, RTC_WAKEUPCLOCK_CK_SPRE_16BITS)
             != HAL_OK) {
         _Error_Handler(__FILE__, __LINE__);
@@ -237,8 +232,7 @@ static void TIM2_Init(void) {
 /* Enable DMA controller clock */
 static void DMA_Init(void) {
     /* DMA controller clock enable */
-    __HAL_RCC_DMA1_CLK_ENABLE()
-    ;
+    __HAL_RCC_DMA1_CLK_ENABLE();
 
     /* DMA interrupt init */
     /* DMA1_Channel2_3_IRQn interrupt configuration */
@@ -254,12 +248,9 @@ static void GPIO_Init(void) {
     GPIO_InitTypeDef GPIO_InitStruct;
 
     /* GPIO Ports Clock Enable */
-    __HAL_RCC_GPIOC_CLK_ENABLE()
-    ;
-    __HAL_RCC_GPIOA_CLK_ENABLE()
-    ;
-    __HAL_RCC_GPIOB_CLK_ENABLE()
-    ;
+    __HAL_RCC_GPIOC_CLK_ENABLE();
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    __HAL_RCC_GPIOB_CLK_ENABLE();
 
     /*Configure GPIO pin Output Level */
     HAL_GPIO_WritePin(GPIOA, GNSS_EN_Pin | CS_Pin | LED_Pin, GPIO_PIN_RESET);

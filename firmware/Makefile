@@ -27,6 +27,7 @@ Src/stm32l0xx_it.c \
 Src/stm32l0xx_hal_msp.c \
 Src/syscalls.c \
 Src/system_stm32l0xx.c \
+Src/tiny_printf.c \
 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_uart.c \
 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_uart_ex.c \
 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_rtc.c \
