@@ -34,8 +34,23 @@ I designed the parts for a printer that can handle 0.1 mm clearance.
 If you need looser clearance, please change the Fusion 360 user
 variable "Clearance" for your needed value.
 
+# Firmware
+
+The firmware uses the STM32 HAL. It can be build by either using make
+and a compatible GCC toolchain (I use the official gcc arm branch) or
+by using Atollic TrueStudio.
+
+You can build the firmeware image by specifying the path of the GCC
+compiler and calling make in the firmware folder:
+
+```bash
+cd firmware
+GCC_PATH=/opt/gcc-arm-none-eabi-7-2018-q2-update/bin make
+```
+
 # License
 
-This hardware design is licensed under CERN Open Hardware Licence v1.2
+The hardware components (case and PCB) are licensed under CERN Open Hardware Licence v1.2
+The software components (firmware) are licensed under GPLv3.
 
-The packages3d files are excluded from this license.
+The pcb/packages3d files are excluded from these license.

@@ -1,3 +1,0 @@
-(fp_lib_table
-  (lib (name exa_tim)(type KiCad)(uri ${KIPRJMOD}/exa_tim.pretty)(options "")(descr ""))
-)
