@@ -2190,6 +2190,7 @@ HAL_StatusTypeDef UART_SetConfig(UART_HandleTypeDef *huart)
     case UART_CLOCKSOURCE_LSE:
       tmpreg = (uint32_t) LSE_VALUE;
       break;
+    case UART_CLOCKSOURCE_PCLK2:
     case UART_CLOCKSOURCE_UNDEFINED:
     default:
         ret = HAL_ERROR;
