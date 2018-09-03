@@ -48,9 +48,28 @@ cd firmware
 GCC_PATH=/opt/gcc-arm-none-eabi-7-2018-q2-update/bin make
 ```
 
+# Flashing
+
+To programm the watch we are using the 10 pin 1.27mm (0.05") Cortex Debug
+header. You need a programmer that can programm an ARM using the SWD
+protocol.
+
+A ST-Link V2 (and it's clones), a JLink (mini) or a blackmagic programmer
+should work fine.
+
+We included a OpenOCD file as an example how to programm the firmware.
+
+You can also use any available flashing software available. For example:
+ - OpenOCD
+ - STM32CubeProgrammer
+ - STM32 ST-Link utility
+ - Segger J-Link JFlash (lite)
+
 # License
 
-The hardware components (case and PCB) are licensed under CERN Open Hardware Licence v1.2
+The hardware components (case and PCB) are licensed under the CERN Open
+Hardware Licence v1.2
+
 The software components (firmware) are licensed under GPLv3.
 
 The pcb/packages3d files are excluded from these license.
