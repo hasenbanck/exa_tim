@@ -1,7 +1,8 @@
-All project specific files are licensed under GPLv3. Files in the Drivers
-folder and all files with its own license header are excluded from this license.
+All project specific files are licensed under GPLv3. Files in the Drivers and
+Middleware folders and all files with its own license header are
+excluded from this license.
 
---------------------------------------------------------------------------------
+##############################################################################
 
                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
