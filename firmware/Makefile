@@ -7,7 +7,7 @@ TARGET = exa_tim
 # building variables
 ######################################
 # debug build?
-DEBUG = 1
+DEBUG = 0
 # optimization
 OPT = -Os
 
@@ -15,43 +15,19 @@ OPT = -Os
 # paths
 #######################################
 # Build path
-BUILD_DIR = build
+BUILD_DIR = Build
 
 ######################################
 # source
 ######################################
 # C sources
-C_SOURCES =  \
-Src/main.c \
-Src/stm32l0xx_it.c \
-Src/stm32l0xx_hal_msp.c \
-Src/system_stm32l0xx.c \
-Src/tiny_printf.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_uart.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_uart_ex.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_rtc.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_rtc_ex.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_spi.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_i2c.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_i2c_ex.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_rcc.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_rcc_ex.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_flash_ramfunc.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_flash.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_flash_ex.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_gpio.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_dma.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_pwr.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_pwr_ex.c \
-Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_cortex.c
+C_SOURCES = $(wildcard ./Src/*.c) \
+			$(wildcard ./Drivers/STM32L0xx_HAL_Driver/Src/*.c) \
+			$(wildcard ./Middleware/u8g2/*.c)
 
 # ASM sources
 ASM_SOURCES =  \
 Src/startup_stm32l071xx.s
-
 
 #######################################
 # binaries
@@ -96,7 +72,6 @@ C_DEFS =  \
 -DUSE_HAL_DRIVER \
 -DSTM32L071xx
 
-
 # AS includes
 AS_INCLUDES =
 
@@ -106,8 +81,8 @@ C_INCLUDES =  \
 -IDrivers/STM32L0xx_HAL_Driver/Inc \
 -IDrivers/STM32L0xx_HAL_Driver/Inc/Legacy \
 -IDrivers/CMSIS/Device/ST/STM32L0xx/Include \
--IDrivers/CMSIS/Include
-
+-IDrivers/CMSIS/Include \
+-IMiddleware/u8g2
 
 # compile gcc flags
 ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections

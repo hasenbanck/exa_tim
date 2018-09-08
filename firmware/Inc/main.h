@@ -1,5 +1,4 @@
-#ifndef __MAIN_H__
-#define __MAIN_H__
+#pragma once
 
 #define ALARM_Pin GPIO_PIN_1
 #define ALARM_GPIO_Port GPIOA
@@ -24,14 +23,5 @@
 #define BTN4_Pin GPIO_PIN_7
 #define BTN4_GPIO_Port GPIOB
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 void _Error_Handler(char *, int);
-
 #define Error_Handler() _Error_Handler(__FILE__, __LINE__)
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* __MAIN_H__ */
