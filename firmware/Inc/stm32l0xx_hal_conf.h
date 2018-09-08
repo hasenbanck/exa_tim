@@ -34,7 +34,7 @@
  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#pragma one
+#pragma once
 
 #include "main.h"
 /* Exported types ------------------------------------------------------------*/
