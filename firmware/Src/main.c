@@ -1,6 +1,5 @@
 #include "main.h"
 #include "stm32l0xx_hal.h"
-#include "SEGGER_RTT.h"
 
 UART_HandleTypeDef hlpuart1;
 DMA_HandleTypeDef hdma_lpuart1_tx;
@@ -35,7 +34,7 @@ int main(void)
   SPI1_Init();
   TIM2_Init();
 
-  SEGGER_RTT_printf(0, "Peripherals initialized\n");
+  debug("Peripherals initialized\n");
 
   /* Infinite loop */
   while (1)
@@ -320,6 +319,7 @@ static void GPIO_Init(void)
  */
 void _Error_Handler(char *file, int line)
 {
+  debug("Error_Handler() called from %s, %d\n", file, line);
   while (1)
   {
   }
