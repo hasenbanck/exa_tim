@@ -1,4 +1,5 @@
 #include "main.h"
+#include "display.h"
 #include "stm32l0xx_hal.h"
 
 UART_HandleTypeDef hlpuart1;
@@ -35,6 +36,9 @@ int main(void)
   TIM2_Init();
 
   debug("Peripherals initialized\n");
+
+  /* Initialize external devices */
+  Display_Init();
 
   /* Infinite loop */
   while (1)

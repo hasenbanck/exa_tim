@@ -12,6 +12,10 @@
 #define DC_GPIO_Port GPIOB
 #define RESET_Pin GPIO_PIN_1
 #define RESET_GPIO_Port GPIOB
+#define SCK_Pin GPIO_PIN_5
+#define SCK_GPIO_Port GPIOA
+#define MOSI_Pin GPIO_PIN_7
+#define MOSI_GPIO_Port GPIOA
 #define CS_Pin GPIO_PIN_8
 #define CS_GPIO_Port GPIOA
 #define LED_Pin GPIO_PIN_9
