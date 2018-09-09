@@ -23,7 +23,9 @@ BUILD_DIR = Build
 # C sources
 C_SOURCES = $(wildcard ./Src/*.c) \
 			$(wildcard ./Drivers/STM32L0xx_HAL_Driver/Src/*.c) \
+			$(wildcard ./Middleware/RTT/*.c) \
 			$(wildcard ./Middleware/u8g2/*.c)
+
 
 # ASM sources
 ASM_SOURCES =  \
@@ -82,6 +84,7 @@ C_INCLUDES =  \
 -IDrivers/STM32L0xx_HAL_Driver/Inc/Legacy \
 -IDrivers/CMSIS/Device/ST/STM32L0xx/Include \
 -IDrivers/CMSIS/Include \
+-IMiddleware/RTT \
 -IMiddleware/u8g2
 
 # compile gcc flags
