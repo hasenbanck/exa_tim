@@ -1,6 +1,7 @@
 #include "stm32l0xx_it.h"
 #include "stm32l0xx.h"
 #include "stm32l0xx_hal.h"
+#include "button.h"
 
 extern LPTIM_HandleTypeDef hlptim1;
 extern DMA_HandleTypeDef hdma_lpuart1_tx;

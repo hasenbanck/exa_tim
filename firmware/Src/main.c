@@ -1,4 +1,5 @@
 #include "main.h"
+#include "button.h"
 #include "display.h"
 #include "stm32l0xx_hal.h"
 
@@ -46,6 +47,7 @@ int main(void)
   /* Infinite loop */
   while (1)
   {
+    btn_pressed_event evt = getPressedButtonEvent();
   }
 }
 

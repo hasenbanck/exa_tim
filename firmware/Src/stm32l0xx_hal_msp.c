@@ -22,10 +22,10 @@ void HAL_MspInit(void)
 
   /* Peripheral interrupt init */
   /* PVD_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(PVD_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(PVD_IRQn, 1, 0);
   HAL_NVIC_EnableIRQ(PVD_IRQn);
   /* RCC_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(RCC_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(RCC_IRQn, 1, 0);
   HAL_NVIC_EnableIRQ(RCC_IRQn);
 }
 
@@ -36,7 +36,7 @@ void HAL_LPTIM_MspInit(LPTIM_HandleTypeDef *hlptim)
     /* Peripheral clock enable */
     __HAL_RCC_LPTIM1_CLK_ENABLE();
     /* LPTIM1 interrupt Init */
-    HAL_NVIC_SetPriority(LPTIM1_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(LPTIM1_IRQn, 2, 0);
     HAL_NVIC_EnableIRQ(LPTIM1_IRQn);
   }
 }
@@ -134,7 +134,7 @@ void HAL_RTC_MspInit(RTC_HandleTypeDef *hrtc)
     /* Peripheral clock enable */
     __HAL_RCC_RTC_ENABLE();
     /* RTC interrupt Init */
-    HAL_NVIC_SetPriority(RTC_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(RTC_IRQn, 1, 0);
     HAL_NVIC_EnableIRQ(RTC_IRQn);
   }
 }
@@ -189,7 +189,7 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef *hspi)
     __HAL_LINKDMA(hspi, hdmatx, hdma_spi1_tx);
 
     /* SPI1 interrupt Init */
-    HAL_NVIC_SetPriority(SPI1_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(SPI1_IRQn, 1, 0);
     HAL_NVIC_EnableIRQ(SPI1_IRQn);
   }
 }
