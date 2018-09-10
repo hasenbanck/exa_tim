@@ -56,7 +56,7 @@
 /*#define HAL_I2S_MODULE_ENABLED   */
 /*#define HAL_IWDG_MODULE_ENABLED   */
 /*#define HAL_LCD_MODULE_ENABLED   */
-/*#define HAL_LPTIM_MODULE_ENABLED   */
+#define HAL_LPTIM_MODULE_ENABLED
 /*#define HAL_RNG_MODULE_ENABLED   */
 #define HAL_RTC_MODULE_ENABLED
 #define HAL_SPI_MODULE_ENABLED
@@ -119,9 +119,9 @@
  * @brief Internal High Speed oscillator for USB (HSI48) value.
  */
 #if !defined(HSI48_VALUE)
-#define HSI48_VALUE                                                                     \
-  ((uint32_t)48000000U) /*!< Value of the Internal High Speed oscillator for USB in Hz. \
-                             The real value may vary depending on the variations        \
+#define HSI48_VALUE                                                                       \
+  ((uint32_t)48000000U) /*!< Value of the Internal High Speed oscillator for USB in Hz. \ \
+                             The real value may vary depending on the variations        \ \
                              in voltage and temperature.  */
 #endif                  /* HSI48_VALUE */
 
@@ -130,8 +130,8 @@
  */
 #if !defined(LSI_VALUE)
 #define LSI_VALUE ((uint32_t)37000U) /*!< LSI Typical Value in Hz*/
-#endif /* LSI_VALUE */               /*!< Value of the Internal Low Speed oscillator in Hz \
-                                      The real value may vary depending on the variations  \
+#endif /* LSI_VALUE */               /*!< Value of the Internal Low Speed oscillator in Hz \ \
+                                      The real value may vary depending on the variations  \ \
                                       in voltage and temperature.*/
 /**
  * @brief External Low Speed oscillator (LSE) value.

@@ -2,6 +2,7 @@
 #include "display.h"
 #include "stm32l0xx_hal.h"
 
+LPTIM_HandleTypeDef hlptim1;
 UART_HandleTypeDef hlpuart1;
 DMA_HandleTypeDef hdma_lpuart1_tx;
 DMA_HandleTypeDef hdma_lpuart1_rx;
@@ -17,6 +18,7 @@ static void LPUART1_UART_Init(void);
 static void RTC_Init(void);
 static void SPI1_Init(void);
 static void TIM2_Init(void);
+static void LPTIM1_Init();
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
 int main(void)
@@ -34,6 +36,7 @@ int main(void)
   RTC_Init();
   SPI1_Init();
   TIM2_Init();
+  LPTIM1_Init();
 
   debug("Peripherals initialized\n");
 
@@ -60,15 +63,11 @@ void SystemClock_Config(void)
   __HAL_RCC_LSEDRIVE_CONFIG(RCC_LSEDRIVE_LOW);
 
   /** Initializes the CPU, AHB and APB busses clocks */
-  RCC_OscInitStruct.OscillatorType =
-      RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_LSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_LSE;
   RCC_OscInitStruct.LSEState = RCC_LSE_ON;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = 16;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLLMUL_3;
-  RCC_OscInitStruct.PLL.PLLDIV = RCC_PLLDIV_3;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -77,7 +76,7 @@ void SystemClock_Config(void)
   /** Initializes the CPU, AHB and APB busses clocks */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK |
                                 RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
@@ -88,9 +87,10 @@ void SystemClock_Config(void)
   }
 
   PeriphClkInit.PeriphClockSelection =
-      RCC_PERIPHCLK_LPUART1 | RCC_PERIPHCLK_RTC;
-  PeriphClkInit.Lpuart1ClockSelection = RCC_LPUART1CLKSOURCE_PCLK1;
+      RCC_PERIPHCLK_LPUART1 | RCC_PERIPHCLK_RTC | RCC_PERIPHCLK_LPTIM1;
+  PeriphClkInit.Lpuart1ClockSelection = RCC_LPUART1CLKSOURCE_HSI;
   PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
+  PeriphClkInit.LptimClockSelection = RCC_LPTIM1CLKSOURCE_HSI;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
@@ -104,6 +104,29 @@ void SystemClock_Config(void)
 
   /* SysTick_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
+}
+
+/* LPTIM1 init function */
+static void LPTIM1_Init(void)
+{
+  hlptim1.Instance = LPTIM1;
+  hlptim1.Init.Clock.Source = LPTIM_CLOCKSOURCE_APBCLOCK_LPOSC;
+  hlptim1.Init.Clock.Prescaler = LPTIM_PRESCALER_DIV16;
+  hlptim1.Init.Trigger.Source = LPTIM_TRIGSOURCE_SOFTWARE;
+  hlptim1.Init.OutputPolarity = LPTIM_OUTPUTPOLARITY_HIGH;
+  hlptim1.Init.UpdateMode = LPTIM_UPDATE_IMMEDIATE;
+  hlptim1.Init.CounterSource = LPTIM_COUNTERSOURCE_INTERNAL;
+  if (HAL_LPTIM_Init(&hlptim1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /* 16Mhz / Div16 = 1Mhz * 5000 = 5ms */
+  if (HAL_LPTIM_Counter_Start_IT(&hlptim1, 4999) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* Start counting */
 }
 
 static void LPUART1_UART_Init(void)
@@ -225,10 +248,11 @@ static void TIM2_Init(void)
   TIM_MasterConfigTypeDef sMasterConfig;
   TIM_OC_InitTypeDef sConfigOC;
 
+  /* 16 Mhz / Div4 = 4 Mhz * 1000 = 4 Khz */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 2;
+  htim2.Init.Prescaler = 4;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 7999;
+  htim2.Init.Period = 999;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
   {

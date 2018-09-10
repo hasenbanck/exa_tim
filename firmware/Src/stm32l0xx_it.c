@@ -2,6 +2,7 @@
 #include "stm32l0xx.h"
 #include "stm32l0xx_hal.h"
 
+extern LPTIM_HandleTypeDef hlptim1;
 extern DMA_HandleTypeDef hdma_lpuart1_tx;
 extern DMA_HandleTypeDef hdma_lpuart1_rx;
 extern RTC_HandleTypeDef hrtc;
@@ -55,4 +56,12 @@ void DMA1_Channel4_5_6_7_IRQHandler(void)
   HAL_DMA_IRQHandler(&hdma_lpuart1_rx);
 }
 
-void SPI1_IRQHandler(void) { HAL_SPI_IRQHandler(&hspi1); }
+void LPTIM1_IRQHandler(void)
+{
+  HAL_LPTIM_IRQHandler(&hlptim1);
+}
+
+void SPI1_IRQHandler(void)
+{
+  HAL_SPI_IRQHandler(&hspi1);
+}

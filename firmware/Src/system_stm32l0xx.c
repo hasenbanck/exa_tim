@@ -71,8 +71,8 @@
 
 /*!< Uncomment the following line if you need to relocate your vector Table in Internal SRAM. */
 /* #define VECT_TAB_SRAM */
-#define VECT_TAB_OFFSET \
-  0x00U /*!< Vector Table base offset field. This value must be a multiple of 0x200. */
+#define VECT_TAB_OFFSET 0x00U /*!< Vector Table base offset field. \
+                                   This value must be a multiple of 0x200. */
 /******************************************************************************/
 
 /* This variable is updated in three ways:
@@ -84,8 +84,7 @@
     SystemCoreClock variable is updated automatically.
  */
 uint32_t SystemCoreClock = 2000000U;
-const uint8_t AHBPrescTable[16] = {0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-                                   1U, 2U, 3U, 4U, 6U, 7U, 8U, 9U};
+const uint8_t AHBPrescTable[16] = {0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 2U, 3U, 4U, 6U, 7U, 8U, 9U};
 const uint8_t APBPrescTable[8] = {0U, 0U, 0U, 0U, 1U, 2U, 3U, 4U};
 const uint8_t PLLMulTable[9] = {3U, 4U, 6U, 8U, 12U, 16U, 24U, 32U, 48U};
 
@@ -171,7 +170,7 @@ void SystemCoreClockUpdate(void)
 {
   uint32_t tmp = 0U, pllmul = 0U, plldiv = 0U, pllsource = 0U, msirange = 0U;
 
-  /* Get SYSCLK source -------------------------------------------------------*/
+  /* Get SYSCLK source */
   tmp = RCC->CFGR & RCC_CFGR_SWS;
 
   switch (tmp)
@@ -187,7 +186,7 @@ void SystemCoreClockUpdate(void)
     SystemCoreClock = HSE_VALUE;
     break;
   case 0x0CU: /* PLL used as system clock */
-    /* Get PLL clock source and multiplication factor ----------------------*/
+    /* Get PLL clock source and multiplication factor */
     pllmul = RCC->CFGR & RCC_CFGR_PLLMUL;
     plldiv = RCC->CFGR & RCC_CFGR_PLLDIV;
     pllmul = PLLMulTable[(pllmul >> 18U)];
@@ -211,7 +210,7 @@ void SystemCoreClockUpdate(void)
     SystemCoreClock = (32768U * (1U << (msirange + 1U)));
     break;
   }
-  /* Compute HCLK clock frequency --------------------------------------------*/
+  /* Compute HCLK clock frequency */
   /* Get HCLK prescaler */
   tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4U)];
   /* HCLK clock frequency */
