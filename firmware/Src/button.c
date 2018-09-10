@@ -14,8 +14,16 @@ void HAL_LPTIM_TriggerCallback(LPTIM_HandleTypeDef *hlptim)
 {
     for (uint8_t i = 0; i < 4; i++)
     {
+        /* Every interrupt (5ms) we are saving the current history of
+         * a button state. We later compare the most recent 3 and
+         * and 2 oldest states using the mask 0b11000111 with the
+         * expected value of a "good" button press history.
+         * We expect to find to find 15ms of HIGH at the start and
+         * 10ms of LOW in the end of the history. The middle 3 states
+         * are not of interest and maybe bounces.
+         * */
         buttonStates[i].history = buttonStates[0].history << 1;
-        buttonStates[i].history |= (GPIOB->IDR & (i << ((uint16_t)0x0010U)));
+        buttonStates[i].history |= (GPIOB->IDR & (((uint16_t)0x0010U)<<i));
         if ((buttonStates[0].history & 0b11000111) == 0b00000111)
         {
             buttonStates[i].pressed = true;
