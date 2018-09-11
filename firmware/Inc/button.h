@@ -1,5 +1,13 @@
 #pragma once
 
-typedef enum {no_button_pressed, btn1_pressed, btn2_pressed, btn3_pressed, btn4_pressed } btn_pressed_event;
+#include <stdint.h>
 
-btn_pressed_event getPressedButtonEvent();
+static uint8_t const BTN1_BIT = 1U << 0;
+static uint8_t const BTN2_BIT = 1U << 1;
+static uint8_t const BTN3_BIT = 1U << 2;
+static uint8_t const BTN4_BIT = 1U << 3;
+
+typedef uint8_t btnBitField;
+
+/* Returns a copy of a bitfield of pressed button events */
+btnBitField getPressedButtonEvent();

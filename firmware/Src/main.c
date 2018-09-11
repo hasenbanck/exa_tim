@@ -22,9 +22,8 @@ static void TIM2_Init(void);
 static void LPTIM1_Init();
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
-int main(void)
-{
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+int main(void) {
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick */
   HAL_Init();
 
   /* Configure the system clock */
@@ -45,14 +44,14 @@ int main(void)
   Display_Init();
 
   /* Infinite loop */
-  while (1)
-  {
-    btn_pressed_event evt = getPressedButtonEvent();
+  while (1) {
+    btnBitField field = getPressedButtonEvent();
+    if (field & BTN1_BIT) {
+    }
   }
 }
 
-void SystemClock_Config(void)
-{
+void SystemClock_Config(void) {
   RCC_OscInitTypeDef RCC_OscInitStruct;
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
   RCC_PeriphCLKInitTypeDef PeriphClkInit;
@@ -65,13 +64,13 @@ void SystemClock_Config(void)
   __HAL_RCC_LSEDRIVE_CONFIG(RCC_LSEDRIVE_LOW);
 
   /** Initializes the CPU, AHB and APB busses clocks */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_LSE;
+  RCC_OscInitStruct.OscillatorType =
+      RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_LSE;
   RCC_OscInitStruct.LSEState = RCC_LSE_ON;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = 16;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
     Error_Handler();
   }
 
@@ -83,8 +82,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
-  {
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK) {
     Error_Handler();
   }
 
@@ -93,8 +91,7 @@ void SystemClock_Config(void)
   PeriphClkInit.Lpuart1ClockSelection = RCC_LPUART1CLKSOURCE_HSI;
   PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
   PeriphClkInit.LptimClockSelection = RCC_LPTIM1CLKSOURCE_HSI;
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
-  {
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) {
     Error_Handler();
   }
 
@@ -109,8 +106,7 @@ void SystemClock_Config(void)
 }
 
 /* LPTIM1 init function */
-static void LPTIM1_Init(void)
-{
+static void LPTIM1_Init(void) {
   hlptim1.Instance = LPTIM1;
   hlptim1.Init.Clock.Source = LPTIM_CLOCKSOURCE_APBCLOCK_LPOSC;
   hlptim1.Init.Clock.Prescaler = LPTIM_PRESCALER_DIV16;
@@ -118,21 +114,18 @@ static void LPTIM1_Init(void)
   hlptim1.Init.OutputPolarity = LPTIM_OUTPUTPOLARITY_HIGH;
   hlptim1.Init.UpdateMode = LPTIM_UPDATE_IMMEDIATE;
   hlptim1.Init.CounterSource = LPTIM_COUNTERSOURCE_INTERNAL;
-  if (HAL_LPTIM_Init(&hlptim1) != HAL_OK)
-  {
+  if (HAL_LPTIM_Init(&hlptim1) != HAL_OK) {
     Error_Handler();
   }
 
   /* 16Mhz / Div16 = 1Mhz * 5000 = 5ms */
-  if (HAL_LPTIM_Counter_Start_IT(&hlptim1, 4999) != HAL_OK)
-  {
+  if (HAL_LPTIM_Counter_Start_IT(&hlptim1, 4999) != HAL_OK) {
     Error_Handler();
   }
   /* Start counting */
 }
 
-static void LPUART1_UART_Init(void)
-{
+static void LPUART1_UART_Init(void) {
   hlpuart1.Instance = LPUART1;
   hlpuart1.Init.BaudRate = 9600;
   hlpuart1.Init.WordLength = UART_WORDLENGTH_7B;
@@ -142,14 +135,12 @@ static void LPUART1_UART_Init(void)
   hlpuart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
   hlpuart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
   hlpuart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-  if (HAL_UART_Init(&hlpuart1) != HAL_OK)
-  {
+  if (HAL_UART_Init(&hlpuart1) != HAL_OK) {
     Error_Handler();
   }
 }
 
-static void RTC_Init(void)
-{
+static void RTC_Init(void) {
   RTC_TimeTypeDef sTime;
   RTC_DateTypeDef sDate;
   RTC_AlarmTypeDef sAlarm;
@@ -163,8 +154,7 @@ static void RTC_Init(void)
   hrtc.Init.OutPutRemap = RTC_OUTPUT_REMAP_NONE;
   hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
   hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
-  if (HAL_RTC_Init(&hrtc) != HAL_OK)
-  {
+  if (HAL_RTC_Init(&hrtc) != HAL_OK) {
     Error_Handler();
   }
 
@@ -174,8 +164,7 @@ static void RTC_Init(void)
   sTime.Seconds = 0x0;
   sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
   sTime.StoreOperation = RTC_STOREOPERATION_RESET;
-  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
-  {
+  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK) {
     Error_Handler();
   }
 
@@ -184,8 +173,7 @@ static void RTC_Init(void)
   sDate.Date = 0x1;
   sDate.Year = 0x0;
 
-  if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK)
-  {
+  if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK) {
     Error_Handler();
   }
 
@@ -201,30 +189,26 @@ static void RTC_Init(void)
   sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
   sAlarm.AlarmDateWeekDay = 0x1;
   sAlarm.Alarm = RTC_ALARM_A;
-  if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BCD) != HAL_OK)
-  {
+  if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BCD) != HAL_OK) {
     Error_Handler();
   }
 
   /** Enable the Alarm B */
   sAlarm.AlarmDateWeekDay = 0x1;
   sAlarm.Alarm = RTC_ALARM_B;
-  if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BCD) != HAL_OK)
-  {
+  if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BCD) != HAL_OK) {
     Error_Handler();
   }
 
   /** Enable the WakeUp */
   if (HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 0, RTC_WAKEUPCLOCK_CK_SPRE_16BITS) !=
-      HAL_OK)
-  {
+      HAL_OK) {
     Error_Handler();
   }
 }
 
 /* SPI1 init function */
-static void SPI1_Init(void)
-{
+static void SPI1_Init(void) {
   /* SPI1 parameter configuration */
   hspi1.Instance = SPI1;
   hspi1.Init.Mode = SPI_MODE_MASTER;
@@ -238,15 +222,13 @@ static void SPI1_Init(void)
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
   hspi1.Init.CRCPolynomial = 7;
-  if (HAL_SPI_Init(&hspi1) != HAL_OK)
-  {
+  if (HAL_SPI_Init(&hspi1) != HAL_OK) {
     Error_Handler();
   }
 }
 
 /* TIM2 init function */
-static void TIM2_Init(void)
-{
+static void TIM2_Init(void) {
   TIM_MasterConfigTypeDef sMasterConfig;
   TIM_OC_InitTypeDef sConfigOC;
 
@@ -256,15 +238,13 @@ static void TIM2_Init(void)
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim2.Init.Period = 999;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
-  {
+  if (HAL_TIM_PWM_Init(&htim2) != HAL_OK) {
     Error_Handler();
   }
 
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
-  {
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK) {
     Error_Handler();
   }
 
@@ -272,8 +252,7 @@ static void TIM2_Init(void)
   sConfigOC.Pulse = 0;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
-  {
+  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2) != HAL_OK) {
     Error_Handler();
   }
 
@@ -281,8 +260,7 @@ static void TIM2_Init(void)
 }
 
 /* Enable DMA controller clock */
-static void DMA_Init(void)
-{
+static void DMA_Init(void) {
   /* DMA controller clock enable */
   __HAL_RCC_DMA1_CLK_ENABLE();
 
@@ -296,8 +274,7 @@ static void DMA_Init(void)
 }
 
 /* Configure GPIO pins */
-static void GPIO_Init(void)
-{
+static void GPIO_Init(void) {
   GPIO_InitTypeDef GPIO_InitStruct;
 
   /* GPIO Ports Clock Enable */
@@ -326,7 +303,8 @@ static void GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(BUSY_GPIO_Port, &GPIO_InitStruct);
 
-  /* Configure GPIO pins : DC_Pin RESET_Pin BTN1_Pin BTN2_Pin BTN3_Pin BTN4_Pin */
+  /* Configure GPIO pins : DC_Pin RESET_Pin BTN1_Pin BTN2_Pin BTN3_Pin BTN4_Pin
+   */
   GPIO_InitStruct.Pin =
       DC_Pin | RESET_Pin | BTN1_Pin | BTN2_Pin | BTN3_Pin | BTN4_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -347,10 +325,8 @@ static void GPIO_Init(void)
  * @param  line: The line in file as a number.
  * @retval None
  */
-void _Error_Handler(char *file, int line)
-{
+void _Error_Handler(char *file, int line) {
   debug("Error_Handler() called from %s, %d\n", file, line);
-  while (1)
-  {
+  while (1) {
   }
 }

@@ -9,7 +9,7 @@ TARGET = exa_tim
 # debug build?
 DEBUG = 0
 # optimization
-OPT = -Os
+OPT = -Os -flto
 
 #######################################
 # paths
@@ -25,7 +25,6 @@ C_SOURCES = $(wildcard ./Src/*.c) \
 			$(wildcard ./Drivers/STM32L0xx_HAL_Driver/Src/*.c) \
 			$(wildcard ./Middleware/RTT/*.c) \
 			$(wildcard ./Middleware/u8g2/*.c)
-
 
 # ASM sources
 ASM_SOURCES =  \
@@ -57,13 +56,8 @@ BIN = $(CP) -O binary -S
 # cpu
 CPU = -mcpu=cortex-m0plus
 
-# fpu
-# NONE for Cortex-M0/M0+/M3
-
-# float-abi
-
 # mcu
-MCU = $(CPU) -mthumb $(FPU) $(FLOAT-ABI)
+MCU = $(CPU) -mthumb
 
 # macros for gcc
 # AS defines
@@ -111,7 +105,6 @@ LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BU
 
 # default action: build all
 all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).bin
-
 
 #######################################
 # build the application
