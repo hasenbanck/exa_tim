@@ -1,14 +1,10 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.0)
 
 set(PRJ_NAME exa_tim)
 set(MCU_FAMILY STM32L0xx)
 set(MCU_LINE STM32L071xx)
 set(MCU_ARCH cortex-m0plus)
 set(MCU_LINKER_SCRIPT stm32_flash.ld)
-set(OPTIMIZATION "-Os -flto")
-
-# TODO: Test DEBUG
-# TODO: Why is cmake and make build different size?
 
 # Add custom command to print firmware size in Berkley format
 function(firmware_size target)
@@ -48,9 +44,14 @@ include_directories(Inc)
 add_executable(${PROJECT_NAME}.elf ${SOURCE_FILES})
 
 get_filename_component(LSCRIPT ${MCU_LINKER_SCRIPT} ABSOLUTE)
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -specs=nano.specs -lc -lm -lnosys -T${LSCRIPT} -Wl,--gc-sections")
-SET(CMAKE_AS_FLAGS "${CMAKE_C_FLAGS} -mcpu=${MCU_ARCH} -mthumb ${OPTIMIZATION} -Wall")
-SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mcpu=${MCU_ARCH} -mthumb ${OPTIMIZATION} -Wall")
+set(CMAKE_EXE_LINKER_FLAGS "-specs=nano.specs -lc -lm -lnosys -T${LSCRIPT} -Wl,--gc-sections")
+SET(CMAKE_ASM_FLAGS "-mcpu=${MCU_ARCH} -mthumb -fdata-sections -ffunction-sections -Wall")
+SET(CMAKE_ASM_FLAGS_DEBUG "-Og -g")
+SET(CMAKE_ASM_FLAGS_RELEASE "-Os -flto")
+SET(CMAKE_C_FLAGS "-mcpu=${MCU_ARCH} -mthumb -fdata-sections -ffunction-sections -Wall")
+SET(CMAKE_C_FLAGS_DEBUG "-Og -g -gdwarf-2")
+SET(CMAKE_C_FLAGS_RELEASE "-Os -flto")
+
 generate_object(${PROJECT_NAME}.elf ${PROJECT_NAME}.hex ihex)
 generate_object(${PROJECT_NAME}.elf ${PROJECT_NAME}.bin binary)
 firmware_size(${PROJECT_NAME}.elf)

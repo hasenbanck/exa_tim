@@ -37,18 +37,20 @@ variable "Clearance" for your needed value.
 # Firmware
 
 The firmware uses the STM32 HAL. It can be build by either using cmake
-and the ARM GCC toolchain or by using Atollic TrueStudio.
+with the ARM GCC toolchain or by using Atollic TrueStudio.
 
 For the CMAKE build, you need to provide the ARM GCC toolchain in the
 PATH of your system. You can choose any CMAKE target that you like
-to use. The standard is make.
+to use. I personaly use ninja.
 
 ```bash
 mkdir -p firmware/build
 cd firmware/build
-cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake  ../
-make
+cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_BUILD_TYPE=Release -G Ninja ../
+ninja
 ```
+
+You can change ```-DCMAKE_BUILD_TYPE=Debug``` to produce debug build.
 
 # Flashing
 
