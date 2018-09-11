@@ -3,5 +3,6 @@ PCB/gerber/
 PCB/exa_tim.step
 firmware/Debug/
 firmware/Release/
+firmware/build/
 firmware/Build/
 firmware/*.launch

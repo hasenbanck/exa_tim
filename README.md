@@ -36,16 +36,18 @@ variable "Clearance" for your needed value.
 
 # Firmware
 
-The firmware uses the STM32 HAL. It can be build by either using make
-and a compatible GCC toolchain (I use the official gcc arm branch) or
-by using Atollic TrueStudio.
+The firmware uses the STM32 HAL. It can be build by either using cmake
+and the ARM GCC toolchain or by using Atollic TrueStudio.
 
-You can build the firmeware image by specifying the path of the GCC
-compiler and calling make in the firmware folder:
+For the CMAKE build, you need to provide the ARM GCC toolchain in the
+PATH of your system. You can choose any CMAKE target that you like
+to use. The standard is make.
 
 ```bash
-cd firmware
-GCC_PATH=/opt/gcc-arm-none-eabi-7-2018-q2-update/bin make
+mkdir -p firmware/build
+cd firmware/build
+cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake  ../
+make
 ```
 
 # Flashing
