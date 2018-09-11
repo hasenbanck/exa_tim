@@ -8,7 +8,6 @@ firmware/*.launch
 firmware/.ninja_deps
 firmware/.ninja_log
 firmware/.settings
-firmware/.vscode
 firmware/CMakeCache.txt
 firmware/CMakeFiles/
 firmware/build.ninja
