@@ -1,4 +1,3 @@
-.vscode/
 PCB/gerber/
 PCB/exa_tim.step
 firmware/Debug/
@@ -6,3 +5,15 @@ firmware/Release/
 firmware/build/
 firmware/Build/
 firmware/*.launch
+firmware/.ninja_deps
+firmware/.ninja_log
+firmware/.settings
+firmware/.vscode
+firmware/CMakeCache.txt
+firmware/CMakeFiles/
+firmware/build.ninja
+firmware/cmake_install.cmake
+firmware/exa_tim.bin
+firmware/exa_tim.elf
+firmware/exa_tim.hex
+firmware/rules.ninja

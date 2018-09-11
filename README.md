@@ -44,13 +44,13 @@ PATH of your system. You can choose any CMAKE target that you like
 to use. I personaly use ninja.
 
 ```bash
-mkdir -p firmware/build
-cd firmware/build
-cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_BUILD_TYPE=Release -G Ninja ../
+cd firmware
+cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -G Ninja .
 ninja
 ```
 
-You can change ```-DCMAKE_BUILD_TYPE=Debug``` to produce debug build.
+You can change add a ```-DCMAKE_BUILD_TYPE=Debug``` to the CMAKE
+command to produce a debug build.
 
 # Flashing
 

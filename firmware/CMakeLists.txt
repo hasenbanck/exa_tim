@@ -6,6 +6,17 @@ set(MCU_LINE STM32L071xx)
 set(MCU_ARCH cortex-m0plus)
 set(MCU_LINKER_SCRIPT stm32_flash.ld)
 
+# Set a default build type if none was specified
+set(default_build_type "Release")
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  message(STATUS "Setting build type to '${default_build_type}' as none was specified.")
+  set(CMAKE_BUILD_TYPE "${default_build_type}" CACHE
+     STRING "Choose the type of build." FORCE)
+  # Set the possible values of build type for cmake-gui
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
+    "Debug" "Release")
+endif()
+
 # Add custom command to print firmware size in Berkley format
 function(firmware_size target)
     add_custom_command(TARGET ${target} POST_BUILD
