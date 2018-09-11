@@ -3,15 +3,14 @@
 
 static uint32_t const BTN_HISTORY_CLEAR_MASK = 0x01010101U;
 
-typedef struct buttonState{
+typedef struct buttonState {
   uint32_t history;
   btnBitField pressed;
 } buttonState;
 
 static buttonState btnState;
 
-void HAL_LPTIM_TriggerCallback(LPTIM_HandleTypeDef *hlptim)
-{
+void HAL_LPTIM_TriggerCallback(LPTIM_HandleTypeDef *hlptim) {
   /* Every interrupt (5ms) we are saving the current history of
    * a button state. We later compare the most recent 3 and
    * and 2 oldest states using the mask 0b11000111 with the
@@ -20,9 +19,9 @@ void HAL_LPTIM_TriggerCallback(LPTIM_HandleTypeDef *hlptim)
    * 10ms of LOW in the end of the history. The middle 3 states
    * are not of interest and maybe bounces.
    * */
-  uint32_t currentButtonStates = GPIOB->IDR; // Get current button states
-  btnState.history <<= 1;                 // Advance history one bit
-  btnState.history &= ~BTN_HISTORY_CLEAR_MASK; // Clear history bits we want to write
+  uint32_t currentButtonStates = GPIOB->IDR;   // Get current button states
+  btnState.history <<= 1;                      // Advance history one bit
+  btnState.history &= ~BTN_HISTORY_CLEAR_MASK; // Clear current history bits
   btnState.history |= currentButtonStates & BTN1_Pin; // Set state of buttons
   btnState.history |= currentButtonStates & BTN2_Pin;
   btnState.history |= currentButtonStates & BTN3_Pin;

@@ -23,7 +23,9 @@ static void LPTIM1_Init();
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
 int main(void) {
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick */
+  /* Reset of all peripherals, Initializes
+   * the Flash interface and the Systick
+   */
   HAL_Init();
 
   /* Configure the system clock */

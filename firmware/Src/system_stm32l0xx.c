@@ -11,8 +11,8 @@
  *                      the "startup_stm32l0xx.s" file.
  *
  *      - SystemCoreClock variable: Contains the core clock (HCLK), it can be
- *        used by the user application to setup the SysTick timer or configure other
- *        parameters.
+ *        used by the user application to setup the SysTick timer or configure
+ *        other parameters.
  *
  *      - SystemCoreClockUpdate(): Updates the variable SystemCoreClock and must
  *                                 be called whenever the core clock is changed
@@ -53,26 +53,28 @@
 #include "stm32l0xx.h"
 
 #if !defined(HSE_VALUE)
-#define HSE_VALUE \
+#define HSE_VALUE                                                              \
   ((uint32_t)8000000U) /*!< Value of the External oscillator in Hz */
 #endif                 /* HSE_VALUE */
 
 #if !defined(MSI_VALUE)
-#define MSI_VALUE \
+#define MSI_VALUE                                                              \
   ((uint32_t)2000000U) /*!< Value of the Internal oscillator in Hz*/
 #endif                 /* MSI_VALUE */
 
 #if !defined(HSI_VALUE)
-#define HSI_VALUE \
+#define HSI_VALUE                                                              \
   ((uint32_t)16000000U) /*!< Value of the Internal oscillator in Hz*/
 #endif                  /* HSI_VALUE */
 
 /************************* Miscellaneous Configuration ************************/
 
-/*!< Uncomment the following line if you need to relocate your vector Table in Internal SRAM. */
+/*!< Uncomment the following line if you need to relocate your vector Table in
+ * Internal SRAM. */
 /* #define VECT_TAB_SRAM */
-#define VECT_TAB_OFFSET 0x00U /*!< Vector Table base offset field. \
-                                   This value must be a multiple of 0x200. */
+#define VECT_TAB_OFFSET                                                        \
+  0x00U /*!< Vector Table base offset field. \                                 \
+             This value must be a multiple of 0x200. */
 /******************************************************************************/
 
 /* This variable is updated in three ways:
@@ -84,7 +86,8 @@
     SystemCoreClock variable is updated automatically.
  */
 uint32_t SystemCoreClock = 2000000U;
-const uint8_t AHBPrescTable[16] = {0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 2U, 3U, 4U, 6U, 7U, 8U, 9U};
+const uint8_t AHBPrescTable[16] = {0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+                                   1U, 2U, 3U, 4U, 6U, 7U, 8U, 9U};
 const uint8_t APBPrescTable[8] = {0U, 0U, 0U, 0U, 1U, 2U, 3U, 4U};
 const uint8_t PLLMulTable[9] = {3U, 4U, 6U, 8U, 12U, 16U, 24U, 32U, 48U};
 
@@ -93,8 +96,7 @@ const uint8_t PLLMulTable[9] = {3U, 4U, 6U, 8U, 12U, 16U, 24U, 32U, 48U};
  * @param  None
  * @retval None
  */
-void SystemInit(void)
-{
+void SystemInit(void) {
   /*!< Set MSION bit */
   RCC->CR |= (uint32_t)0x00000100U;
 
@@ -151,30 +153,30 @@ void SystemInit(void)
  *             HSE_VALUE(**)
  *
  *           - If SYSCLK source is PLL, SystemCoreClock will contain the
- *             HSE_VALUE(**) or HSI_VALUE(*) multiplied/divided by the PLL factors.
+ *             HSE_VALUE(**) or HSI_VALUE(*) multiplied/divided by the PLL
+ *             factors.
  *
  *         (*) HSI_VALUE is a constant defined in stm32l0xx_hal.h file (default
- *             value 16 MHz) but the real value may vary depending on the variations in
- *             voltage and temperature.
+ *             value 16 MHz) but the real value may vary depending on the
+ *             variations in voltage and temperature.
  *
  *         (**) HSE_VALUE is a constant defined in stm32l0xx_hal.h file (default
- *              value 8 MHz), user has to ensure that HSE_VALUE is same as the real frequency
- *              of the crystal used. Otherwise, this function may have wrong result.
+ *              value 8 MHz), user has to ensure that HSE_VALUE is same as the
+ *              real frequency of the crystal used. Otherwise, this function
+ *              may have wrong result.
  *
  *         - The result of this function could be not correct when using
  *           fractional value for HSE crystal.
  * @param  None
  * @retval None
  */
-void SystemCoreClockUpdate(void)
-{
+void SystemCoreClockUpdate(void) {
   uint32_t tmp = 0U, pllmul = 0U, plldiv = 0U, pllsource = 0U, msirange = 0U;
 
   /* Get SYSCLK source */
   tmp = RCC->CFGR & RCC_CFGR_SWS;
 
-  switch (tmp)
-  {
+  switch (tmp) {
   case 0x00U: /* MSI used as system clock */
     msirange = (RCC->ICSCR & RCC_ICSCR_MSIRANGE) >> 13U;
     SystemCoreClock = (32768U * (1U << (msirange + 1U)));
@@ -194,13 +196,10 @@ void SystemCoreClockUpdate(void)
 
     pllsource = RCC->CFGR & RCC_CFGR_PLLSRC;
 
-    if (pllsource == 0x00U)
-    {
+    if (pllsource == 0x00U) {
       /* HSI oscillator clock selected as PLL clock entry */
       SystemCoreClock = (((HSI_VALUE)*pllmul) / plldiv);
-    }
-    else
-    {
+    } else {
       /* HSE selected as PLL clock entry */
       SystemCoreClock = (((HSE_VALUE)*pllmul) / plldiv);
     }
