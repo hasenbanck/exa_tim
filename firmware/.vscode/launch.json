@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Cortex Debug",
+            "name": "Debug (J-Link)",
             "cwd": "${workspaceRoot}",
             "executable": "./build/exa_tim.elf",
             "request": "launch",
