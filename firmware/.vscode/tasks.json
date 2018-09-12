@@ -2,9 +2,21 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "cmake debug",
+            "type": "shell",
+            "command": "mkdir -p build && cd build && cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja ..",
+            "problemMatcher": []
+        },
+        {
+            "label": "cmake release",
+            "type": "shell",
+            "command": "mkdir -p build && cd build && cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_BUILD_TYPE=Release -G Ninja ..",
+            "problemMatcher": []
+        },
+        {
             "label": "build",
             "type": "shell",
-            "command": "mkdir -p build && cd build && cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja .. && ninja",
+            "command": "cd build && ninja",
             "group": {
                 "kind": "build",
                 "isDefault": true
