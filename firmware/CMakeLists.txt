@@ -4,7 +4,7 @@ set(PRJ_NAME exa_tim)
 set(MCU_FAMILY STM32L0xx)
 set(MCU_LINE STM32L071xx)
 set(MCU_ARCH cortex-m0plus)
-set(MCU_LINKER_SCRIPT stm32_flash.ld)
+set(MCU_LINKER_SCRIPT "${CMAKE_CURRENT_SOURCE_DIR}/stm32_flash.ld")
 
 # Set a default build type if none was specified
 set(default_build_type "Release")
@@ -34,6 +34,7 @@ function(generate_object target filename type)
 endfunction()
 
 project(${PRJ_NAME} C ASM)
+set(CMAKE_EXPORT_COMPILE_COMMANDS On)
 
 add_definitions(-D${MCU_LINE} -DUSE_HAL_LIBRARY)
 
@@ -54,8 +55,7 @@ include_directories(Inc)
 
 add_executable(${PROJECT_NAME}.elf ${SOURCE_FILES})
 
-get_filename_component(LSCRIPT ${MCU_LINKER_SCRIPT} ABSOLUTE)
-set(CMAKE_EXE_LINKER_FLAGS "-specs=nano.specs -lc -lm -lnosys -T${LSCRIPT} -Wl,--gc-sections")
+set(CMAKE_EXE_LINKER_FLAGS "-specs=nano.specs -lc -lm -lnosys -T${MCU_LINKER_SCRIPT} -Wl,--gc-sections")
 SET(CMAKE_ASM_FLAGS "-mcpu=${MCU_ARCH} -mthumb -fdata-sections -ffunction-sections -Wall")
 SET(CMAKE_ASM_FLAGS_DEBUG "-Og -g")
 SET(CMAKE_ASM_FLAGS_RELEASE "-Os -flto")

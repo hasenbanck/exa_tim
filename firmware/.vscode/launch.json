@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Cortex Debug",
+            "cwd": "${workspaceRoot}",
+            "executable": "./build/exa_tim.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "jlink"
+        }
+    ]
+}

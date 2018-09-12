@@ -4,7 +4,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "mkdir -p Build && cd Build && cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja ../ && ninja",
+            "command": "mkdir -p build && cd build && cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja .. && ninja",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -16,7 +16,7 @@
         {
             "label": "clean",
             "type": "shell",
-            "command": "rm -Rf Build",
+            "command": "rm -Rf build",
             "problemMatcher": []
         }
     ]

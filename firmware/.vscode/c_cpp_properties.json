@@ -1,0 +1,15 @@
+{
+    "configurations": [{
+        "name": "ARM",
+        "includePath": [
+            "${workspaceFolder}"
+        ],
+        "browse": {
+            "path": [
+                "${workspaceFolder}"
+            ]
+        },
+        "compileCommands": "${workspaceRoot}/build/compile_commands.json"
+    }],
+    "version": 4
+}
