@@ -1,5 +1,5 @@
 #include "main.h"
-#include "button.h"
+#include "application.h"
 #include "display.h"
 #include "stm32l0xx_hal.h"
 
@@ -45,12 +45,8 @@ int main(void) {
   /* Initialize external devices */
   Display_Init();
 
-  /* Infinite loop */
-  while (1) {
-    btnBitField field = getPressedButtonEvent();
-    if (field & BTN1_BIT) {
-    }
-  }
+  /* Run the watch application */
+  Run();
 }
 
 void SystemClock_Config(void) {
