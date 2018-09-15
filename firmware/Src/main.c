@@ -104,7 +104,7 @@ void SystemClock_Config(void) {
 }
 
 /* LPTIM1 init function */
-static void LPTIM1_Init(void) {
+static void LPTIM1_Init(LPTIM_HandleTypeDef *hlptim) {
   hlptim1.Instance = LPTIM1;
   hlptim1.Init.Clock.Source = LPTIM_CLOCKSOURCE_APBCLOCK_LPOSC;
   hlptim1.Init.Clock.Prescaler = LPTIM_PRESCALER_DIV16;
@@ -281,7 +281,8 @@ static void GPIO_Init(void) {
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /* Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GNSS_EN_Pin | CS_Pin | LED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, CS_Pin | LED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, GNSS_EN_Pin, GPIO_PIN_SET);
 
   /* Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(
@@ -301,12 +302,17 @@ static void GPIO_Init(void) {
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(BUSY_GPIO_Port, &GPIO_InitStruct);
 
-  /* Configure GPIO pins : DC_Pin RESET_Pin BTN1_Pin BTN2_Pin BTN3_Pin BTN4_Pin
-   */
-  GPIO_InitStruct.Pin =
-      DC_Pin | RESET_Pin | BTN1_Pin | BTN2_Pin | BTN3_Pin | BTN4_Pin;
+  /* Configure GPIO pins : DC_Pin RESET_Pin */
+  GPIO_InitStruct.Pin = DC_Pin | RESET_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /* Configure GPIO pins : BTN1_Pin BTN2_Pin BTN3_Pin BTN4_Pin */
+  GPIO_InitStruct.Pin = BTN1_Pin | BTN2_Pin | BTN3_Pin | BTN4_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 

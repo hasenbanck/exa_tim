@@ -101,7 +101,13 @@ void Display_Init(void) {
                                   u8g2_gpio_and_delay_stm32);
   u8g2_InitDisplay(&u8g2); // send init sequence to the display, display is in
                            // sleep mode after this,
-  // u8g2_SetPowerSave(&u8g2, 1); // disables the charge pump
   // before drawing, enable charge pump (req. 300ms)
   u8g2_ClearDisplay(&u8g2);
+
+  // Testdraw
+  u8g2_SetFont(&u8g2, u8g2_font_unifont_t_symbols);
+  u8g2_DrawUTF8(&u8g2, 5, 20, "Snowman: ☃");
+  u8g2_DrawUTF8(&u8g2, 50, 50, "EXA_tim");
+  u8g2_SendBuffer(&u8g2);
+  //u8g2_SetPowerSave(&u8g2, 1); // disables the charge pump
 }

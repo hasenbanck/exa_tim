@@ -16,3 +16,5 @@ firmware/exa_tim.bin
 firmware/exa_tim.elf
 firmware/exa_tim.hex
 firmware/rules.ninja
+firmware/.vscode/*.state.json
+firmware/.vscode/settings.json

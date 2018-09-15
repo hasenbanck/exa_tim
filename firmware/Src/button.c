@@ -10,15 +10,15 @@ typedef struct buttonState {
 
 static buttonState btnState;
 
-void HAL_LPTIM_TriggerCallback(LPTIM_HandleTypeDef *hlptim) {
-  /* Every interrupt (5ms) we are saving the current history of
-   * a button state. We later compare the most recent 3 and
-   * and 2 oldest states using the mask 0b11000111 with the
-   * expected value of a "good" button press history.
-   * We expect to find to find 15ms of HIGH at the start and
-   * 10ms of LOW in the end of the history. The middle 3 states
-   * are not of interest and maybe bounces.
-   * */
+/* Every interrupt (5ms) we are saving the current history of
+ * a button state. We later compare the most recent 3 and
+ * and 2 oldest states using the mask 0b11000111 with the
+ * expected value of a "good" button press history.
+ * We expect to find to find 15ms of HIGH at the start and
+ * 10ms of LOW in the end of the history. The middle 3 states
+ * are not of interest and maybe bounces.
+ */
+void HAL_LPTIM_AutoReloadMatchCallback(LPTIM_HandleTypeDef *hlptim) {
   uint32_t currentButtonStates = GPIOB->IDR;   // Get current button states
   btnState.history <<= 1;                      // Advance history one bit
   btnState.history &= ~BTN_HISTORY_CLEAR_MASK; // Clear current history bits

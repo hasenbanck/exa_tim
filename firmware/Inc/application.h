@@ -1,3 +1,3 @@
 #pragma once
 
-void run(void);
+void Run(void);
