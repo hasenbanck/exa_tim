@@ -8,7 +8,8 @@
             "request": "launch",
             "type": "cortex-debug",
             "device": "STM32L071KZ",
-            "servertype": "jlink"
+            "servertype": "jlink",
+            "preLaunchTask": "build"
         }
     ]
 }
