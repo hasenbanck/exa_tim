@@ -1,4 +1,5 @@
 #include "display.h"
+#include "font.h"
 #include "main.h"
 #include "stm32l0xx_hal.h"
 
@@ -105,9 +106,9 @@ void Display_Init(void) {
   u8g2_ClearDisplay(&u8g2);
 
   // Testdraw
-  u8g2_SetFont(&u8g2, u8g2_font_unifont_t_symbols);
-  u8g2_DrawUTF8(&u8g2, 5, 20, "Snowman: ☃");
-  u8g2_DrawUTF8(&u8g2, 50, 50, "EXA_tim");
+  u8g2_SetFont(&u8g2, keihansoukaishinumbers);
+  u8g2_DrawUTF8(&u8g2, 20, 80, "00 31");
+
   u8g2_SendBuffer(&u8g2);
-  //u8g2_SetPowerSave(&u8g2, 1); // disables the charge pump
+  // u8g2_SetPowerSave(&u8g2, 1); // disables the charge pump
 }

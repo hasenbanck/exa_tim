@@ -19,7 +19,7 @@ static void LPUART1_UART_Init(void);
 static void RTC_Init(void);
 static void SPI1_Init(void);
 static void TIM2_Init(void);
-static void LPTIM1_Init();
+static void LPTIM1_Init(void);
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
 int main(void) {
@@ -59,7 +59,7 @@ void SystemClock_Config(void) {
 
   /** Configure LSE Drive Capability */
   HAL_PWR_EnableBkUpAccess();
-  __HAL_RCC_LSEDRIVE_CONFIG(RCC_LSEDRIVE_LOW);
+  __HAL_RCC_LSEDRIVE_CONFIG(RCC_LSEDRIVE_HIGH);
 
   /** Initializes the CPU, AHB and APB busses clocks */
   RCC_OscInitStruct.OscillatorType =
@@ -104,7 +104,7 @@ void SystemClock_Config(void) {
 }
 
 /* LPTIM1 init function */
-static void LPTIM1_Init(LPTIM_HandleTypeDef *hlptim) {
+static void LPTIM1_Init(void) {
   hlptim1.Instance = LPTIM1;
   hlptim1.Init.Clock.Source = LPTIM_CLOCKSOURCE_APBCLOCK_LPOSC;
   hlptim1.Init.Clock.Prescaler = LPTIM_PRESCALER_DIV16;
