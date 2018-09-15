@@ -987,12 +987,12 @@ $EndComp
 $Comp
 L Device:R R3
 U 1 1 5B8F6DF3
-P 5300 2950
-F 0 "R3" H 5370 2996 50  0000 L CNN
-F 1 "1M" H 5370 2905 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 5230 2950 50  0001 C CNN
-F 3 "~" H 5300 2950 50  0001 C CNN
-	1    5300 2950
+P 5300 3400
+F 0 "R3" H 5370 3446 50  0000 L CNN
+F 1 "1M" H 5370 3355 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 5230 3400 50  0001 C CNN
+F 3 "~" H 5300 3400 50  0001 C CNN
+	1    5300 3400
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -1001,20 +1001,12 @@ Text Label 4900 3250 0    50   ~ 0
 GNSS_EN
 Wire Wire Line
 	4900 3250 5300 3250
-Wire Wire Line
-	5300 3250 5300 3100
 Connection ~ 5300 3250
 Wire Wire Line
 	5300 3250 5500 3250
-Wire Wire Line
-	5800 3050 5800 2700
-Wire Wire Line
-	5800 2700 5300 2700
-Wire Wire Line
-	5300 2700 5300 2800
-Text Label 5800 3650 0    50   ~ 0
+Text Label 5800 2850 0    50   ~ 0
 GNSS_VDD
-Text GLabel 5800 2700 2    50   Input ~ 0
+Text GLabel 5800 3650 2    50   Input ~ 0
 3V
 Text Label 7750 1300 0    50   ~ 0
 GNSS_VDD
@@ -1397,4 +1389,10 @@ F 3 "" H 3400 2700 50  0001 C CNN
 	1    3400 2700
 	0    -1   -1   0   
 $EndComp
+Wire Wire Line
+	5800 3650 5300 3650
+Wire Wire Line
+	5300 3650 5300 3550
+Wire Wire Line
+	5800 3050 5800 2850
 $EndSCHEMATC
