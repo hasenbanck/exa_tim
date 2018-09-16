@@ -862,17 +862,6 @@ NoConn ~ 7450 2000
 NoConn ~ 7450 2100
 NoConn ~ 7450 2200
 NoConn ~ 7450 1800
-$Comp
-L power:GND #PWR013
-U 1 1 5B7F342C
-P 7450 2400
-F 0 "#PWR013" H 7450 2150 50  0001 C CNN
-F 1 "GND" V 7455 2272 50  0000 R CNN
-F 2 "" H 7450 2400 50  0001 C CNN
-F 3 "" H 7450 2400 50  0001 C CNN
-	1    7450 2400
-	0    -1   -1   0   
-$EndComp
 Text Label 7750 1700 2    50   ~ 0
 TX_GNSS
 Text Label 4850 1700 0    50   ~ 0
@@ -974,17 +963,6 @@ RX
 Text Label 4050 2200 2    50   ~ 0
 GNSS_EN
 $Comp
-L Device:Q_PMOS_GSD Q1
-U 1 1 5B8EE47B
-P 5700 3250
-F 0 "Q1" H 5905 3296 50  0000 L CNN
-F 1 "SI2333DS-T1-E3" H 5905 3205 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23" H 5900 3350 50  0001 C CNN
-F 3 "https://www.vishay.com/docs/72023/72023.pdf" H 5700 3250 50  0001 C CNN
-	1    5700 3250
-	1    0    0    -1  
-$EndComp
-$Comp
 L Device:R R2
 U 1 1 5B8F6DF3
 P 5300 3400
@@ -996,7 +974,7 @@ F 3 "~" H 5300 3400 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5800 3450 5800 3650
+	5800 3450 5800 3550
 Text Label 4900 3250 0    50   ~ 0
 GNSS_EN
 Wire Wire Line
@@ -1004,12 +982,8 @@ Wire Wire Line
 Connection ~ 5300 3250
 Wire Wire Line
 	5300 3250 5500 3250
-Text Label 5800 2850 0    50   ~ 0
-GNSS_VDD
-Text GLabel 5800 3650 2    50   Input ~ 0
+Text GLabel 7750 1300 2    50   Input ~ 0
 3V
-Text Label 7750 1300 0    50   ~ 0
-GNSS_VDD
 $Comp
 L MCU_ST_STM32L0:STM32L071KZUx U1
 U 1 1 5B9B430A
@@ -1375,11 +1349,38 @@ F 3 "" H 3400 2700 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 Wire Wire Line
-	5800 3650 5300 3650
-Wire Wire Line
-	5300 3650 5300 3550
-Wire Wire Line
 	5800 3050 5800 2850
 Wire Wire Line
 	1950 5150 2800 5150
+$Comp
+L Device:Q_NMOS_GSD Q1
+U 1 1 5B9F4C7F
+P 5700 3250
+F 0 "Q1" H 5906 3296 50  0000 L CNN
+F 1 "DMN3067LW-7" H 5906 3205 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-323_SC-70" H 5900 3350 50  0001 C CNN
+F 3 "https://www.mouser.de/datasheet/2/115/DMN3067LW-335715.pdf" H 5700 3250 50  0001 C CNN
+	1    5700 3250
+	1    0    0    -1  
+$EndComp
+Text Label 7450 2400 0    50   ~ 0
+GNSS_GND
+Text Label 5800 2850 0    50   ~ 0
+GNSS_GND
+$Comp
+L power:GND #PWR013
+U 1 1 5BA6FCEF
+P 5800 3650
+F 0 "#PWR013" H 5800 3400 50  0001 C CNN
+F 1 "GND" H 5805 3477 50  0000 C CNN
+F 2 "" H 5800 3650 50  0001 C CNN
+F 3 "" H 5800 3650 50  0001 C CNN
+	1    5800 3650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5300 3550 5800 3550
+Connection ~ 5800 3550
+Wire Wire Line
+	5800 3550 5800 3650
 $EndSCHEMATC
