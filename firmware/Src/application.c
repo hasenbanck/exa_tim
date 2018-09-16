@@ -24,10 +24,8 @@ void Run(void) {
     field = getPressedButtonEvent();
     if (field & BTN1_BIT) {
       debug("Button 1 pressed\n");
-      Display_DrawWatchFace();
     } else if (field & BTN2_BIT) {
       debug("Button 2 pressed\n");
-      beep();
     } else if (field & BTN3_BIT) {
       debug("Button 3 pressed\n");
     } else if (field & BTN4_BIT) {

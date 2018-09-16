@@ -96,8 +96,7 @@ uint8_t u8x8_byte_4wire_sw_spi_stm32(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int,
 }
 
 void Display_Init(void) {
-  // TODO: Maybe u8g2_Setup_ssd1607_200x200_f()
-  u8g2_Setup_ssd1607_200x200_f(&u8g2, U8G2_R3, u8x8_byte_4wire_sw_spi_stm32,
+    u8g2_Setup_ssd1607_200x200_f(&u8g2, U8G2_R3, u8x8_byte_4wire_sw_spi_stm32,
                                u8g2_gpio_and_delay_stm32);
   u8g2_InitDisplay(&u8g2);
 }
@@ -107,3 +106,7 @@ void Display_DrawWatchFace(void) {
   u8g2_DrawUTF8(&u8g2, 4, -4, "0179");
   u8g2_SendBuffer(&u8g2);
 }
+
+/* Only call this function when you want to put the whole system in sleep
+ * Display need a reset when powering up, since we powered also the clock down */
+void Display_PowerOff(void) { u8g2_SetPowerSave(&u8g2, 1); }
