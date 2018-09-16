@@ -2,11 +2,17 @@
 #include "font.h"
 #include "main.h"
 #include "stm32l0xx_hal.h"
+#include <stdbool.h>
 
 extern SPI_HandleTypeDef hspi1;
 u8g2_t u8g2;
 
-// TODO: I don't think this is needed
+//static bool spiTXBusy = false;
+
+//void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi) {
+//  spiTXBusy = false;
+//}
+
 uint8_t u8g2_gpio_and_delay_stm32(U8X8_UNUSED u8x8_t *u8x8,
                                   U8X8_UNUSED uint8_t msg,
                                   U8X8_UNUSED uint8_t arg_int,
@@ -79,6 +85,8 @@ uint8_t u8x8_byte_4wire_sw_spi_stm32(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int,
     break;
 
   case U8X8_MSG_BYTE_SEND:
+    //while(spiTXBusy) {};
+    //spiTXBusy = true;
     HAL_SPI_Transmit(&hspi1, arg_ptr, arg_int, 100);
     break;
 
@@ -96,22 +104,19 @@ uint8_t u8x8_byte_4wire_sw_spi_stm32(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int,
 }
 
 void Display_Init(void) {
-  // TODO: What do we need to do for power up / and later shutdown?
   // TODO: Maybe u8g2_Setup_ssd1607_200x200_f()
-  u8g2_Setup_ssd1607_gd_200x200_f(&u8g2, U8G2_R3, u8x8_byte_4wire_sw_spi_stm32,
-                                  u8g2_gpio_and_delay_stm32);
-  u8g2_InitDisplay(&u8g2); // send init sequence to the display, display is in
-                           // sleep mode after this,
-  // before drawing, enable charge pump (req. 300ms)
-  u8g2_ClearDisplay(&u8g2);
+  u8g2_Setup_ssd1607_200x200_f(&u8g2, U8G2_R3, u8x8_byte_4wire_sw_spi_stm32,
+                               u8g2_gpio_and_delay_stm32);
+  u8g2_InitDisplay(&u8g2);
 }
 
 void Display_DrawWatchFace(void) {
-  u8g2_SetPowerSave(&u8g2, 0);
-  HAL_Delay(100);
+  // TODO: Configure timer and use it for power management
+  // u8g2_SetPowerSave(&u8g2, 0);
+  // HAL_Delay(300);
   u8g2_SetFont(&u8g2, keihansoukaishinumbers96);
   u8g2_DrawUTF8(&u8g2, 4, -4, "0179");
   u8g2_SendBuffer(&u8g2);
-  HAL_Delay(300);
-  u8g2_SetPowerSave(&u8g2, 1);
+  // HAL_Delay(300);
+  // u8g2_SetPowerSave(&u8g2, 1);
 }

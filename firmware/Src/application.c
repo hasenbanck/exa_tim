@@ -23,15 +23,15 @@ void Run(void) {
   while (1) {
     field = getPressedButtonEvent();
     if (field & BTN1_BIT) {
-      debug("Button 1 pressed");
+      debug("Button 1 pressed\n");
       Display_DrawWatchFace();
     } else if (field & BTN2_BIT) {
-      debug("Button 2 pressed");
+      debug("Button 2 pressed\n");
+      beep();
     } else if (field & BTN3_BIT) {
-      debug("Button 3 pressed");
+      debug("Button 3 pressed\n");
     } else if (field & BTN4_BIT) {
-      debug("Button 4 pressed");
+      debug("Button 4 pressed\n");
     }
-    HAL_Delay(1);
   }
 }
