@@ -7,7 +7,6 @@ extern LPTIM_HandleTypeDef hlptim1;
 extern DMA_HandleTypeDef hdma_lpuart1_tx;
 extern DMA_HandleTypeDef hdma_lpuart1_rx;
 extern RTC_HandleTypeDef hrtc;
-extern DMA_HandleTypeDef hdma_spi1_tx;
 extern SPI_HandleTypeDef hspi1;
 extern TIM_HandleTypeDef htim2;
 
@@ -45,7 +44,6 @@ void RCC_IRQHandler(void) {}
 
 void DMA1_Channel2_3_IRQHandler(void) {
   HAL_DMA_IRQHandler(&hdma_lpuart1_tx);
-  HAL_DMA_IRQHandler(&hdma_spi1_tx);
 }
 
 void DMA1_Channel4_5_6_7_IRQHandler(void) {

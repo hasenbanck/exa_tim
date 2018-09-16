@@ -7,12 +7,6 @@
 extern SPI_HandleTypeDef hspi1;
 u8g2_t u8g2;
 
-//static bool spiTXBusy = false;
-
-//void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi) {
-//  spiTXBusy = false;
-//}
-
 uint8_t u8g2_gpio_and_delay_stm32(U8X8_UNUSED u8x8_t *u8x8,
                                   U8X8_UNUSED uint8_t msg,
                                   U8X8_UNUSED uint8_t arg_int,
@@ -85,8 +79,6 @@ uint8_t u8x8_byte_4wire_sw_spi_stm32(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int,
     break;
 
   case U8X8_MSG_BYTE_SEND:
-    //while(spiTXBusy) {};
-    //spiTXBusy = true;
     HAL_SPI_Transmit(&hspi1, arg_ptr, arg_int, 100);
     break;
 
@@ -111,12 +103,7 @@ void Display_Init(void) {
 }
 
 void Display_DrawWatchFace(void) {
-  // TODO: Configure timer and use it for power management
-  // u8g2_SetPowerSave(&u8g2, 0);
-  // HAL_Delay(300);
   u8g2_SetFont(&u8g2, keihansoukaishinumbers96);
   u8g2_DrawUTF8(&u8g2, 4, -4, "0179");
   u8g2_SendBuffer(&u8g2);
-  // HAL_Delay(300);
-  // u8g2_SetPowerSave(&u8g2, 1);
 }

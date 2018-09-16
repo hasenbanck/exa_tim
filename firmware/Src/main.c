@@ -9,7 +9,6 @@ DMA_HandleTypeDef hdma_lpuart1_tx;
 DMA_HandleTypeDef hdma_lpuart1_rx;
 RTC_HandleTypeDef hrtc;
 SPI_HandleTypeDef hspi1;
-DMA_HandleTypeDef hdma_spi1_tx;
 TIM_HandleTypeDef htim2;
 
 void SystemClock_Config(void);

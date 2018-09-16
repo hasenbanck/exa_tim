@@ -20,6 +20,7 @@ static buttonState btnState;
  * are not of interest and maybe bounces.
  */
 void HAL_LPTIM_AutoReloadMatchCallback(LPTIM_HandleTypeDef *hlptim) {
+  UNUSED(hlptim);
   uint32_t currentButtonStates = GPIOB->IDR;   // Get current button states
   btnState.history <<= 1;                      // Advance history one bit
   btnState.history &= ~BTN_HISTORY_CLEAR_MASK; // Clear current history bits
