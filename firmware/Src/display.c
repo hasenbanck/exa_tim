@@ -104,11 +104,14 @@ void Display_Init(void) {
                            // sleep mode after this,
   // before drawing, enable charge pump (req. 300ms)
   u8g2_ClearDisplay(&u8g2);
+}
 
-  // Testdraw
-  u8g2_SetFont(&u8g2, keihansoukaishinumbers);
-  u8g2_DrawUTF8(&u8g2, 20, 80, "00 31");
-
+void Display_DrawWatchFace(void) {
+  u8g2_SetPowerSave(&u8g2, 0);
+  HAL_Delay(100);
+  u8g2_SetFont(&u8g2, keihansoukaishinumbers96);
+  u8g2_DrawUTF8(&u8g2, 4, -4, "0179");
   u8g2_SendBuffer(&u8g2);
-  // u8g2_SetPowerSave(&u8g2, 1); // disables the charge pump
+  HAL_Delay(300);
+  u8g2_SetPowerSave(&u8g2, 1);
 }

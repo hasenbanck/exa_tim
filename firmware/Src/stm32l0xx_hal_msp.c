@@ -7,8 +7,7 @@ extern DMA_HandleTypeDef hdma_spi1_tx;
 extern void _Error_Handler(char *, int);
 
 /* Initializes the Global MSP */
-void HAL_MspInit(void)
-{
+void HAL_MspInit(void) {
   __HAL_RCC_SYSCFG_CLK_ENABLE();
   __HAL_RCC_PWR_CLK_ENABLE();
 
@@ -29,10 +28,8 @@ void HAL_MspInit(void)
   HAL_NVIC_EnableIRQ(RCC_IRQn);
 }
 
-void HAL_LPTIM_MspInit(LPTIM_HandleTypeDef *hlptim)
-{
-  if (hlptim->Instance == LPTIM1)
-  {
+void HAL_LPTIM_MspInit(LPTIM_HandleTypeDef *hlptim) {
+  if (hlptim->Instance == LPTIM1) {
     /* Peripheral clock enable */
     __HAL_RCC_LPTIM1_CLK_ENABLE();
     /* LPTIM1 interrupt Init */
@@ -41,10 +38,8 @@ void HAL_LPTIM_MspInit(LPTIM_HandleTypeDef *hlptim)
   }
 }
 
-void HAL_LPTIM_MspDeInit(LPTIM_HandleTypeDef *hlptim)
-{
-  if (hlptim->Instance == LPTIM1)
-  {
+void HAL_LPTIM_MspDeInit(LPTIM_HandleTypeDef *hlptim) {
+  if (hlptim->Instance == LPTIM1) {
     /* Peripheral clock disable */
     __HAL_RCC_LPTIM1_CLK_DISABLE();
     /* LPTIM1 interrupt DeInit */
@@ -52,11 +47,9 @@ void HAL_LPTIM_MspDeInit(LPTIM_HandleTypeDef *hlptim)
   }
 }
 
-void HAL_UART_MspInit(UART_HandleTypeDef *huart)
-{
+void HAL_UART_MspInit(UART_HandleTypeDef *huart) {
   GPIO_InitTypeDef GPIO_InitStruct;
-  if (huart->Instance == LPUART1)
-  {
+  if (huart->Instance == LPUART1) {
     /* Peripheral clock enable */
     __HAL_RCC_LPUART1_CLK_ENABLE();
 
@@ -82,8 +75,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
     hdma_lpuart1_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
     hdma_lpuart1_tx.Init.Mode = DMA_NORMAL;
     hdma_lpuart1_tx.Init.Priority = DMA_PRIORITY_LOW;
-    if (HAL_DMA_Init(&hdma_lpuart1_tx) != HAL_OK)
-    {
+    if (HAL_DMA_Init(&hdma_lpuart1_tx) != HAL_OK) {
       _Error_Handler(__FILE__, __LINE__);
     }
 
@@ -99,8 +91,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
     hdma_lpuart1_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
     hdma_lpuart1_rx.Init.Mode = DMA_NORMAL;
     hdma_lpuart1_rx.Init.Priority = DMA_PRIORITY_LOW;
-    if (HAL_DMA_Init(&hdma_lpuart1_rx) != HAL_OK)
-    {
+    if (HAL_DMA_Init(&hdma_lpuart1_rx) != HAL_OK) {
       _Error_Handler(__FILE__, __LINE__);
     }
 
@@ -108,10 +99,8 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
   }
 }
 
-void HAL_UART_MspDeInit(UART_HandleTypeDef *huart)
-{
-  if (huart->Instance == LPUART1)
-  {
+void HAL_UART_MspDeInit(UART_HandleTypeDef *huart) {
+  if (huart->Instance == LPUART1) {
     /* Peripheral clock disable */
     __HAL_RCC_LPUART1_CLK_DISABLE();
 
@@ -127,10 +116,8 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef *huart)
   }
 }
 
-void HAL_RTC_MspInit(RTC_HandleTypeDef *hrtc)
-{
-  if (hrtc->Instance == RTC)
-  {
+void HAL_RTC_MspInit(RTC_HandleTypeDef *hrtc) {
+  if (hrtc->Instance == RTC) {
     /* Peripheral clock enable */
     __HAL_RCC_RTC_ENABLE();
     /* RTC interrupt Init */
@@ -139,10 +126,8 @@ void HAL_RTC_MspInit(RTC_HandleTypeDef *hrtc)
   }
 }
 
-void HAL_RTC_MspDeInit(RTC_HandleTypeDef *hrtc)
-{
-  if (hrtc->Instance == RTC)
-  {
+void HAL_RTC_MspDeInit(RTC_HandleTypeDef *hrtc) {
+  if (hrtc->Instance == RTC) {
     /* Peripheral clock disable */
     __HAL_RCC_RTC_DISABLE();
 
@@ -151,11 +136,9 @@ void HAL_RTC_MspDeInit(RTC_HandleTypeDef *hrtc)
   }
 }
 
-void HAL_SPI_MspInit(SPI_HandleTypeDef *hspi)
-{
+void HAL_SPI_MspInit(SPI_HandleTypeDef *hspi) {
   GPIO_InitTypeDef GPIO_InitStruct;
-  if (hspi->Instance == SPI1)
-  {
+  if (hspi->Instance == SPI1) {
     /* Peripheral clock enable */
     __HAL_RCC_SPI1_CLK_ENABLE();
 
@@ -181,8 +164,7 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef *hspi)
     hdma_spi1_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
     hdma_spi1_tx.Init.Mode = DMA_NORMAL;
     hdma_spi1_tx.Init.Priority = DMA_PRIORITY_LOW;
-    if (HAL_DMA_Init(&hdma_spi1_tx) != HAL_OK)
-    {
+    if (HAL_DMA_Init(&hdma_spi1_tx) != HAL_OK) {
       _Error_Handler(__FILE__, __LINE__);
     }
 
@@ -194,10 +176,8 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef *hspi)
   }
 }
 
-void HAL_SPI_MspDeInit(SPI_HandleTypeDef *hspi)
-{
-  if (hspi->Instance == SPI1)
-  {
+void HAL_SPI_MspDeInit(SPI_HandleTypeDef *hspi) {
+  if (hspi->Instance == SPI1) {
     /* Peripheral clock disable */
     __HAL_RCC_SPI1_CLK_DISABLE();
 
@@ -215,36 +195,30 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef *hspi)
   }
 }
 
-void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim_pwm)
-{
-  if (htim_pwm->Instance == TIM2)
-  {
+void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim_pwm) {
+  if (htim_pwm->Instance == TIM2) {
     /* Peripheral clock enable */
     __HAL_RCC_TIM2_CLK_ENABLE();
   }
 }
 
-void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim)
-{
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim) {
   GPIO_InitTypeDef GPIO_InitStruct;
-  if (htim->Instance == TIM2)
-  {
+  if (htim->Instance == TIM2) {
     /** TIM2 GPIO Configuration
      *  PA1     ------> TIM2_CH2
      */
     GPIO_InitStruct.Pin = ALARM_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
     GPIO_InitStruct.Alternate = GPIO_AF2_TIM2;
     HAL_GPIO_Init(ALARM_GPIO_Port, &GPIO_InitStruct);
   }
 }
 
-void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef *htim_pwm)
-{
-  if (htim_pwm->Instance == TIM2)
-  {
+void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef *htim_pwm) {
+  if (htim_pwm->Instance == TIM2) {
     /* Peripheral clock disable */
     __HAL_RCC_TIM2_CLK_DISABLE();
   }

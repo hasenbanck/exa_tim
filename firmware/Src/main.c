@@ -10,6 +10,7 @@ DMA_HandleTypeDef hdma_lpuart1_rx;
 RTC_HandleTypeDef hrtc;
 SPI_HandleTypeDef hspi1;
 DMA_HandleTypeDef hdma_spi1_tx;
+DMA_HandleTypeDef hdma_tim2_ch2_trig;
 TIM_HandleTypeDef htim2;
 
 void SystemClock_Config(void);
@@ -227,27 +228,20 @@ static void SPI1_Init(void) {
 
 /* TIM2 init function */
 static void TIM2_Init(void) {
-  TIM_MasterConfigTypeDef sMasterConfig;
   TIM_OC_InitTypeDef sConfigOC;
 
   /* 16 Mhz / Div4 = 4 Mhz * 1000 = 4 Khz */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 4;
+  htim2.Init.Prescaler = 1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 999;
+  htim2.Init.Period = 1999;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   if (HAL_TIM_PWM_Init(&htim2) != HAL_OK) {
     Error_Handler();
   }
 
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK) {
-    Error_Handler();
-  }
-
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 0;
+  sConfigOC.Pulse = 999;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2) != HAL_OK) {
