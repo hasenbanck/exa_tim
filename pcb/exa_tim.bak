@@ -183,7 +183,7 @@ Text Label 4050 3200 2    50   ~ 0
 SWCLK
 Text Label 1900 3200 0    50   ~ 0
 BTN4
-Text Label 1900 2900 0    50   ~ 0
+Text Label 1900 3000 0    50   ~ 0
 BTN1
 Text Label 1900 3100 0    50   ~ 0
 BTN3
@@ -982,7 +982,7 @@ Wire Wire Line
 Connection ~ 5300 3250
 Wire Wire Line
 	5300 3250 5500 3250
-Text GLabel 7750 1300 2    50   Input ~ 0
+Text GLabel 5800 3650 2    50   Input ~ 0
 3V
 $Comp
 L MCU_ST_STM32L0:STM32L071KZUx U1
@@ -1286,7 +1286,7 @@ Wire Wire Line
 NoConn ~ 10650 850 
 NoConn ~ 10650 1350
 NoConn ~ 10650 1450
-Text Label 1900 3000 0    50   ~ 0
+Text Label 1900 2900 0    50   ~ 0
 BTN2
 Wire Wire Line
 	1900 3100 2200 3100
@@ -1349,33 +1349,16 @@ F 3 "" H 3400 2700 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 Wire Wire Line
-	5800 3050 5800 2850
-Wire Wire Line
 	1950 5150 2800 5150
 $Comp
-L Device:Q_NMOS_GSD Q1
+L Device:Q_PMOS_GSD Q1
 U 1 1 5B9F4C7F
 P 5700 3250
 F 0 "Q1" H 5906 3296 50  0000 L CNN
-F 1 "DMN3067LW-7" H 5906 3205 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-323_SC-70" H 5900 3350 50  0001 C CNN
-F 3 "https://www.mouser.de/datasheet/2/115/DMN3067LW-335715.pdf" H 5700 3250 50  0001 C CNN
+F 1 "SI2333DS-T1-E3" H 5906 3205 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 5900 3350 50  0001 C CNN
+F 3 "https://www.vishay.com/docs/72023/72023.pdf" H 5700 3250 50  0001 C CNN
 	1    5700 3250
-	1    0    0    -1  
-$EndComp
-Text Label 7450 2400 0    50   ~ 0
-GNSS_GND
-Text Label 5800 2850 0    50   ~ 0
-GNSS_GND
-$Comp
-L power:GND #PWR013
-U 1 1 5BA6FCEF
-P 5800 3650
-F 0 "#PWR013" H 5800 3400 50  0001 C CNN
-F 1 "GND" H 5805 3477 50  0000 C CNN
-F 2 "" H 5800 3650 50  0001 C CNN
-F 3 "" H 5800 3650 50  0001 C CNN
-	1    5800 3650
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -1383,4 +1366,21 @@ Wire Wire Line
 Connection ~ 5800 3550
 Wire Wire Line
 	5800 3550 5800 3650
+$Comp
+L power:GND #PWR?
+U 1 1 5BA03A7E
+P 7450 2400
+F 0 "#PWR?" H 7450 2150 50  0001 C CNN
+F 1 "GND" H 7455 2227 50  0000 C CNN
+F 2 "" H 7450 2400 50  0001 C CNN
+F 3 "" H 7450 2400 50  0001 C CNN
+	1    7450 2400
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	5800 3050 5800 2850
+Text Label 5800 2850 0    50   ~ 0
+VDD_GNSS
+Text Label 7750 1300 0    50   ~ 0
+VDD_GNSS
 $EndSCHEMATC
