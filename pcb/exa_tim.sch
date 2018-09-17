@@ -183,7 +183,7 @@ Text Label 4050 3200 2    50   ~ 0
 SWCLK
 Text Label 1900 3200 0    50   ~ 0
 BTN4
-Text Label 1900 2900 0    50   ~ 0
+Text Label 1900 3000 0    50   ~ 0
 BTN1
 Text Label 1900 3100 0    50   ~ 0
 BTN3
@@ -1286,7 +1286,7 @@ Wire Wire Line
 NoConn ~ 10650 850 
 NoConn ~ 10650 1350
 NoConn ~ 10650 1450
-Text Label 1900 3000 0    50   ~ 0
+Text Label 1900 2900 0    50   ~ 0
 BTN2
 Wire Wire Line
 	1900 3100 2200 3100

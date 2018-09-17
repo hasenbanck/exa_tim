@@ -20,9 +20,9 @@
 #define CS_GPIO_Port GPIOA
 #define LED_Pin GPIO_PIN_9
 #define LED_GPIO_Port GPIOA
-#define BTN1_Pin GPIO_PIN_4
+#define BTN1_Pin GPIO_PIN_5
 #define BTN1_GPIO_Port GPIOB
-#define BTN2_Pin GPIO_PIN_5
+#define BTN2_Pin GPIO_PIN_4
 #define BTN2_GPIO_Port GPIOB
 #define BTN3_Pin GPIO_PIN_6
 #define BTN3_GPIO_Port GPIOB
