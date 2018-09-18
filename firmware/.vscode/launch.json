@@ -4,11 +4,11 @@
         {
             "name": "Debug (J-Link)",
             "cwd": "${workspaceRoot}",
-            "executable": "./build/exa_tim.elf",
+            "executable": "${workspaceRoot}/build/exa_tim.elf",
             "request": "launch",
             "type": "cortex-debug",
             "device": "STM32L071KZ",
-            "svdFile": "./STM32L071.svd",
+            "svdFile": "${workspaceRoot}/STM32L071.svd",
             "servertype": "jlink",
             "preLaunchTask": "build"
         }
