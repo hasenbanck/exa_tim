@@ -9,5 +9,8 @@ static uint8_t const BTN4_BIT = 1U << 3;
 
 typedef uint8_t btnBitField;
 
+/* Resets the current button state */
+void resetBtnState(void);
+
 /* Returns a copy of a bitfield of pressed button events */
 btnBitField getPressedButtonEvent();

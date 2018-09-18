@@ -48,6 +48,13 @@ void HAL_LPTIM_AutoReloadMatchCallback(LPTIM_HandleTypeDef *hlptim) {
   }
 }
 
+void resetBtnState(void) {
+  __disable_irq();
+  btnState.history = 0;
+  btnState.pressed = 0;
+  __enable_irq();
+}
+
 btnBitField getPressedButtonEvent() {
   __disable_irq();
   btnBitField tmp = btnState.pressed;

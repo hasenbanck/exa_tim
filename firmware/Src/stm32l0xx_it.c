@@ -4,11 +4,11 @@
 #include "stm32l0xx_hal.h"
 
 extern LPTIM_HandleTypeDef hlptim1;
-extern DMA_HandleTypeDef hdma_lpuart1_tx;
-extern DMA_HandleTypeDef hdma_lpuart1_rx;
+extern UART_HandleTypeDef hlpuart1;
 extern RTC_HandleTypeDef hrtc;
 extern SPI_HandleTypeDef hspi1;
 extern TIM_HandleTypeDef htim2;
+
 
 void NMI_Handler(void) {}
 
@@ -42,16 +42,10 @@ void RTC_IRQHandler(void) {
 
 void RCC_IRQHandler(void) {}
 
-void DMA1_Channel2_3_IRQHandler(void) {
-  HAL_DMA_IRQHandler(&hdma_lpuart1_tx);
-}
-
-void DMA1_Channel4_5_6_7_IRQHandler(void) {
-  HAL_DMA_IRQHandler(&hdma_lpuart1_rx);
-}
-
 void LPTIM1_IRQHandler(void) { HAL_LPTIM_IRQHandler(&hlptim1); }
 
 void SPI1_IRQHandler(void) { HAL_SPI_IRQHandler(&hspi1); }
 
 void TIM2_IRQHandler(void) { HAL_TIM_IRQHandler(&htim2); }
+
+void AES_RNG_LPUART1_IRQHandler(void) { HAL_UART_IRQHandler(&hlpuart1); }
