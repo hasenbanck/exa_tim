@@ -8,6 +8,7 @@
             "request": "launch",
             "type": "cortex-debug",
             "device": "STM32L071KZ",
+            "svdFile": "./STM32L071.svd",
             "servertype": "jlink",
             "preLaunchTask": "build"
         }
