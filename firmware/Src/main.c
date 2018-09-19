@@ -24,6 +24,7 @@ void beep(void) {
 void Run(void) {}
 
 int main(void) {
+  bool displayNeedUpdate = false;
   bool displayUsed = false;
 
   /* Reset of all peripherals, Initializes
@@ -34,13 +35,9 @@ int main(void) {
   /* Initializes normal operation mode */
   initNormalMode();
 
-  /* Applicatoon code */
-  if (getWakeup() == WKUP_PWR || getWakeup() == WKUP_RTC) {
-    displayUsed = true;
-    initDisplay();
-    // TODO check current menu and if watchface, get current time and update
-    // menu
-    drawDisplay();
+  /* Application code */
+  if (needTimeUpdate()) {
+    displayNeedUpdate = true;
   }
 
   /* Reset button history */
@@ -48,9 +45,18 @@ int main(void) {
   btnBitField field = 0;
   uint32_t timeoutCounter = 0;
   while (1) {
+    if (displayNeedUpdate) {
+      displayUsed = true;
+      displayNeedUpdate = false;
+      initDisplay();
+      // TODO: Create a menu config and give it to the drawing function
+      drawDisplay();
+    }
+
     if (timeoutCounter >= BUTTON_TIMEOUT) {
       if (displayUsed) {
-        while (isDisplayBusy()) {};
+        while (isDisplayBusy()) {
+        };
         powerOffDisplay();
       }
       switchStandbyMode();
@@ -59,6 +65,7 @@ int main(void) {
     // Test for events (buttons / display update)
     field = getPressedButtonEvent();
     if (field & BTN1_BIT) {
+      displayNeedUpdate = true;
       debug("Button 1 pressed\n");
     } else if (field & BTN2_BIT) {
       beep();
@@ -69,7 +76,6 @@ int main(void) {
       debug("Button 4 pressed\n");
     }
     switchStopMode();
-    systemClockConfig();
     timeoutCounter++;
   }
 }

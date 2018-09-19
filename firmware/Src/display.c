@@ -3,6 +3,7 @@
 #include "main.h"
 #include "power.h"
 #include "stm32l0xx_hal.h"
+#include "time.h"
 
 extern SPI_HandleTypeDef hspi1;
 u8g2_t u8g2;
@@ -103,16 +104,18 @@ void initDisplay(void) {
 }
 
 void drawDisplay(void) {
+  currentTime_t t = getCurrentTime();
+  char s[5];
+  sprintf(&s[0], "%02d%02d", t.Hours, t.Minutes);
   u8g2_SetFont(&u8g2, keihansoukaishinumbers96);
-  u8g2_DrawUTF8(&u8g2, 4, -4, "0179");
+  u8g2_DrawUTF8(&u8g2, 4, -4, &s[0]);
   u8g2_SendBuffer(&u8g2);
 }
 
 /* Only call this function when you want to put the whole system in sleep
- * Display need a reset when powering up, since we powered also the clock down */
-void powerOffDisplay(void) {
-  u8g2_SetPowerSave(&u8g2, 1);
-}
+ * Display need a reset when powering up, since we powered also the clock down
+ */
+void powerOffDisplay(void) { u8g2_SetPowerSave(&u8g2, 1); }
 
 bool isDisplayBusy(void) {
   if (HAL_GPIO_ReadPin(BUSY_GPIO_Port, BUSY_Pin) == GPIO_PIN_RESET) {

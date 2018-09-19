@@ -25,10 +25,19 @@ void HAL_LPTIM_AutoReloadMatchCallback(LPTIM_HandleTypeDef *hlptim) {
   uint32_t currentButtonStates = GPIOB->IDR;   // Get current button states
   btnState.history <<= 1;                      // Advance history one bit
   btnState.history &= ~BTN_HISTORY_CLEAR_MASK; // Clear current history bits
-  btnState.history |= ((currentButtonStates & BTN1_Pin) != (uint32_t)GPIO_PIN_RESET) ? 0x1 : 0; // Set state of buttons
-  btnState.history |= ((currentButtonStates & BTN2_Pin) != (uint32_t)GPIO_PIN_RESET) ? 0x100 : 0;
-  btnState.history |= ((currentButtonStates & BTN3_Pin) != (uint32_t)GPIO_PIN_RESET) ? 0x10000 : 0;
-  btnState.history |= ((currentButtonStates & BTN4_Pin) != (uint32_t)GPIO_PIN_RESET) ? 0x1000000 : 0;
+  btnState.history |=
+      ((currentButtonStates & BTN1_Pin) != (uint32_t)GPIO_PIN_RESET)
+          ? 0x1
+          : 0; // Set state of buttons
+  btnState.history |=
+      ((currentButtonStates & BTN2_Pin) != (uint32_t)GPIO_PIN_RESET) ? 0x100
+                                                                     : 0;
+  btnState.history |=
+      ((currentButtonStates & BTN3_Pin) != (uint32_t)GPIO_PIN_RESET) ? 0x10000
+                                                                     : 0;
+  btnState.history |=
+      ((currentButtonStates & BTN4_Pin) != (uint32_t)GPIO_PIN_RESET) ? 0x1000000
+                                                                     : 0;
 
   // Test button press history for every button on "good looking" using the mask
   if ((btnState.history & (0b11000111 << 0)) == (0b00000111 << 0)) {
