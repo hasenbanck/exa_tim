@@ -1,7 +1,9 @@
 #pragma once
 
 #include "u8g2.h"
+#include <stdbool.h>
 
-void Display_Init(void);
-void Display_DrawWatchFace(void);
-void Display_PowerOff(void);
+void initDisplay(void);
+void drawDisplay(void);
+void powerOffDisplay(void);
+bool isDisplayBusy(void);

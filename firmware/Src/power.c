@@ -1,5 +1,8 @@
+#include "power.h"
 #include "main.h"
 #include "stm32l0xx_hal.h"
+
+static wakeupBy systemWakeupBy = WKUP_PWR;
 
 extern LPTIM_HandleTypeDef hlptim1;
 extern UART_HandleTypeDef hlpuart1;
@@ -54,6 +57,11 @@ void systemClockConfig(void) {
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) {
     Error_Handler();
   }
+
+#ifndef NDEBUG
+  /* Activate debug clock */
+  __HAL_RCC_DBGMCU_CLK_ENABLE();
+#endif
 
   /* Configure the Systick interrupt time */
   HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq() / 1000);
@@ -138,7 +146,7 @@ void initTIM2(void) {
   HAL_TIM_MspPostInit(&htim2);
 }
 
-static void initRTC(void) {
+void initRTC(void) {
   RTC_TimeTypeDef sTime;
   RTC_DateTypeDef sDate;
   RTC_AlarmTypeDef sAlarm;
@@ -216,7 +224,7 @@ static void initRTC(void) {
 }
 
 /* LPTIM1 init function */
-static void initLPTIM1(void) {
+void initLPTIM1(void) {
   hlptim1.Instance = LPTIM1;
   hlptim1.Init.Clock.Source = LPTIM_CLOCKSOURCE_APBCLOCK_LPOSC;
   hlptim1.Init.Clock.Prescaler = LPTIM_PRESCALER_DIV16;
@@ -235,7 +243,7 @@ static void initLPTIM1(void) {
 }
 
 /* LPUART1 init function */
-static void initLPUART1(void) {
+void initLPUART1(void) {
   hlpuart1.Instance = LPUART1;
   hlpuart1.Init.BaudRate = 9600;
   hlpuart1.Init.WordLength = UART_WORDLENGTH_7B;
@@ -253,7 +261,7 @@ static void initLPUART1(void) {
 }
 
 /* SPI1 init function */
-static void initSPI1(void) {
+void initSPI1(void) {
   /* SPI1 parameter configuration */
   hspi1.Instance = SPI1;
   hspi1.Init.Mode = SPI_MODE_MASTER;
@@ -273,29 +281,46 @@ static void initSPI1(void) {
 }
 
 void initNormalMode(void) {
-  // TODO: Get event that waked us up
   systemClockConfig();
   initGPIO();
   initTIM2();
   initLPTIM1();
 
-  // TODO: Load configuration values from EEPROM
-  // Init RTC only when on PWR event
-  initRTC();
-
-  // Based on wakeup init other peripherals
-  initSPI1();
-  initLPUART1();
+  // Init RTC only when needed on power on event
+  if (getWakeup() == WKUP_PWR) {
+    // TODO: Load configuration values from EEPROM
+    initRTC();
+  }
 }
 
 void switchStopMode(void) {
+#ifndef NDEBUG
+  HAL_DBGMCU_EnableDBGStopMode();
+#endif
   __HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
+  clearWakeup();
   HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
 }
 
 void switchStandbyMode(void) {
+#ifndef NDEBUG
+  HAL_DBGMCU_EnableDBGStandbyMode();
+#endif
+  //HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN1);
   // TODO: Switch of Display if running
+  clearWakeup();
   HAL_PWR_EnterSTANDBYMode();
 }
 
-void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {}
+wakeupBy getWakeup(void) { return systemWakeupBy; }
+
+void setWakeup(wakeupBy reason) { systemWakeupBy = reason; }
+
+void clearWakeup(void) {
+  systemWakeupBy = WKUP_PWR;
+}
+
+void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
+  // TODO: This is not called
+  setWakeup(WKUP_RTC);
+}

@@ -31,4 +31,8 @@ void _Error_Handler(char *, int);
 #define Error_Handler() _Error_Handler(__FILE__, __LINE__)
 
 /* Debuglog over RTT */
+#ifndef NDEBUG
 #define debug(...) SEGGER_RTT_printf(0, __VA_ARGS__)
+#else
+#define debug(...)
+#endif

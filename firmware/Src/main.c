@@ -4,6 +4,10 @@
 #include "power.h"
 #include "stm32l0xx_hal.h"
 
+#include <stdbool.h>
+
+const uint32_t BUTTON_TIMEOUT = 10;
+
 LPTIM_HandleTypeDef hlptim1;
 UART_HandleTypeDef hlpuart1;
 RTC_HandleTypeDef hrtc;
@@ -17,11 +21,11 @@ void beep(void) {
   HAL_TIM_PWM_Stop_IT(&htim2, TIM_CHANNEL_2);
 }
 
-void Run(void) {
-
-}
+void Run(void) {}
 
 int main(void) {
+  bool displayUsed = false;
+
   /* Reset of all peripherals, Initializes
    * the Flash interface and the Systick
    */
@@ -30,27 +34,24 @@ int main(void) {
   /* Initializes normal operation mode */
   initNormalMode();
 
-  /* Initialize external devices */
-  Display_Init();
-
   /* Applicatoon code */
-  // Print initial screen
-  Display_DrawWatchFace();
-
-  // Test the alarm
-  beep();
+  if (getWakeup() == WKUP_PWR || getWakeup() == WKUP_RTC) {
+    displayUsed = true;
+    initDisplay();
+    // TODO check current menu and if watchface, get current time and update
+    // menu
+    drawDisplay();
+  }
 
   /* Reset button history */
   resetBtnState();
   btnBitField field = 0;
-
-  // Standard button timeout
-  // TODO: Set according current event
-  uint32_t timeoutCounter = 30;
-  uint32_t currentTimeoutCounter = 0;
+  uint32_t timeoutCounter = 0;
   while (1) {
-    if (currentTimeoutCounter >= timeoutCounter) {
-      // TODO if display is activated, deactivate it
+    if (timeoutCounter >= BUTTON_TIMEOUT && !isDisplayBusy()) {
+      if (displayUsed) {
+        powerOffDisplay();
+      }
       switchStandbyMode();
     }
 
@@ -67,7 +68,7 @@ int main(void) {
       debug("Button 4 pressed\n");
     }
     switchStopMode();
-    currentTimeoutCounter++;
+    timeoutCounter++;
   }
 }
 

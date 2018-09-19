@@ -1,5 +1,6 @@
 #include "button.h"
 #include "main.h"
+#include "power.h"
 #include "stm32l0xx_hal.h"
 
 static uint32_t const BTN_HISTORY_CLEAR_MASK = 0x01010101U;

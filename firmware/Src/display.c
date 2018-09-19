@@ -1,8 +1,8 @@
 #include "display.h"
 #include "font.h"
 #include "main.h"
+#include "power.h"
 #include "stm32l0xx_hal.h"
-#include <stdbool.h>
 
 extern SPI_HandleTypeDef hspi1;
 u8g2_t u8g2;
@@ -95,13 +95,14 @@ uint8_t u8x8_byte_4wire_sw_spi_stm32(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int,
   return 1; // command processed successfully.
 }
 
-void Display_Init(void) {
-    u8g2_Setup_ssd1607_200x200_f(&u8g2, U8G2_R3, u8x8_byte_4wire_sw_spi_stm32,
+void initDisplay(void) {
+  initSPI1();
+  u8g2_Setup_ssd1607_200x200_f(&u8g2, U8G2_R3, u8x8_byte_4wire_sw_spi_stm32,
                                u8g2_gpio_and_delay_stm32);
   u8g2_InitDisplay(&u8g2);
 }
 
-void Display_DrawWatchFace(void) {
+void drawDisplay(void) {
   u8g2_SetFont(&u8g2, keihansoukaishinumbers96);
   u8g2_DrawUTF8(&u8g2, 4, -4, "0179");
   u8g2_SendBuffer(&u8g2);
@@ -109,4 +110,14 @@ void Display_DrawWatchFace(void) {
 
 /* Only call this function when you want to put the whole system in sleep
  * Display need a reset when powering up, since we powered also the clock down */
-void Display_PowerOff(void) { u8g2_SetPowerSave(&u8g2, 1); }
+void powerOffDisplay(void) {
+  u8g2_SetPowerSave(&u8g2, 1);
+}
+
+bool isDisplayBusy(void) {
+  if (HAL_GPIO_ReadPin(BUSY_GPIO_Port, BUSY_Pin) == GPIO_PIN_RESET) {
+    return false;
+  } else {
+    return true;
+  }
+}
