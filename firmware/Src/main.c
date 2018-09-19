@@ -2,6 +2,7 @@
 #include "button.h"
 #include "display.h"
 #include "power.h"
+#include "time.h"
 #include "stm32l0xx_hal.h"
 
 #include <stdbool.h>
@@ -35,17 +36,12 @@ int main(void) {
   /* Initializes normal operation mode */
   initNormalMode();
 
-  /* Application code */
-  if (needTimeUpdate()) {
-    displayNeedUpdate = true;
-  }
-
   /* Reset button history */
   resetBtnState();
   btnBitField field = 0;
   uint32_t timeoutCounter = 0;
   while (1) {
-    if (displayNeedUpdate) {
+    if (needTimeUpdate() || displayNeedUpdate) {
       displayUsed = true;
       displayNeedUpdate = false;
       initDisplay();

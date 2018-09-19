@@ -26,17 +26,23 @@ bool needTimeUpdate(void) {
   if (HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK) {
     Error_Handler();
   }
-  // Time different or PWR ON
-  bool pwron = !(__HAL_PWR_GET_FLAG(PWR_FLAG_SB) && __HAL_PWR_GET_FLAG(PWR_FLAG_WU));
+
+  // PWR ON test
+  static bool pwron = true;
+  if (pwron) {
+    pwron = !(__HAL_PWR_GET_FLAG(PWR_FLAG_SB) && __HAL_PWR_GET_FLAG(PWR_FLAG_WU));
+  }
+
   if (sTime.Hours != currentTime.Hours ||
       sTime.Minutes != currentTime.Minutes || pwron) {
+    pwron = false;
     currentTime.Hours = sTime.Hours;
     currentTime.Minutes = sTime.Minutes;
     nextTick = 60 - sTime.Seconds;
     ret = true;
-  }
-  if (sTime.Seconds == 59) {
-    currentTime.Minutes++;
+  } else if (sTime.Seconds == 59) {
+    currentTime.Hours = sTime.Hours;
+    currentTime.Minutes = sTime.Minutes++;
     if (currentTime.Minutes == 60) {
       currentTime.Minutes = 0;
       currentTime.Hours++;
