@@ -17,7 +17,7 @@ void systemClockConfig(void) {
   RCC_PeriphCLKInitTypeDef PeriphClkInit;
 
   /* Configure the main internal regulator output voltage */
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE3);
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
 
   /*  Enable access to backup domain */
   HAL_PWR_EnableBkUpAccess();
@@ -164,7 +164,7 @@ void initRTC(void) {
   }
 
   // We don't need to init RTC when coming back from standby
-  if (!__HAL_PWR_GET_FLAG(PWR_FLAG_SB)) {
+  if (!(__HAL_PWR_GET_FLAG(PWR_FLAG_SB) && __HAL_PWR_GET_FLAG(PWR_FLAG_WU))) {
 
     // TODO Read EEPROM configuration and use it (in case of battery switch)
 
@@ -221,8 +221,7 @@ void initRTC(void) {
   }
 
   // Wait for RTC to come ready
-  while (HAL_RTC_GetState(&hrtc) == HAL_RTC_STATE_BUSY) {
-  };
+  while (HAL_RTC_GetState(&hrtc) == HAL_RTC_STATE_BUSY) {};
 }
 
 /* LPTIM1 init function */

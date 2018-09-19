@@ -27,7 +27,7 @@ bool needTimeUpdate(void) {
     Error_Handler();
   }
   // Time different or PWR ON
-  bool pwron = !__HAL_PWR_GET_FLAG(PWR_FLAG_SB);
+  bool pwron = !(__HAL_PWR_GET_FLAG(PWR_FLAG_SB) && __HAL_PWR_GET_FLAG(PWR_FLAG_WU));
   if (sTime.Hours != currentTime.Hours ||
       sTime.Minutes != currentTime.Minutes || pwron) {
     currentTime.Hours = sTime.Hours;
