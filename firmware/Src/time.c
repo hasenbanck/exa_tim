@@ -23,7 +23,7 @@ bool needTimeUpdate(void) {
 
   currentTime_t currentTime = loadCurrentTime();
 
-  if (HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK) {
+  if (HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN) != HAL_OK) {
     Error_Handler();
   }
 
@@ -42,10 +42,10 @@ bool needTimeUpdate(void) {
     ret = true;
   } else if (sTime.Seconds == 59) {
     currentTime.Hours = sTime.Hours;
-    currentTime.Minutes = sTime.Minutes++;
+    currentTime.Minutes += 1;
     if (currentTime.Minutes == 60) {
       currentTime.Minutes = 0;
-      currentTime.Hours++;
+      currentTime.Hours += 1;
     }
     if (currentTime.Hours == 24) {
       currentTime.Hours = 0;
@@ -68,6 +68,8 @@ bool needTimeUpdate(void) {
   }
 
   if (ret) {
+    debug ("Hours: %d\n", currentTime.Hours);
+    debug ("Minutes: %d\n\n", currentTime.Minutes);
     saveCurrentTime(currentTime);
   }
 

@@ -41,7 +41,21 @@ int main(void) {
   btnBitField field = 0;
   uint32_t timeoutCounter = 0;
   while (1) {
-    if (needTimeUpdate() || displayNeedUpdate) {
+    // Test for events (buttons / display update)
+    field = getPressedButtonEvent();
+    if (field & BTN1_BIT) {
+      displayNeedUpdate = true;
+      debug("Button 1 pressed\n");
+    } else if (field & BTN2_BIT) {
+      beep();
+      debug("Button 2 pressed\n");
+    } else if (field & BTN3_BIT) {
+      debug("Button 3 pressed\n");
+    } else if (field & BTN4_BIT) {
+      debug("Button 4 pressed\n");
+    }
+
+    if (!displayUsed && (needTimeUpdate() || displayNeedUpdate)) {
       displayUsed = true;
       displayNeedUpdate = false;
       initDisplay();
@@ -58,19 +72,6 @@ int main(void) {
       switchStandbyMode();
     }
 
-    // Test for events (buttons / display update)
-    field = getPressedButtonEvent();
-    if (field & BTN1_BIT) {
-      displayNeedUpdate = true;
-      debug("Button 1 pressed\n");
-    } else if (field & BTN2_BIT) {
-      beep();
-      debug("Button 2 pressed\n");
-    } else if (field & BTN3_BIT) {
-      debug("Button 3 pressed\n");
-    } else if (field & BTN4_BIT) {
-      debug("Button 4 pressed\n");
-    }
     switchStopMode();
     timeoutCounter++;
   }
