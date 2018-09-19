@@ -41,7 +41,7 @@ void systemClockConfig(void) {
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK |
                                 RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV4;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
@@ -129,14 +129,14 @@ void initTIM2(void) {
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 1000;
+  htim2.Init.Period = 1999;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   if (HAL_TIM_PWM_Init(&htim2) != HAL_OK) {
     Error_Handler();
   }
 
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 499;
+  sConfigOC.Pulse = 999;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2) != HAL_OK) {
@@ -281,6 +281,11 @@ void initSPI1(void) {
 }
 
 void initNormalMode(void) {
+  // Checks if button was the reason for the wakeup
+  if (__HAL_PWR_GET_FLAG(PWR_FLAG_WU) && getWakeup() == WKUP_PWR) {
+    setWakeup(WKUP_BUTTON);
+  }
+
   systemClockConfig();
   initGPIO();
   initTIM2();
@@ -306,8 +311,8 @@ void switchStandbyMode(void) {
 #ifndef NDEBUG
   HAL_DBGMCU_EnableDBGStandbyMode();
 #endif
-  //HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN1);
-  // TODO: Switch of Display if running
+  HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN1);
+  __HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
   clearWakeup();
   HAL_PWR_EnterSTANDBYMode();
 }

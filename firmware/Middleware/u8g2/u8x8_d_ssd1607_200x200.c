@@ -101,11 +101,11 @@ static const uint8_t u8x8_d_ssd1607_200x200_powersave0_seq[] = {
 static const uint8_t u8x8_d_ssd1607_200x200_powersave1_seq[] = {
   U8X8_START_TRANSFER(),             	/* enable chip, delay is part of the transfer start */
   /* disable clock and charge pump only and enter deep sleeep */
-  U8X8_CA(0x22, 0x00), /* only disable charge pump and clock */
-  U8X8_C(0x20),				 /* execute sequence */
-  U8X8_DLY(20),
+  U8X8_CA(0x22, 0x03), /* only disable charge pump and clock */
+  U8X8_C(0x20),		   /* execute sequence */
+  U8X8_DLY(50),
   U8X8_CA(0x10, 0x01), /* enter deep sleep */
-  U8X8_DLY(20),
+  U8X8_DLY(50),
   U8X8_END_TRANSFER(), /* disable chip */
   U8X8_END()           /* end of sequence */
 };

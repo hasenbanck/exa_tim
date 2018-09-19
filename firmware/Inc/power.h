@@ -9,6 +9,8 @@ typedef enum wakeupBy {
 
 } wakeupBy;
 
+void systemClockConfig(void);
+
 void initLPUART1(void);
 void initSPI1(void);
 

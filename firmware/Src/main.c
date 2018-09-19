@@ -48,8 +48,9 @@ int main(void) {
   btnBitField field = 0;
   uint32_t timeoutCounter = 0;
   while (1) {
-    if (timeoutCounter >= BUTTON_TIMEOUT && !isDisplayBusy()) {
+    if (timeoutCounter >= BUTTON_TIMEOUT) {
       if (displayUsed) {
+        while (isDisplayBusy()) {};
         powerOffDisplay();
       }
       switchStandbyMode();
@@ -68,6 +69,7 @@ int main(void) {
       debug("Button 4 pressed\n");
     }
     switchStopMode();
+    systemClockConfig();
     timeoutCounter++;
   }
 }
