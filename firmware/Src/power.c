@@ -163,7 +163,7 @@ void initRTC(void) {
     Error_Handler();
   }
 
-  // We don't need to init RTC when coming back from standby
+  // We don't need to do further RTC configuration when coming back from standby
   if (!(__HAL_PWR_GET_FLAG(PWR_FLAG_SB) && __HAL_PWR_GET_FLAG(PWR_FLAG_WU))) {
 
     // TODO Read EEPROM configuration and use it (in case of battery switch)

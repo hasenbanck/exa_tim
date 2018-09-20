@@ -2,8 +2,8 @@
 #include "button.h"
 #include "display.h"
 #include "power.h"
-#include "time.h"
 #include "stm32l0xx_hal.h"
+#include "time.h"
 
 #include <stdbool.h>
 
@@ -55,15 +55,14 @@ int main(void) {
       debug("Button 4 pressed\n");
     }
 
-    if (!displayUsed && (needTimeUpdate() || displayNeedUpdate)) {
+    if (displayNeedUpdate || needTimeUpdate()) {
       displayUsed = true;
       displayNeedUpdate = false;
       initDisplay();
       // TODO: Create a menu config and give it to the drawing function
       drawDisplay();
     }
-
-    if (timeoutCounter >= BUTTON_TIMEOUT) {
+    if (displayUsed || (timeoutCounter >= BUTTON_TIMEOUT)) {
       if (displayUsed) {
         while (isDisplayBusy()) {
         };
