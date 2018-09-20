@@ -23,7 +23,7 @@ void systemClockConfig(void) {
   HAL_PWR_EnableBkUpAccess();
 
   /* Configure LSE Drive Capability */
-  __HAL_RCC_LSEDRIVE_CONFIG(RCC_LSEDRIVE_HIGH);
+  __HAL_RCC_LSEDRIVE_CONFIG(RCC_LSEDRIVE_LOW);
 
   /* Initializes the CPU, AHB and APB busses clocks */
   RCC_OscInitStruct.OscillatorType =

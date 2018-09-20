@@ -97,9 +97,9 @@ L Device:Crystal_Small Y1
 U 1 1 5B79A698
 P 1700 2450
 F 0 "Y1" V 1900 2450 50  0000 C CNN
-F 1 "9HT11-32.768KDZB-T" V 1450 2450 50  0000 C CNN
+F 1 "ST2012SB32768B0HPWBB" V 1450 2450 50  0000 C CNN
 F 2 "exa_tim:Crystal_SMD_TXC_9HT11-2Pin_2.0x1.2mm_HandSoldering" H 1700 2450 50  0001 C CNN
-F 3 "http://www.txccrystal.com/images/pdf/9ht11.pdf" H 1700 2450 50  0001 C CNN
+F 3 "https://www.mouser.de/datasheet/2/909/st2012sb_e-1316888.pdf" H 1700 2450 50  0001 C CNN
 	1    1700 2450
 	0    1    1    0   
 $EndComp

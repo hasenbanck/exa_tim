@@ -181,11 +181,11 @@ Text Label 4050 3100 2    50   ~ 0
 SWDIO
 Text Label 4050 3200 2    50   ~ 0
 SWCLK
-Text Label 1900 3200 0    50   ~ 0
+Text Label 1900 3100 0    50   ~ 0
 BTN4
 Text Label 1900 3000 0    50   ~ 0
 BTN1
-Text Label 1900 3100 0    50   ~ 0
+Text Label 1900 3200 0    50   ~ 0
 BTN3
 Wire Wire Line
 	4050 3100 3400 3100
@@ -1278,7 +1278,7 @@ ALARM
 Wire Wire Line
 	2800 5250 1950 5250
 Wire Wire Line
-	1900 3200 2200 3200
+	1900 3100 2200 3100
 Wire Wire Line
 	2200 3000 1900 3000
 Wire Wire Line
@@ -1289,7 +1289,7 @@ NoConn ~ 10650 1450
 Text Label 1900 2900 0    50   ~ 0
 BTN2
 Wire Wire Line
-	1900 3100 2200 3100
+	1900 3200 2200 3200
 $Comp
 L Device:C C6
 U 1 1 5B7C7CBE
