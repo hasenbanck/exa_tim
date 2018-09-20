@@ -55,7 +55,7 @@ include_directories(Inc)
 
 add_executable(${PROJECT_NAME}.elf ${SOURCE_FILES})
 
-set(CMAKE_EXE_LINKER_FLAGS "-specs=nano.specs -lc -lm -lnosys -T${MCU_LINKER_SCRIPT} -Wl,--gc-sections")
+set(CMAKE_EXE_LINKER_FLAGS "-specs=nano.specs -specs=nosys.specs -lc -lm -lnosys -T${MCU_LINKER_SCRIPT} -Wl,--gc-sections")
 SET(CMAKE_ASM_FLAGS "-mcpu=${MCU_ARCH} -mthumb -fdata-sections -ffunction-sections -Wall")
 SET(CMAKE_ASM_FLAGS_DEBUG "-Og -g -gdwarf-2")
 SET(CMAKE_ASM_FLAGS_RELEASE "-Os -flto")
