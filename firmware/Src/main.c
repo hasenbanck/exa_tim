@@ -60,7 +60,8 @@ int main(void) {
       displayNeedUpdate = false;
       initDisplay();
       // TODO: Create a menu config and give it to the drawing function
-      drawDisplay();
+      //drawDisplay();
+      drawMenu();
     }
     if (displayUsed || (timeoutCounter >= BUTTON_TIMEOUT)) {
       if (displayUsed) {
