@@ -3,7 +3,7 @@
 #include "main.h"
 #include "power.h"
 #include "stm32l0xx_hal.h"
-#include "time.h"
+#include "clock.h"
 
 extern SPI_HandleTypeDef hspi1;
 u8g2_t u8g2;

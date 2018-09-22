@@ -3,7 +3,7 @@
 #include "display.h"
 #include "power.h"
 #include "stm32l0xx_hal.h"
-#include "time.h"
+#include "clock.h"
 
 #include <stdbool.h>
 

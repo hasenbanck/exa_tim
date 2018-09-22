@@ -1,7 +1,7 @@
 #include "power.h"
 #include "main.h"
 #include "stm32l0xx_hal.h"
-#include "time.h"
+#include "clock.h"
 
 extern LPTIM_HandleTypeDef hlptim1;
 extern UART_HandleTypeDef hlpuart1;
