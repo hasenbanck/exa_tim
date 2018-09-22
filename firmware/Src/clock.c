@@ -4,24 +4,10 @@
 
 extern RTC_HandleTypeDef hrtc;
 
-currentTime_t loadCurrentTime() {
-  currentTime_t currentTime = {0};
-  currentTime.Hours = HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0);
-  currentTime.Minutes = HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1);
-  return currentTime;
-}
-
-void saveCurrentTime(currentTime_t currentTime) {
-  HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, currentTime.Hours);
-  HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR1, currentTime.Minutes);
-}
-
-bool needTimeUpdate(void) {
+bool needTimeUpdate(applicationState_t* state) {
   RTC_TimeTypeDef sTime;
   bool ret = false;
   uint32_t nextTick = 0;
-
-  currentTime_t currentTime = loadCurrentTime();
 
   if (HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN) != HAL_OK) {
     Error_Handler();
@@ -33,30 +19,13 @@ bool needTimeUpdate(void) {
     pwron = !(__HAL_PWR_GET_FLAG(PWR_FLAG_SB) && __HAL_PWR_GET_FLAG(PWR_FLAG_WU));
   }
 
-  if (sTime.Hours != currentTime.Hours ||
-      sTime.Minutes != currentTime.Minutes || pwron) {
+  if (sTime.Hours != state->currentHours ||
+      sTime.Minutes != state->currentMinutes || pwron) {
     pwron = false;
-    currentTime.Hours = sTime.Hours;
-    currentTime.Minutes = sTime.Minutes;
+    state->currentHours = sTime.Hours;
+    state->currentMinutes = sTime.Minutes;
     nextTick = 60 - sTime.Seconds;
     ret = true;
-  } else if (sTime.Seconds == 59) {
-    currentTime.Hours = sTime.Hours;
-    currentTime.Minutes += 1;
-    if (currentTime.Minutes == 60) {
-      currentTime.Minutes = 0;
-      currentTime.Hours += 1;
-    }
-    if (currentTime.Hours == 24) {
-      currentTime.Hours = 0;
-    }
-    nextTick = 61;
-    ret = true;
-  }
-
-  // TODO temp fix until I know why the RTC returns seconds bigger then 59
-  if (nextTick > 61) {
-    nextTick = 10;
   }
 
   // Set next update
@@ -67,13 +36,5 @@ bool needTimeUpdate(void) {
     }
   }
 
-  if (ret) {
-    debug ("Hours: %d\n", currentTime.Hours);
-    debug ("Minutes: %d\n\n", currentTime.Minutes);
-    saveCurrentTime(currentTime);
-  }
-
   return ret;
 }
-
-currentTime_t getCurrentTime(void) { return loadCurrentTime(); }

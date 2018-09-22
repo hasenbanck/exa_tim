@@ -3,7 +3,6 @@
 #include "main.h"
 #include "power.h"
 #include "stm32l0xx_hal.h"
-#include "clock.h"
 
 extern SPI_HandleTypeDef hspi1;
 u8g2_t u8g2;
@@ -103,41 +102,42 @@ void initDisplay(void) {
   u8g2_InitDisplay(&u8g2);
 }
 
-void drawDisplay(void) {
-  currentTime_t t = getCurrentTime();
-  char s[5];
-  sprintf(&s[0], "%02d%02d", t.Hours, t.Minutes);
-  u8g2_SetFont(&u8g2, keihansoukaishinumbers96);
-  u8g2_DrawUTF8(&u8g2, 4, -4, &s[0]);
-  u8g2_SendBuffer(&u8g2);
-}
+void drawDisplay(applicationState_t *state) {
+  if (state->activeMenu == menu_watch) {
+    // TODO rework me
+    char s[5];
+    sprintf(&s[0], "%02d%02d", state->currentHours, state->currentMinutes);
+    u8g2_SetFont(&u8g2, keihansoukaishinumbers96);
+    u8g2_DrawUTF8(&u8g2, 4, -4, &s[0]);
+    u8g2_SendBuffer(&u8g2);
+  }
+  if (state->activeMenu == menu_options) {
+    // TODO rework me
+    u8g2_SetFont(&u8g2, u8g2_font_logisoso16_tf);
+    u8g2_DrawUTF8(&u8g2, 3, 20, "Alarm");
+    u8g2_DrawUTF8(&u8g2, 3, 40, "Alarm");
+    u8g2_DrawUTF8(&u8g2, 3, 60, "Time Sync");
+    u8g2_DrawUTF8(&u8g2, 3, 80, "UTC Offset");
+    u8g2_DrawUTF8(&u8g2, 3, 100, "DST");
+    u8g2_DrawUTF8(&u8g2, 120, 20, "OFF");
+    u8g2_DrawUTF8(&u8g2, 120, 40, "18:59");
+    u8g2_DrawUTF8(&u8g2, 120, 60, "ON");
+    u8g2_DrawUTF8(&u8g2, 120, 80, "+1");
+    u8g2_DrawUTF8(&u8g2, 120, 100, "+1");
+    u8g2_DrawBox(&u8g2, 100, 0, 2, 100);
 
-void drawMenu(void) {
-  u8g2_SetFont(&u8g2, u8g2_font_logisoso16_tf);
-  u8g2_DrawUTF8(&u8g2, 3, 20, "Alarm");
-  u8g2_DrawUTF8(&u8g2, 3, 40, "Alarm");
-  u8g2_DrawUTF8(&u8g2, 3, 60, "Time Sync");
-  u8g2_DrawUTF8(&u8g2, 3, 80, "UTC Offset");
-  u8g2_DrawUTF8(&u8g2, 3, 100, "DST");
-  u8g2_DrawUTF8(&u8g2, 120, 20, "OFF");
-  u8g2_DrawUTF8(&u8g2, 120, 40, "18:59");
-  u8g2_DrawUTF8(&u8g2, 120, 60, "ON");
-  u8g2_DrawUTF8(&u8g2, 120, 80, "+1");
-  u8g2_DrawUTF8(&u8g2, 120, 100, "+1");
-  u8g2_DrawBox(&u8g2, 100, 0, 2, 100);
+    u8g2_DrawUTF8(&u8g2, 3, 120, "Manual Time Sync");
+    u8g2_DrawUTF8(&u8g2, 3, 140, "Show Debug");
 
-  u8g2_DrawUTF8(&u8g2, 3, 120, "Manual Time Sync");
-  u8g2_DrawUTF8(&u8g2, 3, 140, "Show Debug");
+    u8g2_DrawFrame(&u8g2, 103, 1 + (state->selectedItemMain * 20), 97, 22);
 
-  int i = 2;
-  int j = 1;
-  u8g2_DrawFrame(&u8g2, 1+(j*102), 1+(i*20), 97, 22);
-
-  u8g2_SendBuffer(&u8g2);
+    u8g2_SendBuffer(&u8g2);
+  }
 }
 
 /* Only call this function when you want to put the whole system in sleep
  * Display need a reset when powering up, since we powered also the clock down
+ * TODO: Shut down the whole module via DISP_EN
  */
 void powerOffDisplay(void) { u8g2_SetPowerSave(&u8g2, 1); }
 

@@ -1,9 +1,10 @@
 #include "main.h"
 #include "button.h"
+#include "clock.h"
 #include "display.h"
+#include "logic.h"
 #include "power.h"
 #include "stm32l0xx_hal.h"
-#include "clock.h"
 
 #include <stdbool.h>
 
@@ -25,9 +26,6 @@ void beep(void) {
 void Run(void) {}
 
 int main(void) {
-  bool displayNeedUpdate = false;
-  bool displayUsed = false;
-
   /* Reset of all peripherals, Initializes
    * the Flash interface and the Systick
    */
@@ -36,39 +34,43 @@ int main(void) {
   /* Initializes normal operation mode */
   initNormalMode();
 
+  /* Get current application state */
+  applicationState_t state = loadState();
+
   /* Reset button history */
   resetBtnState();
   btnBitField field = 0;
   uint32_t timeoutCounter = 0;
   while (1) {
+    static inputEvent_t in = inputEvent_None;
+
     // Test for events (buttons / display update)
     field = getPressedButtonEvent();
     if (field & BTN1_BIT) {
-      displayNeedUpdate = true;
+      in = inputEvent_Button_1;
       debug("Button 1 pressed\n");
     } else if (field & BTN2_BIT) {
-      beep();
+      in = inputEvent_Button_2;
       debug("Button 2 pressed\n");
     } else if (field & BTN3_BIT) {
+      in = inputEvent_Button_3;
       debug("Button 3 pressed\n");
     } else if (field & BTN4_BIT) {
+      in = inputEvent_Button_4;
       debug("Button 4 pressed\n");
     }
+    outputEvent_t out = handleEvent(&state, in);
 
-    if (displayNeedUpdate || needTimeUpdate()) {
-      displayUsed = true;
-      displayNeedUpdate = false;
+    if (out == outputEvent_Draw) {
       initDisplay();
-      // TODO: Create a menu config and give it to the drawing function
-      //drawDisplay();
-      drawMenu();
+      drawDisplay(&state);
     }
-    if (displayUsed || (timeoutCounter >= BUTTON_TIMEOUT)) {
-      if (displayUsed) {
-        while (isDisplayBusy()) {
-        };
+    if ((timeoutCounter >= BUTTON_TIMEOUT) || out == outputEvent_Draw) {
+      if (out == outputEvent_Draw) {
+        while (isDisplayBusy());
         powerOffDisplay();
       }
+      saveLogic(&state);
       switchStandbyMode();
     }
 

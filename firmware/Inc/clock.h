@@ -1,12 +1,8 @@
 #pragma once
 
+#include "logic.h"
+
 #include <stdbool.h>
 #include <stdint.h>
 
-typedef struct currentTime {
-  uint8_t Hours;
-  uint8_t Minutes;
-} currentTime_t;
-
-bool needTimeUpdate(void);
-currentTime_t getCurrentTime(void);
+bool needTimeUpdate(applicationState_t* state);
