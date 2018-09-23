@@ -281,27 +281,39 @@ void initSPI1(void) {
   }
 }
 
+void initPVD(void) {
+  PWR_PVDTypeDef sConfigPVD;
+  sConfigPVD.Mode = PWR_PVD_MODE_NORMAL;
+  sConfigPVD.PVDLevel = PWR_PVDLEVEL_4; // 0 = 1.9V, 1 = 2.1V, 2 = 2.3V, 3 = 2.5V, 4 = 2.7V, 5 = 2.9V, 6 = 3.1V
+  HAL_PWR_ConfigPVD(&sConfigPVD);
+  HAL_PWR_EnablePVD();
+}
+
 void initNormalMode(void) {
   systemClockConfig();
   initGPIO();
   initTIM2();
   initLPTIM1();
   initRTC();
+  initPVD();
 }
 
 void switchStopMode(void) {
 #ifndef NDEBUG
   HAL_DBGMCU_EnableDBGStopMode();
 #endif
+  HAL_PWR_DisablePVD();
   __HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
   HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
   systemClockConfig();
+  HAL_PWR_EnablePVD();
 }
 
 void switchStandbyMode(void) {
 #ifndef NDEBUG
   HAL_DBGMCU_EnableDBGStandbyMode();
 #endif
+  HAL_PWR_DisablePVD();
   HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN1);
   __HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
   HAL_PWR_EnterSTANDBYMode();

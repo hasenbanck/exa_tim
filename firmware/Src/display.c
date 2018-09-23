@@ -104,6 +104,12 @@ void initDisplay(void) {
 
 void drawDisplay(applicationState_t *state) {
   if (state->activeMenu == menu_watch) {
+    // Checks if PVDO is set (low battery)
+    if (__HAL_PWR_GET_FLAG(PWR_FLAG_PVDO)) {
+      u8g2_SetFont(&u8g2, u8g2_font_open_iconic_embedded_4x_t);
+      u8g2_DrawGlyph(&u8g2, 0, 32, 64);
+    }
+
     // TODO rework me
     char s[5];
     sprintf(&s[0], "%02d%02d", state->currentHours, state->currentMinutes);
