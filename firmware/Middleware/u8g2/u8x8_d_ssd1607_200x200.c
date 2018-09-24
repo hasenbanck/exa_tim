@@ -92,8 +92,8 @@ static const uint8_t u8x8_d_ssd1607_200x200_powersave0_seq[] = {
   U8X8_START_TRANSFER(),             	/* enable chip, delay is part of the transfer start */
   U8X8_CA(0x22, 0xc0),			/* enable clock and charge pump */
   U8X8_C(0x20),				/* execute sequence */
-  U8X8_DLY(200),				/* according to my measures it may take up to 150ms */
-  U8X8_DLY(100),				/* but it might take longer */
+  U8X8_DLY(200),
+  U8X8_DLY(100),
   U8X8_END_TRANSFER(),             	/* disable chip */
   U8X8_END()             			/* end of sequence */
 };
@@ -345,7 +345,7 @@ static const uint8_t u8x8_d_ssd1607_to_display_seq[] = {
 
   U8X8_CA(0x22, 0x04),	/* display update seq. option: clk -> CP -> LUT -> initial display -> pattern display */
   U8X8_C(0x20),	/* execute sequence */
-  /*
+  /* Optimized for speed
   U8X8_DLY(250),
   U8X8_DLY(250),
   U8X8_DLY(250),
@@ -371,7 +371,7 @@ uint8_t u8x8_d_ssd1607_200x200(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void 
       u8x8_d_helper_display_init(u8x8);
       u8x8_cad_SendSequence(u8x8, u8x8_d_ssd1607_200x200_init_seq);
       u8x8_cad_SendSequence(u8x8, u8x8_d_ssd1607_200x200_powersave0_seq);
-      u8x8_d_ssd1607_200x200_first_init(u8x8);
+      //u8x8_d_ssd1607_200x200_first_init(u8x8); /* Optimized for speed */
       break;
     case U8X8_MSG_DISPLAY_SET_POWER_SAVE:
       if ( arg_int == 0 )
@@ -463,7 +463,7 @@ measured 1240 ms with IL3830 196x128
   U8X8_CA(0x22, 0x04),	/* display update seq. option: clk -> CP -> LUT -> initial display -> pattern display */
   U8X8_C(0x20),	/* execute sequence */
 
-  /*
+  /* Optimized for speed
   U8X8_DLY(250),
   U8X8_DLY(250),
   U8X8_DLY(250),
@@ -554,7 +554,7 @@ measured 1240 ms with IL3830 196x128
   U8X8_CA(0x22, 0x04),	/* display update seq. option: clk -> CP -> LUT -> initial display -> pattern display */
   U8X8_C(0x20),	/* execute sequence */
 
-  /*
+  /* Optimized for speed
   U8X8_DLY(250),
   U8X8_DLY(250),
   U8X8_DLY(250),
@@ -579,7 +579,7 @@ uint8_t u8x8_d_ssd1607_gd_200x200(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, vo
       u8x8_d_helper_display_init(u8x8);
       u8x8_cad_SendSequence(u8x8, u8x8_d_ssd1607_200x200_init_seq);
       u8x8_cad_SendSequence(u8x8, u8x8_d_ssd1607_200x200_powersave0_seq);
-      u8x8_d_ssd1607_200x200_first_init(u8x8);
+      //u8x8_d_ssd1607_200x200_first_init(u8x8); /* Optimized for speed */
       break;
     case U8X8_MSG_DISPLAY_SET_POWER_SAVE:
       if ( arg_int == 0 )
