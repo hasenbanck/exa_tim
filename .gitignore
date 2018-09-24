@@ -11,6 +11,7 @@ firmware/.settings
 firmware/CMakeCache.txt
 firmware/CMakeFiles/
 firmware/build.ninja
+firmware/compile_commands.json
 firmware/cmake_install.cmake
 firmware/exa_tim.bin
 firmware/exa_tim.elf

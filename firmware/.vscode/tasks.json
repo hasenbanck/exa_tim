@@ -4,19 +4,19 @@
         {
             "label": "cmake debug",
             "type": "shell",
-            "command": "mkdir -p build && cd build && cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja ..",
+            "command": "cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja",
             "problemMatcher": []
         },
         {
             "label": "cmake release",
             "type": "shell",
-            "command": "mkdir -p build && cd build && cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_BUILD_TYPE=Release -G Ninja ..",
+            "command": "cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_BUILD_TYPE=Release -G Ninja",
             "problemMatcher": []
         },
         {
             "label": "build",
             "type": "shell",
-            "command": "cd build && ninja",
+            "command": "ninja",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -28,7 +28,7 @@
         {
             "label": "clean",
             "type": "shell",
-            "command": "rm -Rf build",
+            "command": "rm -Rf CMakeFiles/ CMakeCache.txt build.ninja rules.ninja compile_commands.json cmake_install.cmake exa_tim.bin exa_tim.elf exa_tim.hex",
             "problemMatcher": []
         }
     ]

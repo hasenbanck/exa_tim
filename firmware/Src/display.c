@@ -105,9 +105,9 @@ void initDisplay(void) {
 void drawDisplay(applicationState_t *state) {
   if (state->activeMenu == menu_watch) {
     // Checks if PVDO is set (low battery)
-    if (__HAL_PWR_GET_FLAG(PWR_FLAG_PVDO)) {
-      u8g2_SetFont(&u8g2, u8g2_font_open_iconic_embedded_4x_t);
-      u8g2_DrawGlyph(&u8g2, 0, 32, 64);
+    if (state->lowBattery) {
+      u8g2_SetFont(&u8g2, u8g2_font_open_iconic_embedded_2x_t);
+      u8g2_DrawGlyph(&u8g2, 0, 16, 64);
     }
 
     // TODO rework me
@@ -135,7 +135,7 @@ void drawDisplay(applicationState_t *state) {
     u8g2_DrawUTF8(&u8g2, 3, 120, "Manual Time Sync");
     u8g2_DrawUTF8(&u8g2, 3, 140, "Show Debug");
 
-    u8g2_DrawFrame(&u8g2, 103, 1 + (state->selectedItemMain * 20), 97, 22);
+    u8g2_DrawFrame(&u8g2, 103, 1 + (state->selectedItem * 20), 97, 22);
 
     u8g2_SendBuffer(&u8g2);
   }

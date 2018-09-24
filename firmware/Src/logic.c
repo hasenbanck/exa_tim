@@ -13,25 +13,23 @@ applicationState_t loadState(void) {
       0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) >> 16);
   state.activeMenu =
       0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) >> 24);
-  state.selectedItemLevel =
-      0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1));
-  state.selectedItemMain =
+  state.selectedItem = 0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1));
+  state.selectedItemValue =
       0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1) >> 8);
-  state.selectedItemSub =
-      0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1) >> 8);
+  HAL_Delay(100);
+  state.lowBattery = __HAL_PWR_GET_FLAG(PWR_FLAG_PVDO);
   return state;
 }
 
-void saveLogic(applicationState_t *state) {
+void saveState(applicationState_t *state) {
   HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0,
                       (((int32_t)state->activeMenu) << 24) |
                           (((int32_t)state->alarmActive) << 16) |
                           (((int32_t)state->currentMinutes) << 8) |
                           ((int32_t)state->currentHours));
   HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR1,
-                      (((int32_t)state->selectedItemSub) << 16) |
-                          (((int32_t)state->selectedItemMain) << 8) |
-                          ((int32_t)state->selectedItemLevel));
+                      (((int32_t)state->selectedItemValue) << 8) |
+                          ((int32_t)state->selectedItem));
 }
 
 outputEvent_t handleEvent(applicationState_t *state, inputEvent_t in) {
@@ -59,49 +57,35 @@ outputEvent_t handleEvent(applicationState_t *state, inputEvent_t in) {
 
     // Enter
     if (in == inputEvent_Button_3) {
-      if (state->selectedItemLevel == 0) {
-        // TODO change selected config item, special case for time entry
+      if (state->selectedItem == 0) {
+        // TODO toggle edit mode
         return outputEvent_Draw;
       }
     }
 
     // Up
     if (in == inputEvent_Button_1) {
-      // Main Level
-      if (state->selectedItemLevel == 0) {
-        if (state->selectedItemMain == 0)
-          state->selectedItemMain = 6;
-        else
-          state->selectedItemMain--;
-        return outputEvent_Draw;
-      }
-      // Alarm time setting (+)
-      if (state->selectedItemLevel == 1 && state->selectedItemMain == 1) {
-        // TODO
-      }
+      if (state->selectedItem == 0)
+        state->selectedItem = 6;
+      else
+        state->selectedItem--;
+      return outputEvent_Draw;
     }
 
     // Down
     if (in == inputEvent_Button_2) {
-      if (state->selectedItemLevel == 0) {
-        if (state->selectedItemMain == 6)
-          state->selectedItemMain = 0;
-        else
-          state->selectedItemMain++;
-        return outputEvent_Draw;
-      }
-    }
-    // Alarm time setting (-)
-    if (state->selectedItemLevel == 1 && state->selectedItemMain == 1) {
-      // TODO
+      if (state->selectedItem == 6)
+        state->selectedItem = 0;
+      else
+        state->selectedItem++;
+      return outputEvent_Draw;
     }
   }
 
   if (state->activeMenu == menu_watch && in == inputEvent_Button_4) {
     state->activeMenu = menu_options;
-    state->selectedItemLevel = 0;
-    state->selectedItemMain = 0;
-    state->selectedItemSub = 0;
+    state->selectedItem = 0;
+    state->selectedItemValue = 0;
     return outputEvent_Draw;
   }
 

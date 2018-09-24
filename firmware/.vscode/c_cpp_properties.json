@@ -9,7 +9,7 @@
                 "${workspaceFolder}"
             ]
         },
-        "compileCommands": "${workspaceRoot}/build/compile_commands.json"
+        "compileCommands": "${workspaceRoot}/compile_commands.json"
     }],
     "version": 4
 }

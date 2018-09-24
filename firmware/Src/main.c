@@ -70,7 +70,7 @@ int main(void) {
         while (isDisplayBusy());
         powerOffDisplay();
       }
-      saveLogic(&state);
+      saveState(&state);
       switchStandbyMode();
     }
 

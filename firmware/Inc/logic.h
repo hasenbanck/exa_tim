@@ -34,11 +34,11 @@ typedef struct applicationState {
   uint8_t currentMinutes;
   bool alarmActive;
   menu_t activeMenu;
-  uint8_t selectedItemLevel;
-  uint8_t selectedItemMain;
-  uint8_t selectedItemSub;
+  uint8_t selectedItem;
+  uint8_t selectedItemValue;
+  bool lowBattery;
 } applicationState_t;
 
 applicationState_t loadState(void);
-void saveLogic(applicationState_t *state);
+void saveState(applicationState_t *state);
 outputEvent_t handleEvent(applicationState_t *state, inputEvent_t in);

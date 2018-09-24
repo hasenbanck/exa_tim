@@ -4,7 +4,7 @@
         {
             "name": "Debug (J-Link)",
             "cwd": "${workspaceRoot}",
-            "executable": "${workspaceRoot}/build/exa_tim.elf",
+            "executable": "${workspaceRoot}/exa_tim.elf",
             "request": "launch",
             "type": "cortex-debug",
             "device": "STM32L071KZ",

@@ -4,8 +4,8 @@
 File:     stm32_flash.ld
 
 Abstract: Linker script for STM32L071KZ device
-          Set heap size, stack size, stack location, memory areas and 
-          sections according to application requirements. 
+          Set heap size, stack size, stack location, memory areas and
+          sections according to application requirements.
 
 The MIT License (MIT)
 Copyright (c) 2018 STMicroelectronics
@@ -38,8 +38,8 @@ ENTRY(Reset_Handler)
 _estack = 0x20005000;    /* end of 20K RAM */
 
 /* Generate a link error if heap and stack don't fit into RAM */
-_Min_Heap_Size = 0;      /* required amount of heap  */
-_Min_Stack_Size = 0x100; /* required amount of stack */
+_Min_Heap_Size = 0x200;  /* required amount of heap  */
+_Min_Stack_Size = 0x400; /* required amount of stack */
 
 /* Specify the memory areas */
 MEMORY
@@ -117,7 +117,7 @@ SECTIONS
   _sidata = LOADADDR(.data);
 
   /* Initialized data sections goes into RAM, load LMA copy after code */
-  .data : 
+  .data :
   {
     . = ALIGN(4);
     _sdata = .;        /* create a global symbol at data start */
