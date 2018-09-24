@@ -1,7 +1,5 @@
 #pragma once
 
-#include "SEGGER_RTT.h"
-
 #define ALARM_Pin GPIO_PIN_1
 #define ALARM_GPIO_Port GPIOA
 #define GNSS_EN_Pin GPIO_PIN_4
@@ -29,10 +27,3 @@
 
 void _Error_Handler(char *, int);
 #define Error_Handler() _Error_Handler(__FILE__, __LINE__)
-
-/* Debuglog over RTT */
-#ifndef NDEBUG
-#define debug(...) SEGGER_RTT_printf(0, __VA_ARGS__)
-#else
-#define debug(...)
-#endif

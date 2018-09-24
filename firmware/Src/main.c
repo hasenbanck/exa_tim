@@ -23,8 +23,6 @@ void beep(void) {
   HAL_TIM_PWM_Stop_IT(&htim2, TIM_CHANNEL_2);
 }
 
-void Run(void) {}
-
 int main(void) {
   /* Reset of all peripherals, Initializes
    * the Flash interface and the Systick
@@ -48,16 +46,12 @@ int main(void) {
     field = getPressedButtonEvent();
     if (field & BTN1_BIT) {
       in = inputEvent_Button_1;
-      debug("Button 1 pressed\n");
     } else if (field & BTN2_BIT) {
       in = inputEvent_Button_2;
-      debug("Button 2 pressed\n");
     } else if (field & BTN3_BIT) {
       in = inputEvent_Button_3;
-      debug("Button 3 pressed\n");
     } else if (field & BTN4_BIT) {
       in = inputEvent_Button_4;
-      debug("Button 4 pressed\n");
     }
     outputEvent_t out = handleEvent(&state, in);
 
@@ -86,7 +80,7 @@ int main(void) {
  * @retval None
  */
 void _Error_Handler(char *file, int line) {
-  debug("Error_Handler() called from %s, %d\n", file, line);
-  while (1) {
-  }
+  UNUSED(file);
+  UNUSED(line);
+  while (1);
 }

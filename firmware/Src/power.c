@@ -296,7 +296,6 @@ void initNormalMode(void) {
   initLPTIM1();
   initRTC();
   initPVD();
-  debug("Entered normal mode\n");
 }
 
 void switchStopMode(void) {
