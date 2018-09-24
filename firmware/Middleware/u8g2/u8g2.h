@@ -7,66 +7,65 @@
   Copyright (c) 2016, olikraus@gmail.com
   All rights reserved.
 
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification,
   are permitted provided that the following conditions are met:
 
-  * Redistributions of source code must retain the above copyright notice, this list 
+  * Redistributions of source code must retain the above copyright notice, this list
     of conditions and the following disclaimer.
-    
-  * Redistributions in binary form must reproduce the above copyright notice, this 
-    list of conditions and the following disclaimer in the documentation and/or other 
+
+  * Redistributions in binary form must reproduce the above copyright notice, this
+    list of conditions and the following disclaimer in the documentation and/or other
     materials provided with the distribution.
 
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND 
-  CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
-  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
-  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
-  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
-  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
-  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+  CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
   call sequence
-  
+
   u8g2_SetupBuffer_XYZ
     u8x8_Setup_XYZ
       u8x8_SetupDefaults(u8g2);
       assign u8x8 callbacks
-      u8x8->display_cb(u8x8, U8X8_MSG_DISPLAY_SETUP_MEMORY, 0, NULL);  
+      u8x8->display_cb(u8x8, U8X8_MSG_DISPLAY_SETUP_MEMORY, 0, NULL);
     setup tile buffer
-    
-  
+
+
   Arduino Uno Text Example
->	FONT_ROTATION	INTERSECTION	CLIPPING	text	   	data		bss		dec		hex	
+>	FONT_ROTATION	INTERSECTION	CLIPPING	text	   	data		bss		dec		hex
 >																		8700
 >	x				x				x			7450	104		1116	8670	21de
 >	-				x				x			7132	104		1115	8351	209f
 >	x				-				x			7230	104		1116	8450	2102
 >	-				-				x			7010	104		1115	8229	2025
 >	-				-				-			6880	104		1115	8099	1fa3
-  
-  
+
+
 */
 
 
-#ifndef _U8G2_H
-#define _U8G2_H
+#pragma once
 
 #include "u8x8.h"
-
+#include <stdbool.h>
 
 /*
-  The following macro enables 16 Bit mode. 
+  The following macro enables 16 Bit mode.
   Without defining this macro all calulations are done with 8 Bit (1 Byte) variables.
-  Especially on AVR architecture, this will save some space. 
+  Especially on AVR architecture, this will save some space.
   If this macro is defined, then U8g2 will switch to 16 Bit mode.
-  Use 16 Bit mode for any display with more than 240 pixel in one 
+  Use 16 Bit mode for any display with more than 240 pixel in one
   direction.
 */
 //#define U8G2_16BIT
@@ -107,17 +106,17 @@
   U8glib V2 contains support for unicode plane 0 (Basic Multilingual Plane, BMP).
   The following macro activates this support. Deactivation would save some ROM.
   This definition also defines the behavior of the expected string encoding.
-  If the following macro is defined, then the DrawUTF8 function is enabled and 
-  the string argument for this function is assumed 
+  If the following macro is defined, then the DrawUTF8 function is enabled and
+  the string argument for this function is assumed
   to be UTF-8 encoded.
-  If the following macro is not defined, then all strings in the c-code are assumed 
-  to be ISO 8859-1/CP1252 encoded. 
+  If the following macro is not defined, then all strings in the c-code are assumed
+  to be ISO 8859-1/CP1252 encoded.
   Independently from this macro, the Arduino print function never accepts UTF-8
   strings.
-  
+
   This macro does not affect the u8x8 string draw function.
   u8x8 has also two function, one for pure strings and one for UTF8
-  
+
   Conclusion:
     U8G2_WITH_UNICODE defined
       - C-Code Strings must be UTF-8 encoded
@@ -141,7 +140,7 @@
   Clipping procedures are mandatory for the picture loop (u8g2_FirstPage/NextPage).
   Clipping procedures will also allow strings to exceed the display boundaries.
   On the other side, without clipping, all the setting of pixels must happen within the display boundaries.
-  
+
   WARNING: Adding a comment in front of the following macro or removing the following line
   may lead to memory faults if you write any pixel outside the display boundary.
 */
@@ -159,7 +158,7 @@
 #  define U8G2_NOINLINE
 #endif
 
-#define U8G2_FONT_SECTION(name) U8X8_FONT_SECTION(name) 
+#define U8G2_FONT_SECTION(name) U8X8_FONT_SECTION(name)
 
 
 /* the macro U8G2_USE_LARGE_FONTS disables large fonts (>32K) */
@@ -167,7 +166,7 @@
 #if defined(unix) || defined(__arm__) || defined(__arc__) || defined(ESP8266) || defined(ESP_PLATFORM)
 #ifndef U8G2_USE_LARGE_FONTS
 #define U8G2_USE_LARGE_FONTS
-#endif 
+#endif
 #endif
 
 /*==========================================*/
@@ -208,32 +207,32 @@ struct _u8g2_font_info_t
   uint8_t bbx_mode;
   uint8_t bits_per_0;
   uint8_t bits_per_1;
-  
+
   /* offset 4 */
   uint8_t bits_per_char_width;
-  uint8_t bits_per_char_height;		
+  uint8_t bits_per_char_height;
   uint8_t bits_per_char_x;
   uint8_t bits_per_char_y;
   uint8_t bits_per_delta_x;
-  
+
   /* offset 9 */
   int8_t max_char_width;
   int8_t max_char_height; /* overall height, NOT ascent. Instead ascent = max_char_height + y_offset */
   int8_t x_offset;
   int8_t y_offset;
-  
+
   /* offset 13 */
   int8_t  ascent_A;
   int8_t  descent_g;	/* usually a negative value */
   int8_t  ascent_para;
   int8_t  descent_para;
-    
+
   /* offset 17 */
   uint16_t start_pos_upper_A;
-  uint16_t start_pos_lower_a; 
-  
+  uint16_t start_pos_lower_a;
+
   /* offset 21 */
-#ifdef U8G2_WITH_UNICODE  
+#ifdef U8G2_WITH_UNICODE
   uint16_t start_pos_unicode;
 #endif
 };
@@ -243,20 +242,20 @@ typedef struct _u8g2_font_info_t u8g2_font_info_t;
 struct _u8g2_font_decode_t
 {
   const uint8_t *decode_ptr;			/* pointer to the compressed data */
-  
+
   u8g2_uint_t target_x;
   u8g2_uint_t target_y;
-  
+
   int8_t x;						/* local coordinates, (0,0) is upper left */
   int8_t y;
-  int8_t glyph_width;	
+  int8_t glyph_width;
   int8_t glyph_height;
 
   uint8_t decode_bit_pos;			/* bitpos inside a byte of the compressed data */
   uint8_t is_transparent;
   uint8_t fg_color;
   uint8_t bg_color;
-#ifdef U8G2_WITH_FONT_ROTATION  
+#ifdef U8G2_WITH_FONT_ROTATION
   uint8_t dir;				/* direction */
 #endif
 };
@@ -266,7 +265,7 @@ struct _u8g2_kerning_t
 {
   uint16_t first_table_cnt;
   uint16_t second_table_cnt;
-  const uint16_t *first_encoding_table;  
+  const uint16_t *first_encoding_table;
   const uint16_t *index_to_second_table;
   const uint16_t *second_encoding_table;
   const uint8_t *kerning_values;
@@ -288,28 +287,28 @@ struct u8g2_struct
   u8x8_t u8x8;
   u8g2_draw_ll_hvline_cb ll_hvline;	/* low level hvline procedure */
   const u8g2_cb_t *cb;		/* callback drawprocedures, can be replaced for rotation */
-  
+
   /* the following variables must be assigned during u8g2 setup */
   uint8_t *tile_buf_ptr;	/* ptr to memory area with u8g2.display_info->tile_width * 8 * tile_buf_height bytes */
   uint8_t tile_buf_height;	/* height of the tile memory area in tile rows */
   uint8_t tile_curr_row;	/* current row for picture loop */
-  
+
   /* dimension of the buffer in pixel */
   u8g2_uint_t pixel_buf_width;		/* equal to tile_buf_height*8 */
   u8g2_uint_t pixel_buf_height;		/* u8g2.display_info->tile_width*8 */
   u8g2_uint_t pixel_curr_row;		/* u8g2.tile_curr_row*8 */
-  
+
   /* the following variables are set by the update dimension callback */
   /* this is clipbox after rotation for the hvline procedures */
   //u8g2_uint_t buf_x0;	/* left corner of the buffer */
   //u8g2_uint_t buf_x1;	/* right corner of the buffer (excluded) */
   u8g2_uint_t buf_y0;
   u8g2_uint_t buf_y1;
-  
+
   /* display dimensions in pixel for the user, calculated in u8g2_update_dimension_common(), used in u8g2_draw_hv_line_2dir() */
   u8g2_uint_t width;
   u8g2_uint_t height;
-  
+
   /* ths is the clip box for the user to check if a specific box has an intersection */
   /* use u8g2_IsIntersection from u8g2_intersection.c to test against this intersection */
   /* boundary values are part of the box so that they can be used with u8g2_IsIntersection */
@@ -317,12 +316,12 @@ struct u8g2_struct
   u8g2_uint_t user_x1;	/* right corner of the buffer (excluded) */
   u8g2_uint_t user_y0;	/* upper edge of the buffer */
   u8g2_uint_t user_y1;	/* lower edge of the buffer (excluded) */
-  
+
   /* information about the current font */
   const uint8_t *font;             /* current font for all text procedures */
   // removed: const u8g2_kerning_t *kerning;		/* can be NULL */
   // removed: u8g2_get_kerning_cb get_kerning_cb;
-  
+
   u8g2_font_calc_vref_fnptr font_calc_vref;
   u8g2_font_decode_t font_decode;		/* new font decode structure */
   u8g2_font_info_t font_info;			/* new font info structure */
@@ -330,20 +329,20 @@ struct u8g2_struct
   uint8_t font_height_mode;
   int8_t font_ref_ascent;
   int8_t font_ref_descent;
-  
+
   int8_t glyph_x_offset;		/* set by u8g2_GetGlyphWidth as a side effect */
-  
+
   uint8_t bitmap_transparency;	/* black pixels will be treated as transparent (not drawn) */
 
   uint8_t draw_color;		/* 0: clear pixel, 1: set pixel, modified and restored by font procedures */
 					/* draw_color can be used also directly by the user API */
-					
+
 	// the following variable should be renamed to is_buffer_auto_clear
   uint8_t is_auto_page_clear; 		/* set to 0 to disable automatic clear of the buffer in firstPage() and nextPage() */
-  
+
 #ifdef U8G2_WITH_HVLINE_COUNT
   unsigned long hv_cnt;
-#endif /* U8G2_WITH_HVLINE_COUNT */   
+#endif /* U8G2_WITH_HVLINE_COUNT */
 
 // removed, there is now the new index table
 //#ifdef __unix__
@@ -360,7 +359,7 @@ struct u8g2_struct
 #define u8g2_SetUserPtr(u8g2, p) ((u8g2_GetU8x8(u8g2))->user_ptr = (p))
 #endif
 
-// this should be renamed to SetBufferAutoClear 
+// this should be renamed to SetBufferAutoClear
 #define u8g2_SetAutoPageClear(u8g2, mode) ((u8g2)->is_auto_page_clear = (mode))
 
 /*==========================================*/
@@ -383,8 +382,8 @@ void u8g2_ClearDisplay(u8g2_t *u8g2);
 #define u8g2_SetI2CAddress(u8g2, address) ((u8g2_GetU8x8(u8g2))->i2c_address = (address))
 #define u8g2_GetI2CAddress(u8g2)   u8x8_GetI2CAddress(u8g2_GetU8x8(u8g2))
 
-#ifdef U8X8_USE_PINS 
-#define u8g2_SetMenuSelectPin(u8g2, val) u8x8_SetMenuSelectPin(u8g2_GetU8x8(u8g2), (val)) 
+#ifdef U8X8_USE_PINS
+#define u8g2_SetMenuSelectPin(u8g2, val) u8x8_SetMenuSelectPin(u8g2_GetU8x8(u8g2), (val))
 #define u8g2_SetMenuNextPin(u8g2, val) u8x8_SetMenuNextPin(u8g2_GetU8x8(u8g2), (val))
 #define u8g2_SetMenuPrevPin(u8g2, val) u8x8_SetMenuPrevPin(u8g2_GetU8x8(u8g2), (val))
 #define u8g2_SetMenuHomePin(u8g2, val) u8x8_SetMenuHomePin(u8g2_GetU8x8(u8g2), (val))
@@ -416,7 +415,7 @@ extern const u8g2_cb_t u8g2_cb_mirror;
     u8g2_ll_hvline_vertical_top_lsb
     u8g2_ll_hvline_horizontal_right_lsb
   u8g2_cb			U8G2_R0 .. U8G2_R3
-      
+
 */
 
 void u8g2_SetupBuffer(u8g2_t *u8g2, uint8_t *buf, uint8_t tile_buf_height, u8g2_draw_ll_hvline_cb ll_hvline_cb, const u8g2_cb_t *u8g2_cb);
@@ -979,7 +978,7 @@ void u8g2_Setup_ssd1607_200x200_1(u8g2_t *u8g2, const u8g2_cb_t *rotation, u8x8_
 void u8g2_Setup_ssd1607_gd_200x200_1(u8g2_t *u8g2, const u8g2_cb_t *rotation, u8x8_msg_cb byte_cb, u8x8_msg_cb gpio_and_delay_cb);
 void u8g2_Setup_ssd1607_200x200_2(u8g2_t *u8g2, const u8g2_cb_t *rotation, u8x8_msg_cb byte_cb, u8x8_msg_cb gpio_and_delay_cb);
 void u8g2_Setup_ssd1607_gd_200x200_2(u8g2_t *u8g2, const u8g2_cb_t *rotation, u8x8_msg_cb byte_cb, u8x8_msg_cb gpio_and_delay_cb);
-void u8g2_Setup_ssd1607_200x200_f(u8g2_t *u8g2, const u8g2_cb_t *rotation, u8x8_msg_cb byte_cb, u8x8_msg_cb gpio_and_delay_cb);
+void u8g2_Setup_ssd1607_200x200_f(u8g2_t *u8g2, const u8g2_cb_t *rotation, u8x8_msg_cb byte_cb, u8x8_msg_cb gpio_and_delay_cb, bool fast_refresh);
 void u8g2_Setup_ssd1607_gd_200x200_f(u8g2_t *u8g2, const u8g2_cb_t *rotation, u8x8_msg_cb byte_cb, u8x8_msg_cb gpio_and_delay_cb);
 void u8g2_Setup_il3820_296x128_1(u8g2_t *u8g2, const u8g2_cb_t *rotation, u8x8_msg_cb byte_cb, u8x8_msg_cb gpio_and_delay_cb);
 void u8g2_Setup_il3820_v2_296x128_1(u8g2_t *u8g2, const u8g2_cb_t *rotation, u8x8_msg_cb byte_cb, u8x8_msg_cb gpio_and_delay_cb);
@@ -1034,7 +1033,7 @@ uint8_t u8g2_NextPage(u8g2_t *u8g2);
   len		length of the line in pixel, len must not be 0
   dir		0: horizontal line (left to right)
 		1: vertical line (top to bottom)
-  asumption: 
+  asumption:
     all clipping done
 */
 
@@ -1068,7 +1067,7 @@ void u8g2_DrawXBMP(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w, u8
 
 /*==========================================*/
 /* u8g2_intersection.c */
-#ifdef U8G2_WITH_INTERSECTION    
+#ifdef U8G2_WITH_INTERSECTION
 uint8_t u8g2_IsIntersection(u8g2_t *u8g2, u8g2_uint_t x0, u8g2_uint_t y0, u8g2_uint_t x1, u8g2_uint_t y1);
 #endif /* U8G2_WITH_INTERSECTION */
 
@@ -2667,7 +2666,3 @@ extern const uint8_t u8g2_font_px437wyse700b_mn[] U8G2_FONT_SECTION("u8g2_font_p
 #ifdef __cplusplus
 }
 #endif
-
-
-#endif
-

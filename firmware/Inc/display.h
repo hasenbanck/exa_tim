@@ -4,7 +4,7 @@
 #include "logic.h"
 #include <stdbool.h>
 
-void initDisplay(void);
+void initDisplay(applicationState_t *state);
 void drawDisplay(applicationState_t* state);
 void powerOffDisplay(void);
 void drawMenu(void);

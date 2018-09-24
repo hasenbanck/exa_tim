@@ -60,6 +60,8 @@
 
 #include "u8x8.h"
 
+#include <stdbool.h>
+
 /*=================================================*/
 
 static const u8x8_display_info_t u8x8_ssd1607_200x200_display_info =
@@ -371,7 +373,7 @@ uint8_t u8x8_d_ssd1607_200x200(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void 
       u8x8_d_helper_display_init(u8x8);
       u8x8_cad_SendSequence(u8x8, u8x8_d_ssd1607_200x200_init_seq);
       u8x8_cad_SendSequence(u8x8, u8x8_d_ssd1607_200x200_powersave0_seq);
-      //u8x8_d_ssd1607_200x200_first_init(u8x8); /* Optimized for speed */
+      u8x8_d_ssd1607_200x200_first_init(u8x8);
       break;
     case U8X8_MSG_DISPLAY_SET_POWER_SAVE:
       if ( arg_int == 0 )
@@ -393,6 +395,38 @@ uint8_t u8x8_d_ssd1607_200x200(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void 
   return 1;
 }
 
+uint8_t u8x8_d_ssd1607_200x200_fast_refresh(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr)
+{
+  switch(msg)
+  {
+    case U8X8_MSG_DISPLAY_SETUP_MEMORY:
+      u8x8_d_helper_display_setup_memory(u8x8, &u8x8_ssd1607_200x200_display_info);
+      break;
+    case U8X8_MSG_DISPLAY_INIT:
+      u8x8_d_helper_display_init(u8x8);
+      u8x8_cad_SendSequence(u8x8, u8x8_d_ssd1607_200x200_init_seq);
+      u8x8_cad_SendSequence(u8x8, u8x8_d_ssd1607_200x200_powersave0_seq);
+      //u8x8_d_ssd1607_200x200_first_init(u8x8); /* Optimized for speed */
+      break;
+    case U8X8_MSG_DISPLAY_SET_POWER_SAVE:
+      if ( arg_int == 0 )
+	u8x8_cad_SendSequence(u8x8, u8x8_d_ssd1607_200x200_powersave0_seq);
+      else
+	u8x8_cad_SendSequence(u8x8, u8x8_d_ssd1607_200x200_powersave1_seq);
+      break;
+    case U8X8_MSG_DISPLAY_SET_FLIP_MODE:
+      break;
+    case U8X8_MSG_DISPLAY_DRAW_TILE:
+      u8x8_d_ssd1607_draw_tile(u8x8, arg_int, arg_ptr);
+      break;
+    case U8X8_MSG_DISPLAY_REFRESH:
+      u8x8_cad_SendSequence(u8x8, u8x8_d_ssd1607_to_display_seq);
+      break;
+    default:
+      return 0;
+  }
+  return 1;
+}
 
 /*=================================================*/
 /* there is no improvement possible... so i consider the v2 version as obsolete */
@@ -579,7 +613,7 @@ uint8_t u8x8_d_ssd1607_gd_200x200(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, vo
       u8x8_d_helper_display_init(u8x8);
       u8x8_cad_SendSequence(u8x8, u8x8_d_ssd1607_200x200_init_seq);
       u8x8_cad_SendSequence(u8x8, u8x8_d_ssd1607_200x200_powersave0_seq);
-      //u8x8_d_ssd1607_200x200_first_init(u8x8); /* Optimized for speed */
+      u8x8_d_ssd1607_200x200_first_init(u8x8); /* Optimized for speed */
       break;
     case U8X8_MSG_DISPLAY_SET_POWER_SAVE:
       if ( arg_int == 0 )

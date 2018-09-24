@@ -56,7 +56,7 @@ int main(void) {
     outputEvent_t out = handleEvent(&state, in);
 
     if (out == outputEvent_Draw) {
-      initDisplay();
+      initDisplay(&state);
       drawDisplay(&state);
     }
     if ((timeoutCounter >= BUTTON_TIMEOUT) || out == outputEvent_Draw) {

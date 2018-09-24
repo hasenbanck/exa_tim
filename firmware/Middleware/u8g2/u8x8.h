@@ -1,43 +1,43 @@
 /*
 
   u8x8.h
-  
+
   Universal 8bit Graphics Library (https://github.com/olikraus/u8g2/)
 
   Copyright (c) 2016, olikraus@gmail.com
   All rights reserved.
 
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification,
   are permitted provided that the following conditions are met:
 
-  * Redistributions of source code must retain the above copyright notice, this list 
+  * Redistributions of source code must retain the above copyright notice, this list
     of conditions and the following disclaimer.
-    
-  * Redistributions in binary form must reproduce the above copyright notice, this 
-    list of conditions and the following disclaimer in the documentation and/or other 
+
+  * Redistributions in binary form must reproduce the above copyright notice, this
+    list of conditions and the following disclaimer in the documentation and/or other
     materials provided with the distribution.
 
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND 
-  CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
-  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
-  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
-  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
-  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
-  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  
-  
-  
-  
-  U8glib has several layers. Each layer is implemented with a callback function. 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+  CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+
+  U8glib has several layers. Each layer is implemented with a callback function.
   This callback function handels the messages for the layer.
 
   The topmost level is the display layer. It includes the following messages:
-  
+
     U8X8_MSG_DISPLAY_SETUP_MEMORY			no communicaation with the display, setup memory ony
     U8X8_MSG_DISPLAY_INIT
     U8X8_MSG_DISPLAY_SET_FLIP_MODE
@@ -47,7 +47,7 @@
 
   A display driver may decided to breakdown these messages to a lower level interface or
   implement this functionality directly.
-  
+
 
   One layer is the Command/Arg/Data interface. It can be used by the display layer
   to communicate with the display hardware.
@@ -60,10 +60,10 @@
     U8X8_MSG_CAD_SEND_ARG
     U8X8_MSG_CAD_SEND_DATA
     U8X8_MSG_CAD_END_TRANSFER
-    
+
   The byte interface is there to send 1 byte (8 bits) to the display hardware.
-  This layer depends on the hardware of a microcontroller, if a specific hardware 
-  should be used (I2C or SPI). 
+  This layer depends on the hardware of a microcontroller, if a specific hardware
+  should be used (I2C or SPI).
   If this interface is implemented via software, it may use the GPIO level for sending
   bytes.
     U8X8_MSG_BYTE_INIT
@@ -113,7 +113,7 @@
 
 #if defined(__GNUC__) && defined(__AVR__)
 #include <avr/pgmspace.h>
-#endif 
+#endif
 
 /*==========================================*/
 /* C++ compatible */
@@ -163,11 +163,11 @@ uint8_t u8x8_pgm_read_esp(const uint8_t * addr);   /* u8x8_8x8.c */
 
 
 #ifndef U8X8_FONT_SECTION
-#  define U8X8_FONT_SECTION(name) 
+#  define U8X8_FONT_SECTION(name)
 #endif
 
 #ifndef u8x8_pgm_read
-#  define u8x8_pgm_read(adr) (*(const uint8_t *)(adr)) 
+#  define u8x8_pgm_read(adr) (*(const uint8_t *)(adr))
 #endif
 
 #ifndef U8X8_PROGMEM
@@ -214,15 +214,15 @@ struct u8x8_display_info_struct
 
   uint8_t chip_enable_level;			/* UC1601: 0 */
   uint8_t chip_disable_level;			/* opposite of chip_enable_level */
-  
+
   uint8_t post_chip_enable_wait_ns;		/* UC1601: 5ns */
   uint8_t pre_chip_disable_wait_ns;		/* UC1601: 5ns */
-  uint8_t reset_pulse_width_ms;		/* UC1601: 0.003ms --> 1ms */ 
-  uint8_t post_reset_wait_ms;			/* UC1601: 6ms  */ 
-  
-  
+  uint8_t reset_pulse_width_ms;		/* UC1601: 0.003ms --> 1ms */
+  uint8_t post_reset_wait_ms;			/* UC1601: 6ms  */
+
+
   /* == SPI interface == */
-  
+
   /* after SDA has been applied, wait this much time for the SCK data takeover edge */
   /* if this is smaller than sck_pulse_width_ns, then use the value from sck_pulse_width_ns */
   uint8_t sda_setup_time_ns;		/* UC1601: 12ns */
@@ -230,12 +230,12 @@ struct u8x8_display_info_struct
   /* max freq is 1/(2*sck_pulse_width_ns) */
   /* AVR: below 70: DIV2, 8 MHz, >= 70 --> 4MHz clock (DIV4) */
   uint8_t sck_pulse_width_ns;		/* UC1701: 50ns */
-  
+
   /* until here we have 8 bytes (uint8_t). Newly introduced for SPI.beginTransaction */
   uint32_t sck_clock_hz;
-  
+
   /* previous name "sck_takeover_edge" renamed to "spi_mode" */
-  /* bit 0 of spi_mode is equal to the value of the previous variable sck_takeover_edge, 20 Aug 16: This is wrong the bit is actually inverted */ 
+  /* bit 0 of spi_mode is equal to the value of the previous variable sck_takeover_edge, 20 Aug 16: This is wrong the bit is actually inverted */
   /* SPI has four clock modes: */
   /*   0: clock active high, data out on falling edge, clock default value is zero, takover on rising edge */
   /*   1: clock active high, data out on rising edge, clock default value is zero, takover on falling edge */
@@ -243,25 +243,25 @@ struct u8x8_display_info_struct
   /*   3: clock active low, data out on falling edge */
   /* most displays have clock mode 1 */
   uint8_t spi_mode;
-  
+
   /* == I2C == */
   uint8_t i2c_bus_clock_100kHz;		/* UC1601: 1000000000/275 = 37 *100k */
 
-  
+
   /* == 8 bit interface == */
-  
+
   /* how long to wait after all data line are set */
   uint8_t data_setup_time_ns;		/* UC1601: 30ns */
   /* write enable pulse width */
   uint8_t write_pulse_width_ns;		/* UC1601: 40ns */
-  
+
   /* == layout == */
   uint8_t tile_width;
   uint8_t tile_height;
 
   uint8_t default_x_offset;		/* default x offset for the display */
   uint8_t flipmode_x_offset;	/* x offset, if flip mode is enabled */
- 
+
  /* pixel width is not used by the u8x8 procedures */
  /* instead it will be used by the u8g2 procedures, because the pixel dimension can */
  /* not always be calculated from the tile_width/_height */
@@ -308,7 +308,7 @@ struct u8x8_display_info_struct
 
 #define U8X8_PIN_INPUT_CNT 6
 
-#ifdef U8X8_USE_PINS 
+#ifdef U8X8_USE_PINS
 #define U8X8_PIN_CNT (U8X8_PIN_OUTPUT_CNT+U8X8_PIN_INPUT_CNT)
 #define U8X8_PIN_NONE 255
 #endif
@@ -331,7 +331,7 @@ struct u8x8_struct
   uint8_t i2c_started;	/* for i2c interface */
   uint8_t device_address;	/* this is the device address, replacement for U8X8_MSG_CAD_SET_DEVICE */
   uint8_t utf8_state;		/* number of chars which are still to scan */
-  uint8_t gpio_result;	/* return value from the gpio call (only for MENU keys at the moment) */ 
+  uint8_t gpio_result;	/* return value from the gpio call (only for MENU keys at the moment) */
   uint8_t debounce_default_pin_state;
   uint8_t debounce_last_pin_state;
   uint8_t debounce_state;
@@ -339,7 +339,7 @@ struct u8x8_struct
 #ifdef U8X8_WITH_USER_PTR
   void *user_ptr;
 #endif
-#ifdef U8X8_USE_PINS 
+#ifdef U8X8_USE_PINS
   uint8_t pins[U8X8_PIN_CNT];	/* defines a pinlist: Mainly a list of pins for the Arduino Envionment, use U8X8_PIN_xxx to access */
 #endif
 };
@@ -361,7 +361,7 @@ struct u8x8_struct
 #define u8x8_GetSPIClockDefaultLevel(u8x8) (((u8x8)->display_info->spi_mode & 0x02) >> 1)
 
 
-#ifdef U8X8_USE_PINS 
+#ifdef U8X8_USE_PINS
 #define u8x8_SetPin(u8x8,pin,val) (u8x8)->pins[pin] = (val)
 #define u8x8_SetMenuSelectPin(u8x8, val) u8x8_SetPin((u8x8),U8X8_PIN_MENU_SELECT,(val))
 #define u8x8_SetMenuNextPin(u8x8, val) u8x8_SetPin((u8x8),U8X8_PIN_MENU_NEXT,(val))
@@ -390,7 +390,7 @@ struct u8log_struct
   uint8_t *screen_buffer;	/* size must be width*heigh bytes */
   uint8_t is_redraw_line_for_each_char;
   int8_t line_height_offset;		/* extra offset for the line height (u8g2 only) */
-  
+
   /* internal data */
   //uint8_t last_x, last_y;	/* position of the last printed char */
   uint8_t cursor_x, cursor_y;  /* position of the cursor, might be off screen */
@@ -416,7 +416,7 @@ void u8x8_d_helper_display_init(u8x8_t *u8g2);
   Tasks:
     1) setup u8g2->display_info
       copy u8g2->display_info->default_x_offset to u8g2->x_offset
-      
+
    usually calls u8x8_d_helper_display_setup_memory()
 */
 #define U8X8_MSG_DISPLAY_SETUP_MEMORY 9
@@ -426,12 +426,12 @@ void u8x8_d_helper_display_init(u8x8_t *u8g2);
   Args:	None
   Tasks:
 
-    2) put interface into default state: 
+    2) put interface into default state:
 	  execute u8x8_gpio_Init for port directions
 	  execute u8x8_cad_Init for default port levels
     3) set CS status (not clear, may be done in cad/byte interface
     4) execute display reset (gpio interface)
-    5) send setup sequence to display, do not activate display, disable "power save" will follow 
+    5) send setup sequence to display, do not activate display, disable "power save" will follow
 */
 #define U8X8_MSG_DISPLAY_INIT 10
 
@@ -449,7 +449,7 @@ void u8x8_d_helper_display_init(u8x8_t *u8g2);
   Name: 	U8X8_MSG_DISPLAY_SET_FLIP_MODE
   Args:	arg_int: 0: normal mode, 1: flipped HW screen (180 degree)
   Tasks:
-    Reprogramms the display controller to rotate the display by 
+    Reprogramms the display controller to rotate the display by
     180 degree (arg_int = 1) or not (arg_int = 0)
     This may change u8g2->x_offset if the display is smaller than the controller ram
     This message should only be supported if U8X8_WITH_FLIP_MODE is defined.
@@ -461,15 +461,15 @@ void u8x8_d_helper_display_init(u8x8_t *u8g2);
 
 /*
   Name: 	U8X8_MSG_DISPLAY_DRAW_TILE
-  Args:	
+  Args:
     arg_int: How often to repeat this tile pattern
     arg_ptr: pointer to u8x8_tile_t
         uint8_t *tile_ptr;	pointer to one or more tiles (number is "cnt")
 	uint8_t cnt;		number of tiles
 	uint8_t x_pos;		first tile x position
-	uint8_t y_pos;		first tile y position 
+	uint8_t y_pos;		first tile y position
   Tasks:
-    One tile has exactly 8 bytes (8x8 pixel monochrome bitmap). 
+    One tile has exactly 8 bytes (8x8 pixel monochrome bitmap).
     The lowest bit of the first byte is the upper left corner
     The highest bit of the first byte is the lower left corner
     The lowest bit of the last byte is the upper right corner
@@ -477,24 +477,24 @@ void u8x8_d_helper_display_init(u8x8_t *u8g2);
     "tile_ptr" is the address of a memory area, which contains
     one or more tiles. "cnt" will contain the exact number of
     tiles in the memory areay. The size of the memory area is 8*cnt;
-    Multiple tiles in the memory area form a horizontal sequence, this 
+    Multiple tiles in the memory area form a horizontal sequence, this
     means the first tile is drawn at x_pos/y_pos, the second tile is drawn
     at x_pos+1/y_pos, third at x_pos+2/y_pos.
     "arg_int" tells how often the tile sequence should be repeated:
     For example if "cnt" is two and tile_ptr points to tiles A and B,
     then for arg_int = 3, the following tile sequence will be drawn:
-    ABABAB. Totally, cnt*arg_int tiles will be drawn. 
-        
+    ABABAB. Totally, cnt*arg_int tiles will be drawn.
+
 */
 #define U8X8_MSG_DISPLAY_DRAW_TILE 15
 
 
 /*
   Name: 	U8X8_MSG_DISPLAY_REFRESH
-  Args:	
+  Args:
     arg_int: -
     arg_ptr: -
-  
+
   This was introduced for the SSD1606 eInk display.
   The problem is, that all RAM access will not appear on the screen
   unless a special command is executed. With this message, this command
@@ -510,10 +510,10 @@ void u8x8_d_helper_display_init(u8x8_t *u8g2);
 
 uint8_t u8x8_dummy_cb(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
 
-/* 
-  Setup u8x8 object itself. This should be the very first function 
+/*
+  Setup u8x8 object itself. This should be the very first function
   called on the new u8x8 object. After this call, assign the callback
-  functions. Optional: Set the pins 
+  functions. Optional: Set the pins
 */
 
 void u8x8_SetupDefaults(u8x8_t *u8x8); /* do not use this, use u8x8_Setup() instead */
@@ -524,9 +524,9 @@ void u8x8_Setup(u8x8_t *u8x8, u8x8_msg_cb display_cb, u8x8_msg_cb cad_cb, u8x8_m
 /* u8x8_display.c */
 uint8_t u8x8_DrawTile(u8x8_t *u8x8, uint8_t x, uint8_t y, uint8_t cnt, uint8_t *tile_ptr);
 
-/* 
-  After a call to u8x8_SetupDefaults, 
-  setup u8x8 memory structures & inform callbacks 
+/*
+  After a call to u8x8_SetupDefaults,
+  setup u8x8 memory structures & inform callbacks
   This function is also called from u8x8_Setup(), so do not call u8x8_SetupMemory()
   directly, but use u8x8_Setup() instead.
 */
@@ -535,8 +535,8 @@ void u8x8_SetupMemory(u8x8_t *u8x8);
 /*
   After calling u8x8_SetupMemory()/u8x8_Setup(), init the display hardware itself.
   This will will the first time, u8x8 talks to the display.
-  It will init the display, but keep display in power save mode. 
-  Usually this command must be followed by u8x8_SetPowerSave() 
+  It will init the display, but keep display in power save mode.
+  Usually this command must be followed by u8x8_SetPowerSave()
 */
 void u8x8_InitDisplay(u8x8_t *u8x8);
 /* wake up display from power save mode */
@@ -685,7 +685,7 @@ uint8_t u8x8_byte_sed1520(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_
 #define U8X8_MSG_DELAY_I2C		45
 
 #define U8X8_MSG_GPIO(x) (64+(x))
-#ifdef U8X8_USE_PINS 
+#ifdef U8X8_USE_PINS
 #define u8x8_GetPinIndex(u8x8, msg) ((msg)&0x3f)
 #define u8x8_GetPinValue(u8x8, msg) ((u8x8)->pins[(msg)&0x3f])
 #endif
@@ -876,6 +876,7 @@ uint8_t u8x8_d_pcf8812_96x65(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *a
 uint8_t u8x8_d_hx1230_96x68(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
 uint8_t u8x8_d_ssd1606_172x72(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
 uint8_t u8x8_d_ssd1607_200x200(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
+uint8_t u8x8_d_ssd1607_200x200_fast_refresh(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
 uint8_t u8x8_d_ssd1607_v2_200x200(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
 uint8_t u8x8_d_ssd1607_gd_200x200(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
 uint8_t u8x8_d_il3820_296x128(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
@@ -899,7 +900,7 @@ uint16_t u8x8_upscale_byte(uint8_t x) U8X8_NOINLINE;
 void u8x8_utf8_init(u8x8_t *u8x8);
 uint16_t u8x8_ascii_next(u8x8_t *u8x8, uint8_t b);
 uint16_t u8x8_utf8_next(u8x8_t *u8x8, uint8_t b);
-// the following two functions are replaced by the init/next functions 
+// the following two functions are replaced by the init/next functions
 //uint16_t u8x8_get_encoding_from_utf8_string(const char **str);
 //uint16_t u8x8_get_char_from_string(const char **str);
 
@@ -941,8 +942,8 @@ struct _u8sl_struct
   uint8_t visible;		/* number of visible elements in the menu */
   uint8_t total;			/* total number of elements in the menu */
   uint8_t first_pos;		/* position of the first visible line */
-  uint8_t current_pos;	/* current cursor position, starts at 0 */  
-  
+  uint8_t current_pos;	/* current cursor position, starts at 0 */
+
   uint8_t x;		/* u8x8 only, not used in u8g2 */
   uint8_t y;		/* u8x8 only, not used in u8g2 */
 };

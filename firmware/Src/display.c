@@ -95,10 +95,15 @@ uint8_t u8x8_byte_4wire_sw_spi_stm32(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int,
   return 1; // command processed successfully.
 }
 
-void initDisplay(void) {
+void initDisplay(applicationState_t *state) {
   initSPI1();
+  // Do a full refresh every hour, a fast refresh every other minute
+  if (state->activeMenu == menu_watch && state->currentMinutes == 0)
   u8g2_Setup_ssd1607_200x200_f(&u8g2, U8G2_R3, u8x8_byte_4wire_sw_spi_stm32,
-                               u8g2_gpio_and_delay_stm32);
+                               u8g2_gpio_and_delay_stm32, false);
+  else
+    u8g2_Setup_ssd1607_200x200_f(&u8g2, U8G2_R3, u8x8_byte_4wire_sw_spi_stm32,
+                               u8g2_gpio_and_delay_stm32, true);
   u8g2_InitDisplay(&u8g2);
 }
 
