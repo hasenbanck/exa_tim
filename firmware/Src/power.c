@@ -170,7 +170,7 @@ void initRTC(void) {
 
     /* Initialize RTC and set the Time and Date */
     sTime.Hours = 0;
-    sTime.Minutes = 0;
+    sTime.Minutes = 59;
     sTime.Seconds = 0;
     sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
     sTime.StoreOperation = RTC_STOREOPERATION_RESET;

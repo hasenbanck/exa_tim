@@ -29,7 +29,7 @@ typedef enum menu_t {
   menu_gnss = 3,
 } menu_t;
 
-typedef struct applicationState {
+typedef struct applicationState_t {
   uint8_t currentHours;
   uint8_t currentMinutes;
   bool alarmActive;

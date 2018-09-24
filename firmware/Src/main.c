@@ -36,7 +36,6 @@ int main(void) {
   applicationState_t state = loadState();
 
   /* Reset button history */
-  resetBtnState();
   btnBitField field = 0;
   uint32_t timeoutCounter = 0;
   while (1) {

@@ -10,7 +10,7 @@ typedef struct buttonState {
   btnBitField pressed;
 } buttonState;
 
-static buttonState btnState;
+static buttonState btnState = {0};
 
 /* Every interrupt (5ms) we are saving the current history of
  * a button state. We later compare the most recent 3 and
@@ -56,13 +56,6 @@ void HAL_LPTIM_AutoReloadMatchCallback(LPTIM_HandleTypeDef *hlptim) {
     btnState.pressed |= BTN4_BIT;
     btnState.history |= 0b11111111 << 24;
   }
-}
-
-void resetBtnState(void) {
-  __disable_irq();
-  btnState.history = 0;
-  btnState.pressed = 0;
-  __enable_irq();
 }
 
 btnBitField getPressedButtonEvent() {
