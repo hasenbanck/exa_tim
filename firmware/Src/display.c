@@ -110,7 +110,10 @@ void initDisplay(applicationState_t *state) {
 void drawDisplay(applicationState_t *state) {
   if (state->activeMenu == menu_watch) {
     // Checks if PVDO is set (low battery)
-    if (state->lowBattery) {
+    if (__HAL_PWR_GET_FLAG(PWR_FLAG_PVDO)) { /* We can't move this into the logic handling,
+                                              * since it would be too early for the PVD to
+                                              *  have a valid value
+                                              */
       u8g2_SetFont(&u8g2, u8g2_font_open_iconic_embedded_2x_t);
       u8g2_DrawGlyph(&u8g2, 0, 16, 64);
     }

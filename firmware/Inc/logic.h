@@ -36,7 +36,6 @@ typedef struct applicationState_t {
   menu_t activeMenu;
   uint8_t selectedItem;
   uint8_t selectedItemValue;
-  bool lowBattery;
 } applicationState_t;
 
 applicationState_t loadState();

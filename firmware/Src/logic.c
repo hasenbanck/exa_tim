@@ -16,7 +16,6 @@ applicationState_t loadState() {
   state.selectedItem = 0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1));
   state.selectedItemValue =
       0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1) >> 8);
-  state.lowBattery = __HAL_PWR_GET_FLAG(PWR_FLAG_PVDO);
   return state;
 }
 

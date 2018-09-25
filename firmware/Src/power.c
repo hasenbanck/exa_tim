@@ -308,7 +308,6 @@ void switchStopMode(void) {
   __HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
   HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
   systemClockConfig();
-  HAL_PWR_EnablePVD();
   HAL_PWR_EnableBkUpAccess();
 }
 
