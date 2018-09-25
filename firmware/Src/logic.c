@@ -64,7 +64,7 @@ outputEvent_t handleEvent(applicationState_t *state, inputEvent_t in) {
     // Up
     if (in == inputEvent_Button_1) {
       if (state->selectedItem == 0)
-        state->selectedItem = 6;
+        state->selectedItem = 7;
       else
         state->selectedItem--;
       return outputEvent_Draw;
@@ -72,7 +72,7 @@ outputEvent_t handleEvent(applicationState_t *state, inputEvent_t in) {
 
     // Down
     if (in == inputEvent_Button_2) {
-      if (state->selectedItem == 6)
+      if (state->selectedItem == 7)
         state->selectedItem = 0;
       else
         state->selectedItem++;

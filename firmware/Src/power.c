@@ -1,7 +1,8 @@
 #include "power.h"
+#include "clock.h"
+#include "config.h"
 #include "main.h"
 #include "stm32l0xx_hal.h"
-#include "clock.h"
 
 extern LPTIM_HandleTypeDef hlptim1;
 extern UART_HandleTypeDef hlpuart1;
@@ -145,10 +146,53 @@ void initTIM2(void) {
   HAL_TIM_MspPostInit(&htim2);
 }
 
+void setAlarmA(config_t *config) {
+  if (config->alarmActivated) {
+    RTC_AlarmTypeDef sAlarm;
+    sAlarm.AlarmTime.Hours = config->alarmHours;
+    sAlarm.AlarmTime.Minutes = config->alarmMinutes;
+    sAlarm.AlarmTime.Seconds = 0x0;
+    sAlarm.AlarmTime.SubSeconds = 0x0;
+    sAlarm.AlarmTime.DayLightSaving = config->dst;
+    sAlarm.AlarmTime.StoreOperation = RTC_STOREOPERATION_RESET;
+    sAlarm.AlarmMask = RTC_ALARMMASK_NONE;
+    sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_ALL;
+    sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
+    sAlarm.AlarmDateWeekDay = 0x1;
+    sAlarm.Alarm = RTC_ALARM_A;
+    if (HAL_RTC_SetAlarm(&hrtc, &sAlarm, RTC_FORMAT_BCD) != HAL_OK) {
+      Error_Handler();
+    }
+  } else {
+    HAL_RTC_DeactivateAlarm(&hrtc, RTC_ALARM_A);
+  }
+}
+
+void setAlarmB(config_t *config) {
+  if (config->syncActivated) {
+    RTC_AlarmTypeDef sAlarm;
+    sAlarm.AlarmTime.Hours = 0x1;
+    sAlarm.AlarmTime.Minutes = 0x20;
+    sAlarm.AlarmTime.Seconds = 0x0;
+    sAlarm.AlarmTime.SubSeconds = 0x0;
+    sAlarm.AlarmTime.DayLightSaving = config->dst;
+    sAlarm.AlarmTime.StoreOperation = RTC_STOREOPERATION_RESET;
+    sAlarm.AlarmMask = RTC_ALARMMASK_NONE;
+    sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_ALL;
+    sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
+    sAlarm.AlarmDateWeekDay = 0x1;
+    sAlarm.Alarm = RTC_ALARM_B;
+    if (HAL_RTC_SetAlarm(&hrtc, &sAlarm, RTC_FORMAT_BCD) != HAL_OK) {
+      Error_Handler();
+    }
+  } else {
+    HAL_RTC_DeactivateAlarm(&hrtc, RTC_ALARM_B);
+  }
+}
+
 void initRTC(void) {
   RTC_TimeTypeDef sTime;
   RTC_DateTypeDef sDate;
-  RTC_AlarmTypeDef sAlarm;
 
   /* Initialize RTC Only */
   hrtc.Instance = RTC;
@@ -166,13 +210,15 @@ void initRTC(void) {
   // We don't need to do further RTC configuration when coming back from standby
   if (!(__HAL_PWR_GET_FLAG(PWR_FLAG_SB) && __HAL_PWR_GET_FLAG(PWR_FLAG_WU))) {
 
-    // TODO Read EEPROM configuration and use it (in case of battery switch)
+    /* Check if configuration was set in EEPROM, if not, init with default values */
+    checkConfig();
+    config_t config = loadConfig();
 
     /* Initialize RTC and set the Time and Date */
-    sTime.Hours = 0x0;
-    sTime.Minutes = 0x59;
-    sTime.Seconds = 0x0;
-    sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+    sTime.Hours = 0x12;
+    sTime.Minutes = 0x00;
+    sTime.Seconds = 0x00;
+    sTime.DayLightSaving = config.dst;
     sTime.StoreOperation = RTC_STOREOPERATION_RESET;
     if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK) {
       Error_Handler();
@@ -187,42 +233,13 @@ void initRTC(void) {
       Error_Handler();
     }
 
-    /* Enable the Alarm A */
-    sAlarm.AlarmTime.Hours = 0x0;
-    sAlarm.AlarmTime.Minutes = 0x0;
-    sAlarm.AlarmTime.Seconds = 0x0;
-    sAlarm.AlarmTime.SubSeconds = 0x0;
-    sAlarm.AlarmTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
-    sAlarm.AlarmTime.StoreOperation = RTC_STOREOPERATION_RESET;
-    sAlarm.AlarmMask = RTC_ALARMMASK_NONE;
-    sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_ALL;
-    sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
-    sAlarm.AlarmDateWeekDay = 0x1;
-    sAlarm.Alarm = RTC_ALARM_A;
-    if (HAL_RTC_SetAlarm(&hrtc, &sAlarm, RTC_FORMAT_BCD) != HAL_OK) {
-      Error_Handler();
-    }
-
-    /* Enable the Alarm B */
-    sAlarm.AlarmTime.Hours = 0x1;
-    sAlarm.AlarmTime.Minutes = 0x0;
-    sAlarm.AlarmTime.Seconds = 0x0;
-    sAlarm.AlarmTime.SubSeconds = 0x0;
-    sAlarm.AlarmTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
-    sAlarm.AlarmTime.StoreOperation = RTC_STOREOPERATION_RESET;
-    sAlarm.AlarmMask = RTC_ALARMMASK_NONE;
-    sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_ALL;
-    sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
-    sAlarm.AlarmDateWeekDay = 0x1;
-    sAlarm.Alarm = RTC_ALARM_B;
-    if (HAL_RTC_SetAlarm(&hrtc, &sAlarm, RTC_FORMAT_BCD) != HAL_OK) {
-      Error_Handler();
-    }
-
+    setAlarmA(&config);
+    setAlarmB(&config);
   }
 
   // Wait for RTC to come ready
-  while (HAL_RTC_GetState(&hrtc) == HAL_RTC_STATE_BUSY) {};
+  while (HAL_RTC_GetState(&hrtc) == HAL_RTC_STATE_BUSY)
+    ;
 }
 
 /* LPTIM1 init function */
@@ -285,7 +302,14 @@ void initSPI1(void) {
 void initPVD(void) {
   PWR_PVDTypeDef sConfigPVD;
   sConfigPVD.Mode = PWR_PVD_MODE_NORMAL;
-  sConfigPVD.PVDLevel = PWR_PVDLEVEL_4; // 0 = 1.9V, 1 = 2.1V, 2 = 2.3V, 3 = 2.5V, 4 = 2.7V, 5 = 2.9V, 6 = 3.1V
+  sConfigPVD.PVDLevel = PWR_PVDLEVEL_4; /* 0 = 1.9V
+                                         * 1 = 2.1V
+                                         * 2 = 2.3V
+                                         * 3 = 2.5V
+                                         * 4 = 2.7V
+                                         * 5 = 2.9V
+                                         * 6 = 3.1V
+                                         */
   HAL_PWR_ConfigPVD(&sConfigPVD);
   HAL_PWR_EnablePVD();
 }

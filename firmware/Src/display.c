@@ -1,4 +1,5 @@
 #include "display.h"
+#include "config.h"
 #include "font.h"
 #include "main.h"
 #include "power.h"
@@ -99,21 +100,22 @@ void initDisplay(applicationState_t *state) {
   initSPI1();
   // Do a full refresh every hour, a fast refresh every other minute
   if (state->activeMenu == menu_watch && state->currentMinutes == 0)
-  u8g2_Setup_ssd1607_200x200_f(&u8g2, U8G2_R3, u8x8_byte_4wire_sw_spi_stm32,
-                               u8g2_gpio_and_delay_stm32, false);
+    u8g2_Setup_ssd1607_200x200_f(&u8g2, U8G2_R3, u8x8_byte_4wire_sw_spi_stm32,
+                                 u8g2_gpio_and_delay_stm32, false);
   else
     u8g2_Setup_ssd1607_200x200_f(&u8g2, U8G2_R3, u8x8_byte_4wire_sw_spi_stm32,
-                               u8g2_gpio_and_delay_stm32, true);
+                                 u8g2_gpio_and_delay_stm32, true);
   u8g2_InitDisplay(&u8g2);
 }
 
 void drawDisplay(applicationState_t *state) {
   if (state->activeMenu == menu_watch) {
     // Checks if PVDO is set (low battery)
-    if (__HAL_PWR_GET_FLAG(PWR_FLAG_PVDO)) { /* We can't move this into the logic handling,
-                                              * since it would be too early for the PVD to
-                                              *  have a valid value
-                                              */
+    if (__HAL_PWR_GET_FLAG(
+            PWR_FLAG_PVDO)) { /* We can't move this into the logic handling,
+                               * since it would be too early for the PVD to
+                               *  have a valid value
+                               */
       u8g2_SetFont(&u8g2, u8g2_font_open_iconic_embedded_2x_t);
       u8g2_DrawGlyph(&u8g2, 0, 16, 64);
     }
@@ -123,29 +125,92 @@ void drawDisplay(applicationState_t *state) {
     sprintf(&s[0], "%02x%02x", state->currentHours, state->currentMinutes);
     u8g2_SetFont(&u8g2, keihansoukaishinumbers96);
     u8g2_DrawUTF8(&u8g2, 4, -4, &s[0]);
-    //u8g2_SetFont(&u8g2, u8g2_font_inb46_mr);
-    //u8g2_DrawUTF8(&u8g2, 4, 120, &s[0]);
+    // u8g2_SetFont(&u8g2, u8g2_font_inb46_mr);
+    // u8g2_DrawUTF8(&u8g2, 4, 120, &s[0]);
     u8g2_SendBuffer(&u8g2);
   }
   if (state->activeMenu == menu_options) {
     // TODO rework me
+    config_t config = loadConfig();
     u8g2_SetFont(&u8g2, u8g2_font_logisoso16_tf);
     u8g2_DrawUTF8(&u8g2, 3, 20, "Alarm");
     u8g2_DrawUTF8(&u8g2, 3, 40, "Alarm");
     u8g2_DrawUTF8(&u8g2, 3, 60, "Time Sync");
     u8g2_DrawUTF8(&u8g2, 3, 80, "UTC Offset");
     u8g2_DrawUTF8(&u8g2, 3, 100, "DST");
-    u8g2_DrawUTF8(&u8g2, 120, 20, "OFF");
-    u8g2_DrawUTF8(&u8g2, 120, 40, "18:59");
-    u8g2_DrawUTF8(&u8g2, 120, 60, "ON");
-    u8g2_DrawUTF8(&u8g2, 120, 80, "+1");
-    u8g2_DrawUTF8(&u8g2, 120, 100, "+1");
+    if (config.alarmActivated) {
+      u8g2_DrawUTF8(&u8g2, 120, 20, "ON");
+    } else {
+      u8g2_DrawUTF8(&u8g2, 120, 20, "OFF");
+    }
+
+    char s[6];
+    sprintf(&s[0], "%02x:%02x", config.alarmHours, config.alarmMinutes);
+    u8g2_DrawUTF8(&u8g2, 120, 40, &s[0]);
+
+    if (config.syncActivated) {
+      u8g2_DrawUTF8(&u8g2, 120, 60, "ON");
+    } else {
+      u8g2_DrawUTF8(&u8g2, 120, 60, "OFF");
+    }
+
+    if (config.utcOffset > 0)
+      sprintf(&s[0], "+%02d", config.utcOffset);
+    else if (config.utcOffset < 0)
+      sprintf(&s[0], "-%02d", config.utcOffset);
+    else
+      sprintf(&s[0], "%d", config.utcOffset);
+    u8g2_DrawUTF8(&u8g2, 120, 80, s);
+
+    if (config.dst == RTC_DAYLIGHTSAVING_ADD1H)
+      u8g2_DrawUTF8(&u8g2, 120, 100, "+1");
+    else if (config.dst == RTC_DAYLIGHTSAVING_SUB1H)
+      u8g2_DrawUTF8(&u8g2, 120, 100, "-1");
+    else
+      u8g2_DrawUTF8(&u8g2, 120, 100, "Off");
+
     u8g2_DrawBox(&u8g2, 100, 0, 2, 100);
 
     u8g2_DrawUTF8(&u8g2, 3, 120, "Manual Time Sync");
     u8g2_DrawUTF8(&u8g2, 3, 140, "Show Debug");
 
-    u8g2_DrawFrame(&u8g2, 103, 1 + (state->selectedItem * 20), 97, 22);
+    // Draw selection frame
+    switch (state->selectedItem) {
+    case 0:
+      u8g2_DrawFrame(&u8g2, 103, 1, 97, 22);
+      break;
+
+    case 1:
+      u8g2_DrawFrame(&u8g2, 116, 21, 30, 22);
+      break;
+
+    case 2:
+      u8g2_DrawFrame(&u8g2, 140, 21, 30, 22);
+      break;
+
+    case 3:
+      u8g2_DrawFrame(&u8g2, 103, 41, 97, 22);
+      break;
+
+    case 4:
+      u8g2_DrawFrame(&u8g2, 103, 61, 97, 22);
+      break;
+
+    case 5:
+      u8g2_DrawFrame(&u8g2, 103, 81, 97, 22);
+      break;
+
+    case 6:
+      u8g2_DrawFrame(&u8g2, 1, 101, 164, 22);
+      break;
+
+    case 7:
+      u8g2_DrawFrame(&u8g2, 1, 121, 110, 22);
+      break;
+
+    default:
+      break;
+    }
 
     u8g2_SendBuffer(&u8g2);
   }
