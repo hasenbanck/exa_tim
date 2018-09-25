@@ -1,5 +1,6 @@
 #include "logic.h"
 #include "clock.h"
+#include "config.h"
 #include "stm32l0xx_hal.h"
 
 extern RTC_HandleTypeDef hrtc;
@@ -14,8 +15,6 @@ applicationState_t loadState() {
   state.activeMenu =
       0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) >> 24);
   state.selectedItem = 0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1));
-  state.selectedItemValue =
-      0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1) >> 8);
   return state;
 }
 
@@ -25,9 +24,7 @@ void saveState(applicationState_t *state) {
                           (((int32_t)state->alarmActive) << 16) |
                           (((int32_t)state->currentMinutes) << 8) |
                           ((int32_t)state->currentHours));
-  HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR1,
-                      (((int32_t)state->selectedItemValue) << 8) |
-                          ((int32_t)state->selectedItem));
+  HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR1, ((int32_t)state->selectedItem));
 }
 
 outputEvent_t handleEvent(applicationState_t *state, inputEvent_t in) {
@@ -53,12 +50,55 @@ outputEvent_t handleEvent(applicationState_t *state, inputEvent_t in) {
       return outputEvent_Draw;
     }
 
-    // Enter
+    // Configuration change
     if (in == inputEvent_Button_3) {
-      if (state->selectedItem == 0) {
-        // TODO toggle edit mode
-        return outputEvent_Draw;
+      config_t config = loadConfig();
+      switch (state->selectedItem) {
+      case 0:
+        config.alarmActivated = config.alarmActivated ? false : true;
+        break;
+      case 1:
+        config.alarmHours =
+            RTC_ByteToBcd2((RTC_Bcd2ToByte(config.alarmHours) >= 23)
+                               ? 0
+                               : RTC_Bcd2ToByte(config.alarmHours) + 1);
+        break;
+      case 2:
+        config.alarmMinutes =
+            RTC_ByteToBcd2((RTC_Bcd2ToByte(config.alarmMinutes) >= 55)
+                               ? 0
+                               : RTC_Bcd2ToByte(config.alarmMinutes) + 5);
+        break;
+
+      case 3:
+        config.syncActivated = config.syncActivated ? false : true;
+        break;
+
+      case 4:
+        config.utcOffset =
+            (config.utcOffset >= 12) ? -12 : config.utcOffset + 1;
+        break;
+
+      case 5:
+        if (config.dst == RTC_DAYLIGHTSAVING_ADD1H)
+          config.dst = RTC_DAYLIGHTSAVING_SUB1H;
+        else if (config.dst == RTC_DAYLIGHTSAVING_SUB1H)
+          config.dst = RTC_DAYLIGHTSAVING_NONE;
+        else
+          config.dst = RTC_DAYLIGHTSAVING_ADD1H;
+        break;
+
+      case 6:
+        return outputEvent_GNSS_Sync;
+
+      case 7:
+        return outputEvent_Debug;
+
+      default:
+        break;
       }
+      saveConfig(&config);
+      return outputEvent_Draw;
     }
 
     // Up
@@ -83,7 +123,6 @@ outputEvent_t handleEvent(applicationState_t *state, inputEvent_t in) {
   if (state->activeMenu == menu_watch && in == inputEvent_Button_4) {
     state->activeMenu = menu_options;
     state->selectedItem = 0;
-    state->selectedItemValue = 0;
     return outputEvent_Draw;
   }
 

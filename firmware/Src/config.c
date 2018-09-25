@@ -53,12 +53,12 @@ void saveConfig(config_t *config) {
   }
   if (old.utcOffset != config->utcOffset) {
     HAL_FLASHEx_DATAEEPROM_Program(FLASH_TYPEPROGRAMDATA_WORD,
-                                   DATA_EEPROM_BASE + 17,
+                                   DATA_EEPROM_BASE + 20,
                                    (uint32_t)config->utcOffset);
   }
   if (old.dst != config->dst) {
     HAL_FLASHEx_DATAEEPROM_Program(FLASH_TYPEPROGRAMDATA_WORD,
-                                   DATA_EEPROM_BASE + 18,
+                                   DATA_EEPROM_BASE + 24,
                                    (uint32_t)config->dst);
   }
   HAL_FLASHEx_DATAEEPROM_Lock();

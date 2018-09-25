@@ -20,6 +20,7 @@ typedef enum outputEvent_t {
   outputEvent_StartAlarm = 2,
   outputEvent_StopAlarm = 3,
   outputEvent_GNSS_Sync = 4,
+  outputEvent_Debug = 5,
 } outputEvent_t;
 
 typedef enum menu_t {
@@ -35,7 +36,6 @@ typedef struct applicationState_t {
   bool alarmActive;
   menu_t activeMenu;
   uint8_t selectedItem;
-  uint8_t selectedItemValue;
 } applicationState_t;
 
 applicationState_t loadState();

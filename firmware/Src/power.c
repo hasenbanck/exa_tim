@@ -238,8 +238,7 @@ void initRTC(void) {
   }
 
   // Wait for RTC to come ready
-  while (HAL_RTC_GetState(&hrtc) == HAL_RTC_STATE_BUSY)
-    ;
+  while (HAL_RTC_GetState(&hrtc) == HAL_RTC_STATE_BUSY);
 }
 
 /* LPTIM1 init function */
