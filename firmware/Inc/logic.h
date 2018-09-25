@@ -39,6 +39,6 @@ typedef struct applicationState_t {
   bool lowBattery;
 } applicationState_t;
 
-applicationState_t loadState(void);
+applicationState_t loadState();
 void saveState(applicationState_t *state);
 outputEvent_t handleEvent(applicationState_t *state, inputEvent_t in);

@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include "u8g2.h"
 
-const uint8_t keihansoukaishinumbers64[] U8G2_FONT_SECTION("keihansoukaishinumbers64") =
+static uint8_t const keihansoukaishinumbers64[] U8G2_FONT_SECTION("keihansoukaishinumbers64") =
   "\32\0\5\4\5\6\2\7\7\37\71\0\311\375\0\0\0\0\0\0\0\2\27 \6\0\20\10\6!\6\0"
   "\20\10\6\42\6\0\20\10\6#\6\0\20\10\6$\6\0\20\10\6%\6\0\20\10\6&\6\0\20\10"
   "\6'\6\0\20\10\6(\6\0\20\10\6)\6\0\20\10\6*\6\0\20\10\6+\6\0\20\10\6,"
@@ -23,7 +23,7 @@ const uint8_t keihansoukaishinumbers64[] U8G2_FONT_SECTION("keihansoukaishinumbe
   "$\233\213\252\232,=\360Kl\252\212\256\311\344\303_y\340\367\341\377\344\3\277\17\177\205dsQU"
   "\223\245\7~\211MU\321\65\231\64\0\0\0\0\4\377\377\0";
 
-const uint8_t keihansoukaishinumbers96[] U8G2_FONT_SECTION("keihansoukaishinumbers96") =
+static uint8_t const keihansoukaishinumbers96[] U8G2_FONT_SECTION("keihansoukaishinumbers96") =
   "\32\0\6\4\6\7\3\10\7/\304\0\0\275\0\0\0\0\0\0\0\3\12 \6\0\200\200p!\6\0"
   "\200\200p\42\6\0\200\200p#\6\0\200\200p$\6\0\200\200p%\6\0\200\200p&\6\0\200\200"
   "p'\6\0\200\200p(\6\0\200\200p)\6\0\200\200p*\6\0\200\200p+\6\0\200\200p,"

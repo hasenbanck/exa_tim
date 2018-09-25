@@ -17,7 +17,7 @@ SPI_HandleTypeDef hspi1;
 TIM_HandleTypeDef htim2;
 
 void beep(void) {
-  // TODO: Interrupt based delay?
+  // TODO: Interrupt based delay with a timer
   HAL_TIM_PWM_Start_IT(&htim2, TIM_CHANNEL_2);
   HAL_Delay(250);
   HAL_TIM_PWM_Stop_IT(&htim2, TIM_CHANNEL_2);
@@ -35,15 +35,20 @@ int main(void) {
   /* Get current application state */
   applicationState_t state = loadState();
 
+
   /* Reset button history */
   btnBitField field = 0;
   uint32_t timeoutCounter = 0;
   while (1) {
-    static inputEvent_t in = inputEvent_None;
+    inputEvent_t in = inputEvent_None;
 
     // Test for events (buttons / display update)
     field = getPressedButtonEvent();
-    if (field & BTN1_BIT) {
+    if (HAL_RTC_PollForAlarmAEvent(&hrtc, 0) == HAL_OK) {
+      in = inputEvent_Alarm_A;
+    } else if  (HAL_RTC_PollForAlarmBEvent(&hrtc, 0) == HAL_OK) {
+      in = inputEvent_Alarm_B;
+    } else if (field & BTN1_BIT) {
       in = inputEvent_Button_1;
     } else if (field & BTN2_BIT) {
       in = inputEvent_Button_2;
@@ -53,7 +58,16 @@ int main(void) {
       in = inputEvent_Button_4;
     }
     outputEvent_t out = handleEvent(&state, in);
-
+    if (out == outputEvent_StartAlarm) {
+      // TODO: Implement an alarm
+      beep();
+      out = handleEvent(&state, inputEvent_None);
+    }
+    if (out == outputEvent_GNSS_Sync) {
+      // TODO: Implement GNSS sync
+      beep();
+      out = handleEvent(&state, inputEvent_None);
+    }
     if (out == outputEvent_Draw) {
       initDisplay(&state);
       drawDisplay(&state);

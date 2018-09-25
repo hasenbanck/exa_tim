@@ -9,7 +9,7 @@ bool needTimeUpdate(applicationState_t* state) {
   bool ret = false;
   uint8_t nextTick = 0;
 
-  if (HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN) != HAL_OK) {
+  if (HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK) {
     Error_Handler();
   }
 
@@ -24,7 +24,7 @@ bool needTimeUpdate(applicationState_t* state) {
     pwron = false;
     state->currentHours = sTime.Hours;
     state->currentMinutes = sTime.Minutes;
-    nextTick = 60 - sTime.Seconds;
+    nextTick = 60 - RTC_Bcd2ToByte(sTime.Seconds);
     ret = true;
   }
 

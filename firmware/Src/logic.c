@@ -4,8 +4,8 @@
 
 extern RTC_HandleTypeDef hrtc;
 
-applicationState_t loadState(void) {
-  applicationState_t state = {0};
+applicationState_t loadState() {
+  applicationState_t state;
   state.currentHours = 0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0));
   state.currentMinutes =
       0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) >> 8);
