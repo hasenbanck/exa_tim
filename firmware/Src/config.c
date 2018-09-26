@@ -13,6 +13,7 @@ void checkConfig(void) {
     config.syncActivated = true;
     config.alarmHours = 0x18;
     config.alarmMinutes = 0x00;
+    config.timezone = 0x01;
     saveConfig(&config);
   }
 }
@@ -23,8 +24,7 @@ config_t loadConfig(void) {
   config.alarmHours = (uint8_t) * (uint32_t *)(DATA_EEPROM_BASE + 8);
   config.alarmMinutes = (uint8_t) * (uint32_t *)(DATA_EEPROM_BASE + 12);
   config.syncActivated = (bool)*(uint32_t *)(DATA_EEPROM_BASE + 16);
-  config.utcOffset = (uint8_t) * (uint32_t *)(DATA_EEPROM_BASE + 20);
-  config.dst = *(uint32_t *)(DATA_EEPROM_BASE + 24);
+  config.timezone = *(uint32_t *)(DATA_EEPROM_BASE + 20);
   return config;
 }
 
@@ -51,15 +51,10 @@ void saveConfig(config_t *config) {
                                    DATA_EEPROM_BASE + 16,
                                    (uint32_t)config->syncActivated);
   }
-  if (old.utcOffset != config->utcOffset) {
+  if (old.timezone != config->timezone) {
     HAL_FLASHEx_DATAEEPROM_Program(FLASH_TYPEPROGRAMDATA_WORD,
                                    DATA_EEPROM_BASE + 20,
-                                   (uint32_t)config->utcOffset);
-  }
-  if (old.dst != config->dst) {
-    HAL_FLASHEx_DATAEEPROM_Program(FLASH_TYPEPROGRAMDATA_WORD,
-                                   DATA_EEPROM_BASE + 24,
-                                   (uint32_t)config->dst);
+                                   (uint32_t)config->timezone);
   }
   HAL_FLASHEx_DATAEEPROM_Lock();
 }

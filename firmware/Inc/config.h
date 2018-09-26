@@ -8,8 +8,7 @@ typedef struct config_t {
   uint8_t alarmHours;
   uint8_t alarmMinutes;
   bool syncActivated;
-  int8_t utcOffset;
-  uint32_t dst;
+  uint32_t timezone;
 } config_t;
 
 void checkConfig(void);

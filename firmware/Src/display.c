@@ -124,7 +124,7 @@ void drawDisplay(applicationState_t *state) {
     // TODO better styling
     struct tm tim = getTime();
     char s[6];
-    sprintf(&s[0], "%02x%02x", tim.tm_hour, tim.tm_min);
+    sprintf(&s[0], "%02d%02d", tim.tm_hour, tim.tm_min);
     u8g2_SetFont(&u8g2, keihansoukaishinumbers96);
     u8g2_DrawUTF8(&u8g2, 4, -4, &s[0]);
     // u8g2_SetFont(&u8g2, u8g2_font_inb46_mr);
@@ -132,21 +132,20 @@ void drawDisplay(applicationState_t *state) {
     u8g2_SendBuffer(&u8g2);
   }
   if (state->activeMenu == menu_options) {
-    // TODO rework me
+    // TODO better styling
     config_t config = loadConfig();
     u8g2_SetFont(&u8g2, u8g2_font_logisoso16_tf);
-    u8g2_DrawUTF8(&u8g2, 3, 20, "Alarm");
-    u8g2_DrawUTF8(&u8g2, 3, 40, "Alarm");
-    u8g2_DrawUTF8(&u8g2, 3, 60, "Time Sync");
-    u8g2_DrawUTF8(&u8g2, 3, 80, "UTC Offset");
-    u8g2_DrawUTF8(&u8g2, 3, 100, "DST");
+    u8g2_DrawUTF8(&u8g2, 3, 20, "Alarm:");
+    u8g2_DrawUTF8(&u8g2, 3, 40, "Alarm Time:");
+    u8g2_DrawUTF8(&u8g2, 3, 60, "Time Sync:");
+    u8g2_DrawUTF8(&u8g2, 3, 80, "Timezone:");
     if (config.alarmActivated) {
       u8g2_DrawUTF8(&u8g2, 120, 20, "ON");
     } else {
       u8g2_DrawUTF8(&u8g2, 120, 20, "OFF");
     }
 
-    char s[6];
+    char s[17];
     sprintf(&s[0], "%02x:%02x", config.alarmHours, config.alarmMinutes);
     u8g2_DrawUTF8(&u8g2, 120, 40, &s[0]);
 
@@ -156,25 +155,11 @@ void drawDisplay(applicationState_t *state) {
       u8g2_DrawUTF8(&u8g2, 120, 60, "OFF");
     }
 
-    if (config.utcOffset > 0)
-      sprintf(&s[0], "+%02d", config.utcOffset);
-    else if (config.utcOffset < 0)
-      sprintf(&s[0], "-%02d", config.utcOffset);
-    else
-      sprintf(&s[0], "%d", config.utcOffset);
-    u8g2_DrawUTF8(&u8g2, 120, 80, s);
+    getTimeZoneName(config.timezone, s);
+    u8g2_DrawUTF8(&u8g2, 3, 100, s);
 
-    if (config.dst == RTC_DAYLIGHTSAVING_ADD1H)
-      u8g2_DrawUTF8(&u8g2, 120, 100, "+1");
-    else if (config.dst == RTC_DAYLIGHTSAVING_SUB1H)
-      u8g2_DrawUTF8(&u8g2, 120, 100, "-1");
-    else
-      u8g2_DrawUTF8(&u8g2, 120, 100, "Off");
-
-    u8g2_DrawBox(&u8g2, 100, 0, 2, 100);
-
-    u8g2_DrawUTF8(&u8g2, 3, 120, "Manual Time Sync");
-    u8g2_DrawUTF8(&u8g2, 3, 140, "Show Debug");
+    u8g2_DrawUTF8(&u8g2, 3, 140, "Manual Time Sync");
+    u8g2_DrawUTF8(&u8g2, 3, 160, "Show Debug");
 
     // Draw selection frame
     switch (state->selectedItem) {
@@ -195,19 +180,15 @@ void drawDisplay(applicationState_t *state) {
       break;
 
     case 4:
-      u8g2_DrawFrame(&u8g2, 103, 61, 97, 22);
+      u8g2_DrawFrame(&u8g2, 1, 81, 197, 22);
       break;
 
     case 5:
-      u8g2_DrawFrame(&u8g2, 103, 81, 97, 22);
+      u8g2_DrawFrame(&u8g2, 1, 121, 164, 22);
       break;
 
     case 6:
-      u8g2_DrawFrame(&u8g2, 1, 101, 164, 22);
-      break;
-
-    case 7:
-      u8g2_DrawFrame(&u8g2, 1, 121, 110, 22);
+      u8g2_DrawFrame(&u8g2, 1, 141, 110, 22);
       break;
 
     default:

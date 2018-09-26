@@ -75,23 +75,16 @@ outputEvent_t handleEvent(applicationState_t *state, inputEvent_t in) {
         break;
 
       case 4:
-        config.utcOffset =
-            (config.utcOffset >= 12) ? -12 : config.utcOffset + 1;
+        // TODO should we update the alarm A and alarm B?
+        config.timezone =
+            (config.timezone >= 100) ? 1 : config.timezone + 1;
         break;
 
       case 5:
-        if (config.dst == RTC_DAYLIGHTSAVING_ADD1H)
-          config.dst = RTC_DAYLIGHTSAVING_SUB1H;
-        else if (config.dst == RTC_DAYLIGHTSAVING_SUB1H)
-          config.dst = RTC_DAYLIGHTSAVING_NONE;
-        else
-          config.dst = RTC_DAYLIGHTSAVING_ADD1H;
-        break;
-
-      case 6:
+        // TODO should we update the alarm A and alarm B?
         return outputEvent_GNSS_Sync;
 
-      case 7:
+      case 6:
         return outputEvent_Debug;
 
       default:
@@ -104,7 +97,7 @@ outputEvent_t handleEvent(applicationState_t *state, inputEvent_t in) {
     // Up
     if (in == inputEvent_Button_1) {
       if (state->selectedItem == 0)
-        state->selectedItem = 7;
+        state->selectedItem = 6;
       else
         state->selectedItem--;
       return outputEvent_Draw;
@@ -112,7 +105,7 @@ outputEvent_t handleEvent(applicationState_t *state, inputEvent_t in) {
 
     // Down
     if (in == inputEvent_Button_2) {
-      if (state->selectedItem == 7)
+      if (state->selectedItem == 6)
         state->selectedItem = 0;
       else
         state->selectedItem++;
