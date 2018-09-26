@@ -3,6 +3,7 @@
 #include "font.h"
 #include "main.h"
 #include "power.h"
+#include "clock.h"
 #include "stm32l0xx_hal.h"
 
 extern SPI_HandleTypeDef hspi1;
@@ -120,9 +121,10 @@ void drawDisplay(applicationState_t *state) {
       u8g2_DrawGlyph(&u8g2, 0, 16, 64);
     }
 
-    // TODO rework me
+    // TODO better styling
+    struct tm tim = getTime();
     char s[6];
-    sprintf(&s[0], "%02x%02x", state->currentHours, state->currentMinutes);
+    sprintf(&s[0], "%02x%02x", tim.tm_hour, tim.tm_min);
     u8g2_SetFont(&u8g2, keihansoukaishinumbers96);
     u8g2_DrawUTF8(&u8g2, 4, -4, &s[0]);
     // u8g2_SetFont(&u8g2, u8g2_font_inb46_mr);

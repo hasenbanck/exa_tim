@@ -42,15 +42,17 @@ file(GLOB_RECURSE C_SOURCES Src/*.c)
 file(GLOB_RECURSE AS_SOURCES Src/*.s)
 file(GLOB_RECURSE RTT_SOURCES Middleware/RTT/*.c)
 file(GLOB_RECURSE U8G2_SOURCES Middleware/u8g2/*.c)
+file(GLOB_RECURSE UTZ_SOURCES Middleware/utz/*.c)
 file(GLOB_RECURSE HAL_SOURCES Drivers/${MCU_FAMILY}_HAL_Driver/Src/*.c)
 
-set(SOURCE_FILES ${C_SOURCES} ${AS_SOURCES} ${RTT_SOURCES} ${U8G2_SOURCES} ${HAL_SOURCES})
+set(SOURCE_FILES ${C_SOURCES} ${AS_SOURCES} ${RTT_SOURCES} ${U8G2_SOURCES} ${UTZ_SOURCES} ${HAL_SOURCES})
 
 include_directories(Drivers/CMSIS/Device/ST/${MCU_FAMILY}/Include)
 include_directories(Drivers/CMSIS/Include)
 include_directories(Drivers/${MCU_FAMILY}_HAL_Driver/Inc)
 include_directories(Middleware/RTT)
 include_directories(Middleware/u8g2)
+include_directories(Middleware/utz)
 include_directories(Inc)
 
 add_executable(${PROJECT_NAME}.elf ${SOURCE_FILES})

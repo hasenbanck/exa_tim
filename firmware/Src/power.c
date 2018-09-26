@@ -215,7 +215,7 @@ void initRTC(void) {
     config_t config = loadConfig();
 
     /* Initialize RTC and set the Time and Date */
-    sTime.Hours = 0x12;
+    sTime.Hours = 0x00;
     sTime.Minutes = 0x00;
     sTime.Seconds = 0x00;
     sTime.DayLightSaving = config.dst;
@@ -226,7 +226,7 @@ void initRTC(void) {
 
     sDate.WeekDay = RTC_WEEKDAY_MONDAY;
     sDate.Month = RTC_MONTH_JANUARY;
-    sDate.Date = 0x1;
+    sDate.Date = 0x01;
     sDate.Year = 0x18;
 
     if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK) {
