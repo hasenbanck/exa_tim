@@ -68,11 +68,6 @@ int main(void) {
       beep();
       out = handleEvent(&state, inputEvent_None);
     }
-    if (out == outputEvent_Debug) {
-      // TODO: Implement Debug
-      beep();
-      out = handleEvent(&state, inputEvent_None);
-    }
     if (out == outputEvent_Draw) {
       initDisplay(&state);
       drawDisplay(&state);

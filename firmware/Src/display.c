@@ -159,7 +159,6 @@ void drawDisplay(applicationState_t *state) {
     u8g2_DrawUTF8(&u8g2, 3, 100, s);
 
     u8g2_DrawUTF8(&u8g2, 3, 140, "Manual Time Sync");
-    u8g2_DrawUTF8(&u8g2, 3, 160, "Show Debug");
 
     // Draw selection frame
     switch (state->selectedItem) {
