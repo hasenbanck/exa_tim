@@ -50,6 +50,7 @@ void saveState(applicationState_t *state) {
                           (((int32_t)state->currentDay) << 16) |
                           (((int32_t)state->currentMonth) << 8) |
                           ((int32_t)state->currentYear));
+
   HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR1,
                       (((int32_t)state->activeMenu) << 24) |
                           (((int32_t)state->alarmActive) << 16) |
@@ -94,15 +95,18 @@ outputEvent_t handleEvent(applicationState_t *state, inputEvent_t in) {
     if (in == inputEvent_Button_3) {
       config_t config = loadConfig();
       switch (state->selectedItem) {
+
       case 0:
         config.alarmActivated = config.alarmActivated ? false : true;
         break;
+
       case 1:
         config.alarmHours =
             RTC_ByteToBcd2((RTC_Bcd2ToByte(config.alarmHours) >= 23)
                                ? 0
                                : RTC_Bcd2ToByte(config.alarmHours) + 1);
         break;
+
       case 2:
         config.alarmMinutes =
             RTC_ByteToBcd2((RTC_Bcd2ToByte(config.alarmMinutes) >= 55)

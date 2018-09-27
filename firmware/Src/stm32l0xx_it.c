@@ -9,12 +9,12 @@ extern RTC_HandleTypeDef hrtc;
 extern SPI_HandleTypeDef hspi1;
 extern TIM_HandleTypeDef htim2;
 
-
 void NMI_Handler(void) {}
 
 void HardFault_Handler(void) {
-  while (1) {
-  }
+  // clang-format off
+  while (1);
+  // clang-format on
 }
 
 void SVC_Handler(void) {}

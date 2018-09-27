@@ -29,8 +29,8 @@ bool checkAlarmTimer(applicationState_t *state) {
   if (config.alarmActivated && (state->currentHours == config.alarmHours) &&
       (state->currentMinutes == config.alarmMinutes) &&
       (state->lastAlarmDay != state->currentDay)) {
-        state->lastAlarmDay = state->currentDay;
-        return true;
+    state->lastAlarmDay = state->currentDay;
+    return true;
   }
   return false;
 }
@@ -41,8 +41,8 @@ bool checkGNSSTimer(applicationState_t *state) {
   if (config.syncActivated && (state->currentHours == 1) &&
       (state->currentMinutes == 27) &&
       (state->lastGNSSDay != state->currentDay)) {
-        state->lastGNSSDay = state->currentDay;
-        return true;
+    state->lastGNSSDay = state->currentDay;
+    return true;
   }
   return false;
 }
@@ -60,12 +60,13 @@ int main(void) {
   applicationState_t state = loadState();
 
   /* Reset button history */
-  btnBitField field = 0;
+  inputEvent_t in;
+  btnBitField field;
   uint32_t timeoutCounter = 0;
   while (1) {
-    inputEvent_t in = needTimeUpdate(&state);
 
-    // Test for events (buttons / display update)
+    // Test for events
+    in = needTimeUpdate(&state);
     field = getPressedButtonEvent();
     if (checkAlarmTimer(&state)) {
       in = inputEvent_Alarm_Timer;
@@ -100,7 +101,9 @@ int main(void) {
 
     if ((timeoutCounter >= BUTTON_TIMEOUT) || out == outputEvent_Draw) {
       if (out == outputEvent_Draw) {
+        // clang-format off
         while (isDisplayBusy());
+        // clang-format on
         powerOffDisplay();
       }
       saveState(&state);
@@ -121,5 +124,7 @@ int main(void) {
 void _Error_Handler(char *file, int line) {
   UNUSED(file);
   UNUSED(line);
+  // clang-format off
   while (1);
+  // clang-format on
 }

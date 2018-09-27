@@ -186,7 +186,9 @@ void initRTC(void) {
   }
 
   // Wait for RTC to come ready
+  // clang-format off
   while (HAL_RTC_GetState(&hrtc) == HAL_RTC_STATE_BUSY);
+  // clang-format on
 }
 
 /* LPTIM1 init function */
