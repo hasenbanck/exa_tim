@@ -146,51 +146,6 @@ void initTIM2(void) {
   HAL_TIM_MspPostInit(&htim2);
 }
 
-void setAlarmA(config_t *config) {
-  if (config->alarmActivated) {
-    RTC_AlarmTypeDef sAlarm;
-    sAlarm.AlarmTime.Hours = config->alarmHours;
-    sAlarm.AlarmTime.Minutes = config->alarmMinutes;
-    sAlarm.AlarmTime.Seconds = 0x0;
-    sAlarm.AlarmTime.SubSeconds = 0x0;
-    sAlarm.AlarmTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
-    sAlarm.AlarmTime.StoreOperation = RTC_STOREOPERATION_RESET;
-    sAlarm.AlarmMask = RTC_ALARMMASK_NONE;
-    sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_ALL;
-    sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
-    sAlarm.AlarmDateWeekDay = 0x1;
-    sAlarm.Alarm = RTC_ALARM_A;
-    if (HAL_RTC_SetAlarm(&hrtc, &sAlarm, RTC_FORMAT_BIN) != HAL_OK) {
-      Error_Handler();
-    }
-  } else {
-    HAL_RTC_DeactivateAlarm(&hrtc, RTC_ALARM_A);
-  }
-}
-
-void setAlarmB(config_t *config) {
-  if (config->syncActivated) {
-    //TODO Update alarm time to UTC value
-    RTC_AlarmTypeDef sAlarm;
-    sAlarm.AlarmTime.Hours = 1;
-    sAlarm.AlarmTime.Minutes = 27;
-    sAlarm.AlarmTime.Seconds = 0;
-    sAlarm.AlarmTime.SubSeconds = 0;
-    sAlarm.AlarmTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
-    sAlarm.AlarmTime.StoreOperation = RTC_STOREOPERATION_RESET;
-    sAlarm.AlarmMask = RTC_ALARMMASK_NONE;
-    sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_ALL;
-    sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
-    sAlarm.AlarmDateWeekDay = 1;
-    sAlarm.Alarm = RTC_ALARM_B;
-    if (HAL_RTC_SetAlarm(&hrtc, &sAlarm, RTC_FORMAT_BIN) != HAL_OK) {
-      Error_Handler();
-    }
-  } else {
-    HAL_RTC_DeactivateAlarm(&hrtc, RTC_ALARM_B);
-  }
-}
-
 void initRTC(void) {
   RTC_TimeTypeDef sTime;
   RTC_DateTypeDef sDate;
@@ -210,11 +165,6 @@ void initRTC(void) {
 
   // We don't need to do further RTC configuration when coming back from standby
   if (!(__HAL_PWR_GET_FLAG(PWR_FLAG_SB) && __HAL_PWR_GET_FLAG(PWR_FLAG_WU))) {
-
-    /* Check if configuration was set in EEPROM, if not, init with default values */
-    checkConfig();
-    config_t config = loadConfig();
-
     /* Initialize RTC and set the Time and Date */
     sTime.Hours = 0;
     sTime.Minutes = 0;
@@ -233,9 +183,6 @@ void initRTC(void) {
     if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN) != HAL_OK) {
       Error_Handler();
     }
-
-    setAlarmA(&config);
-    setAlarmB(&config);
   }
 
   // Wait for RTC to come ready
@@ -255,8 +202,8 @@ void initLPTIM1(void) {
     Error_Handler();
   }
 
-  /* 32.768 kHz / 16 =  0.48828125 ms * 30 = 14.6484366ms a tick */
-  if (HAL_LPTIM_Counter_Start_IT(&hlptim1, 29) != HAL_OK) {
+  /* 32.768 kHz / 16 =  0.48828125 ms * 10 = 5ms a tick */
+  if (HAL_LPTIM_Counter_Start_IT(&hlptim1, 9) != HAL_OK) {
     Error_Handler();
   }
 }

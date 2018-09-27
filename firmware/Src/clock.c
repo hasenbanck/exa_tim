@@ -5,6 +5,8 @@
 #include "utz.h"
 #include "zones.h"
 
+#include <string.h>
+
 extern RTC_HandleTypeDef hrtc;
 
 /* Chip time = UTC */
@@ -58,14 +60,9 @@ struct tm getTime() {
   return printTm;
 }
 
-bool needTimeUpdate(applicationState_t *state) {
-  RTC_TimeTypeDef sTime;
-  bool ret = false;
+inputEvent_t needTimeUpdate(applicationState_t *state) {
+  inputEvent_t ret = inputEvent_None;
   uint8_t nextTick = 0;
-
-  if (HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK) {
-    Error_Handler();
-  }
 
   // PWR ON test
   static bool pwron = true;
@@ -74,13 +71,20 @@ bool needTimeUpdate(applicationState_t *state) {
         !(__HAL_PWR_GET_FLAG(PWR_FLAG_SB) && __HAL_PWR_GET_FLAG(PWR_FLAG_WU));
   }
 
-  if (sTime.Hours != state->currentHours ||
-      sTime.Minutes != state->currentMinutes || pwron) {
+  struct tm tim = getTime(); // localtime
+  if (tim.tm_hour != state->currentHours ||
+      tim.tm_min != state->currentMinutes || pwron) {
     pwron = false;
-    state->currentHours = sTime.Hours;
-    state->currentMinutes = sTime.Minutes;
-    nextTick = 60 - RTC_Bcd2ToByte(sTime.Seconds);
-    ret = true;
+
+    state->currentHours = tim.tm_hour;
+    state->currentMinutes = tim.tm_min;
+    state->currentDay = tim.tm_mday;
+    state->currentWeekday = tim.tm_wday;
+    state->currentMonth = tim.tm_mon;
+    state->currentYear = tim.tm_year;
+
+    nextTick = 60 - tim.tm_sec;
+    ret = inputEvent_Time_Update;
   }
 
   // Set next update

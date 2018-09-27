@@ -1,6 +1,7 @@
 #include "main.h"
 #include "button.h"
 #include "clock.h"
+#include "config.h"
 #include "display.h"
 #include "logic.h"
 #include "power.h"
@@ -23,6 +24,29 @@ void beep(void) {
   HAL_TIM_PWM_Stop_IT(&htim2, TIM_CHANNEL_2);
 }
 
+bool checkAlarmTimer(applicationState_t *state) {
+  config_t config = loadConfig();
+  if (config.alarmActivated && (state->currentHours == config.alarmHours) &&
+      (state->currentMinutes == config.alarmMinutes) &&
+      (state->lastAlarmDay != state->currentDay)) {
+        state->lastAlarmDay = state->currentDay;
+        return true;
+  }
+  return false;
+}
+
+bool checkGNSSTimer(applicationState_t *state) {
+  config_t config = loadConfig();
+  // Sync is every night at 01:27
+  if (config.syncActivated && (state->currentHours == 1) &&
+      (state->currentMinutes == 27) &&
+      (state->lastGNSSDay != state->currentDay)) {
+        state->lastGNSSDay = state->currentDay;
+        return true;
+  }
+  return false;
+}
+
 int main(void) {
   /* Reset of all peripherals, Initializes
    * the Flash interface and the Systick
@@ -35,19 +59,18 @@ int main(void) {
   /* Get current application state */
   applicationState_t state = loadState();
 
-
   /* Reset button history */
   btnBitField field = 0;
   uint32_t timeoutCounter = 0;
   while (1) {
-    inputEvent_t in = inputEvent_None;
+    inputEvent_t in = needTimeUpdate(&state);
 
     // Test for events (buttons / display update)
     field = getPressedButtonEvent();
-    if (HAL_RTC_PollForAlarmAEvent(&hrtc, 0) == HAL_OK) {
-      in = inputEvent_Alarm_A;
-    } else if  (HAL_RTC_PollForAlarmBEvent(&hrtc, 0) == HAL_OK) {
-      in = inputEvent_Alarm_B;
+    if (checkAlarmTimer(&state)) {
+      in = inputEvent_Alarm_Timer;
+    } else if (checkGNSSTimer(&state)) {
+      in = inputEvent_GNSS_Timer;
     } else if (field & BTN1_BIT) {
       in = inputEvent_Button_1;
     } else if (field & BTN2_BIT) {
@@ -57,21 +80,24 @@ int main(void) {
     } else if (field & BTN4_BIT) {
       in = inputEvent_Button_4;
     }
+
     outputEvent_t out = handleEvent(&state, in);
+
     if (out == outputEvent_StartAlarm) {
       // TODO: Implement an alarm
       beep();
-      out = handleEvent(&state, inputEvent_None);
     }
+
     if (out == outputEvent_GNSS_Sync) {
       // TODO: Implement GNSS sync
       beep();
-      out = handleEvent(&state, inputEvent_None);
     }
+
     if (out == outputEvent_Draw) {
       initDisplay(&state);
       drawDisplay(&state);
     }
+
     if ((timeoutCounter >= BUTTON_TIMEOUT) || out == outputEvent_Draw) {
       if (out == outputEvent_Draw) {
         while (isDisplayBusy());

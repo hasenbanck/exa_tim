@@ -9,9 +9,10 @@ typedef enum inputEvent_t {
   inputEvent_Button_2 = 2,
   inputEvent_Button_3 = 3,
   inputEvent_Button_4 = 4,
-  inputEvent_Alarm_A = 5,
-  inputEvent_Alarm_B = 6,
+  inputEvent_Alarm_Timer = 5,
+  inputEvent_GNSS_Timer = 6,
   inputEvent_GNSS_Finished = 7,
+  inputEvent_Time_Update = 8,
 } inputEvent_t;
 
 typedef enum outputEvent_t {
@@ -30,11 +31,18 @@ typedef enum menu_t {
 } menu_t;
 
 typedef struct applicationState_t {
+  uint8_t currentYear;
+  uint8_t currentMonth;
+  uint8_t currentDay;
+  uint8_t currentWeekday;
   uint8_t currentHours;
   uint8_t currentMinutes;
   bool alarmActive;
   menu_t activeMenu;
   uint8_t selectedItem;
+  uint8_t lastAlarmDay;
+  uint8_t lastGNSSDay;
+  bool successGNSS;
 } applicationState_t;
 
 applicationState_t loadState();

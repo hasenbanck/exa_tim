@@ -6,36 +6,76 @@
 extern RTC_HandleTypeDef hrtc;
 
 applicationState_t loadState() {
-  applicationState_t state;
-  state.currentHours = 0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0));
-  state.currentMinutes =
+  applicationState_t state = {0};
+
+  state.currentYear = 0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0));
+
+  state.currentMonth =
       0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) >> 8);
-  state.alarmActive =
+
+  state.currentDay =
       0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) >> 16);
-  state.activeMenu =
+
+  state.currentWeekday =
       0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) >> 24);
-  state.selectedItem = 0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1));
+
+  state.currentHours = 0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1));
+
+  state.currentMinutes =
+      0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1) >> 8);
+
+  state.alarmActive =
+      0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1) >> 16);
+
+  state.activeMenu =
+      0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1) >> 24);
+
+  state.selectedItem = 0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR2));
+
+  state.lastAlarmDay =
+      0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR2) >> 8);
+
+  state.lastGNSSDay =
+      0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR2) >> 16);
+
+  state.successGNSS =
+      0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR2) >> 24);
+
   return state;
 }
 
 void saveState(applicationState_t *state) {
   HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0,
+                      (((int32_t)state->currentWeekday) << 24) |
+                          (((int32_t)state->currentDay) << 16) |
+                          (((int32_t)state->currentMonth) << 8) |
+                          ((int32_t)state->currentYear));
+  HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR1,
                       (((int32_t)state->activeMenu) << 24) |
                           (((int32_t)state->alarmActive) << 16) |
                           (((int32_t)state->currentMinutes) << 8) |
                           ((int32_t)state->currentHours));
-  HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR1, ((int32_t)state->selectedItem));
+
+  HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR2,
+                      (((int32_t)state->successGNSS) << 24) |
+                          (((int32_t)state->lastGNSSDay) << 16) |
+                          (((int32_t)state->lastAlarmDay) << 8) |
+                          ((int32_t)state->selectedItem));
 }
 
 outputEvent_t handleEvent(applicationState_t *state, inputEvent_t in) {
+  if (!state->alarmActive && in == inputEvent_Alarm_Timer) {
+    return outputEvent_StartAlarm;
+  }
+
   if (state->alarmActive &&
       (in == inputEvent_Button_1 || in == inputEvent_Button_2 ||
        in == inputEvent_Button_3 || in == inputEvent_Button_4)) {
     return outputEvent_StopAlarm;
   }
 
-  if (!state->alarmActive && in == inputEvent_Alarm_A) {
-    return outputEvent_StartAlarm;
+  if (in == inputEvent_GNSS_Timer) {
+    return outputEvent_GNSS_Sync;
   }
 
   if (state->activeMenu == menu_gnss && in == inputEvent_GNSS_Finished) {
@@ -75,13 +115,10 @@ outputEvent_t handleEvent(applicationState_t *state, inputEvent_t in) {
         break;
 
       case 4:
-        // TODO should we update the alarm A and alarm B?
-        config.timezone =
-            (config.timezone >= 100) ? 1 : config.timezone + 1;
+        config.timezone = (config.timezone >= 100) ? 1 : config.timezone + 1;
         break;
 
       case 5:
-        // TODO should we update the alarm A and alarm B?
         return outputEvent_GNSS_Sync;
 
       default:
@@ -116,11 +153,7 @@ outputEvent_t handleEvent(applicationState_t *state, inputEvent_t in) {
     return outputEvent_Draw;
   }
 
-  if (in == inputEvent_Alarm_B) {
-    return outputEvent_GNSS_Sync;
-  }
-
-  if (needTimeUpdate(state)) {
+  if (in == inputEvent_Time_Update) {
     if (state->activeMenu == menu_watch)
       return outputEvent_Draw;
   }

@@ -122,9 +122,8 @@ void drawDisplay(applicationState_t *state) {
     }
 
     // TODO better styling
-    struct tm tim = getTime();
     char s[6];
-    sprintf(&s[0], "%02d%02d", tim.tm_hour, tim.tm_min);
+    sprintf(&s[0], "%02d%02d", state->currentHours, state->currentMinutes);
     u8g2_SetFont(&u8g2, keihansoukaishinumbers96);
     u8g2_DrawUTF8(&u8g2, 4, -4, &s[0]);
     // u8g2_SetFont(&u8g2, u8g2_font_inb46_mr);
