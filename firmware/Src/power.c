@@ -204,8 +204,8 @@ void initLPTIM1(void) {
     Error_Handler();
   }
 
-  /* 32.768 kHz / 16 =  0.48828125 ms * 10 = 5ms a tick */
-  if (HAL_LPTIM_Counter_Start_IT(&hlptim1, 9) != HAL_OK) {
+  /* 32.768 kHz / 16 =  0.48828125 ms * 30 = 15ms a tick */
+  if (HAL_LPTIM_Counter_Start_IT(&hlptim1, 29) != HAL_OK) {
     Error_Handler();
   }
 }
@@ -270,6 +270,15 @@ void initNormalMode(void) {
   initLPTIM1();
   initRTC();
   initPVD();
+}
+
+void switchSleepMode(void) {
+#ifndef NDEBUG
+  HAL_DBGMCU_EnableDBGSleepMode();
+#endif
+  HAL_PWR_DisableBkUpAccess();
+  HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_STOPENTRY_WFI);
+  HAL_PWR_EnableBkUpAccess();
 }
 
 void switchStopMode(void) {

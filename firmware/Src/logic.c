@@ -32,8 +32,8 @@ applicationState_t loadState() {
 
   state.selectedItem = 0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR2));
 
-  state.lastAlarmDay =
-      0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR2) >> 8);
+  // state.lastAlarmDay =
+  //    0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR2) >> 8);
 
   state.lastGNSSDay =
       0x000000FF & (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR2) >> 16);

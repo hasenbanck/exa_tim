@@ -1,4 +1,5 @@
 #include "main.h"
+#include "alarm.h"
 #include "button.h"
 #include "clock.h"
 #include "config.h"
@@ -10,19 +11,13 @@
 #include <stdbool.h>
 
 const uint32_t BUTTON_TIMEOUT = 10;
+const uint32_t ALARM_TIMEOUT = 30000;
 
 LPTIM_HandleTypeDef hlptim1;
 UART_HandleTypeDef hlpuart1;
 RTC_HandleTypeDef hrtc;
 SPI_HandleTypeDef hspi1;
 TIM_HandleTypeDef htim2;
-
-void beep(void) {
-  // TODO: Interrupt based delay with a timer
-  HAL_TIM_PWM_Start_IT(&htim2, TIM_CHANNEL_2);
-  HAL_Delay(250);
-  HAL_TIM_PWM_Stop_IT(&htim2, TIM_CHANNEL_2);
-}
 
 bool checkAlarmTimer(applicationState_t *state) {
   config_t config = loadConfig();
@@ -63,10 +58,12 @@ int main(void) {
   inputEvent_t in;
   btnBitField field;
   uint32_t timeoutCounter = 0;
-  while (1) {
+  uint32_t timeout = BUTTON_TIMEOUT;
 
+  /* Look if we have reache a new time code */
+  in = needTimeUpdate(&state);
+  while (1) {
     // Test for events
-    in = needTimeUpdate(&state);
     field = getPressedButtonEvent();
     if (checkAlarmTimer(&state)) {
       in = inputEvent_Alarm_Timer;
@@ -85,13 +82,13 @@ int main(void) {
     outputEvent_t out = handleEvent(&state, in);
 
     if (out == outputEvent_StartAlarm) {
-      // TODO: Implement an alarm
-      beep();
+      state.alarmActive = true;
+      startAlarmTone();
+      out = outputEvent_Draw;
     }
 
     if (out == outputEvent_GNSS_Sync) {
       // TODO: Implement GNSS sync
-      beep();
     }
 
     if (out == outputEvent_Draw) {
@@ -99,18 +96,36 @@ int main(void) {
       drawDisplay(&state);
     }
 
-    if ((timeoutCounter >= BUTTON_TIMEOUT) || out == outputEvent_Draw) {
+    if ((timeoutCounter >= timeout) || out == outputEvent_Draw) {
       if (out == outputEvent_Draw) {
         // clang-format off
         while (isDisplayBusy());
         // clang-format on
         powerOffDisplay();
       }
-      saveState(&state);
-      switchStandbyMode();
+
+      if (!state.alarmActive) {
+        saveState(&state);
+        switchStandbyMode();
+      }
     }
 
-    switchStopMode();
+    if (state.alarmActive) {
+      timeout = ALARM_TIMEOUT;
+
+      if (timeoutCounter == timeout || out == outputEvent_StopAlarm) {
+        state.alarmActive = false;
+        stopAlarmTone();
+      }
+
+      if ((timeoutCounter % 250) == 0) {
+        toggleAlarmTone();
+      }
+
+      switchSleepMode();
+    } else
+      switchStopMode();
+    in = inputEvent_None;
     timeoutCounter++;
   }
 }

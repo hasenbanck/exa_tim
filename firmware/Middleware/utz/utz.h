@@ -105,8 +105,8 @@ typedef struct uzone_packed_t {
  *
  *  @var urule_packed_t::from_year years since 2000
  *  @var urule_packed_t::to_year years since 2000
- *  @var urule_packed_t::on_dayofweek day of week (monday = 1, sunday = 7) 
- *  @var urule_packed_t::on_dayofmonth day of month 
+ *  @var urule_packed_t::on_dayofweek day of week (monday = 1, sunday = 7)
+ *  @var urule_packed_t::on_dayofmonth day of month
  *  @var urule_packed_t::at_is_local_time is time of day in local time, if not utc
  *  @var urule_packed_t::at_hours time of day, hours
  *  @var urule_packed_t::at_inc_minutes time of day, minutes, in OFFSET_INCREMENT minute increments
@@ -335,6 +335,6 @@ static uint16_t utz_k;
 extern const urule_packed_t zone_rules[];
 extern const uzone_packed_t zone_defns[];
 extern const char zone_abrevs[];
-extern const unsigned char zone_names[];
+extern const char zone_names[];
 
 #endif /* _UTZ_H */
