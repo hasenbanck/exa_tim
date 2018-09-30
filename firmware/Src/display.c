@@ -1,9 +1,9 @@
 #include "display.h"
+#include "clock.h"
 #include "config.h"
 #include "font.h"
 #include "main.h"
 #include "power.h"
-#include "clock.h"
 #include "stm32l0xx_hal.h"
 
 extern SPI_HandleTypeDef hspi1;
@@ -110,29 +110,42 @@ void initDisplay(applicationState_t *state) {
 }
 
 void drawDisplay(applicationState_t *state) {
+  config_t config = loadConfig();
   if (state->activeMenu == menu_watch) {
+
+    u8g2_SetFont(&u8g2, u8g2_font_open_iconic_embedded_2x_t);
+
+    if (config.alarmActivated)
+      u8g2_DrawGlyph(&u8g2, 0, 16, 65);
+
     // Checks if PVDO is set (low battery)
     if (__HAL_PWR_GET_FLAG(
-            PWR_FLAG_PVDO)) { /* We can't move this into the logic handling,
-                               * since it would be too early for the PVD to
-                               *  have a valid value
-                               */
-      u8g2_SetFont(&u8g2, u8g2_font_open_iconic_embedded_2x_t);
-      u8g2_DrawGlyph(&u8g2, 0, 16, 64);
-    }
+            PWR_FLAG_PVDO)) /* We can't move this into the logic handling,
+                             * since it would be too early for the PVD to
+                             *  have a valid value
+                             */
+      u8g2_DrawGlyph(&u8g2, 92, 16, 64);
 
-    // TODO better styling
-    char s[6];
+    if (state->successGNSS)
+      u8g2_DrawGlyph(&u8g2, 184, 16, 70);
+
+    // TODO Change to exa_pico mode with a button press
+    char s[25];
     sprintf(&s[0], "%02d%02d", state->currentHours, state->currentMinutes);
     u8g2_SetFont(&u8g2, keihansoukaishinumbers96);
     u8g2_DrawUTF8(&u8g2, 4, -4, &s[0]);
-    // u8g2_SetFont(&u8g2, u8g2_font_inb46_mr);
-    // u8g2_DrawUTF8(&u8g2, 4, 120, &s[0]);
+    //u8g2_SetFont(&u8g2, u8g2_font_inb46_mr);
+    //u8g2_DrawUTF8(&u8g2, 4, 120, &s[0]);
+
+    u8g2_SetFont(&u8g2, u8g2_font_logisoso16_tf);
+    char day[10];
+    getWeekdayName(state->currentWeekday, day);
+    sprintf(&s[0], "%d-%02d-%02d %s", 1900+state->currentYear, state->currentMonth + 1, state->currentDay, day);
+    u8g2_DrawUTF8(&u8g2, 0, 190, s);
+
     u8g2_SendBuffer(&u8g2);
   }
   if (state->activeMenu == menu_options) {
-    // TODO better styling
-    config_t config = loadConfig();
     u8g2_SetFont(&u8g2, u8g2_font_logisoso16_tf);
     u8g2_DrawUTF8(&u8g2, 3, 20, "Alarm:");
     u8g2_DrawUTF8(&u8g2, 3, 40, "Alarm Time:");
@@ -158,6 +171,8 @@ void drawDisplay(applicationState_t *state) {
     u8g2_DrawUTF8(&u8g2, 3, 100, s);
 
     u8g2_DrawUTF8(&u8g2, 3, 140, "Manual Time Sync");
+
+    u8g2_DrawUTF8(&u8g2, 3, 200, "Firmware: " PRINT_VERSION);
 
     // Draw selection frame
     switch (state->selectedItem) {

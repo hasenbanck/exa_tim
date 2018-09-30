@@ -98,8 +98,34 @@ inputEvent_t needTimeUpdate(applicationState_t *state) {
   return ret;
 }
 
-void getTimeZoneName(uint32_t num, char *s) {
-  switch (num) {
+void getWeekdayName(uint32_t weekdaynum, char *s) {
+  switch (weekdaynum) {
+  case 1:
+    strcpy(s, "Monday");
+    return;
+  case 2:
+    strcpy(s, "Tuesday");
+    return;
+  case 3:
+    strcpy(s, "Wednesday");
+    return;
+  case 4:
+    strcpy(s, "Thursday");
+    return;
+  case 5:
+    strcpy(s, "Friday");
+    return;
+  case 6:
+    strcpy(s, "Saturday");
+    return;
+  case 0:
+    strcpy(s, "Sunday");
+    return;
+  }
+}
+
+void getTimeZoneName(uint32_t timezonenum, char *s) {
+  switch (timezonenum) {
   case 1:
     strcpy(s, "Adelaide");
     return;

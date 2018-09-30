@@ -1,5 +1,10 @@
 #pragma once
 
+#define VERSION_MAJOR "1"
+#define VERSION_MINOR "0"
+#define VERSION_PATCH "0"
+#define PRINT_VERSION VERSION_MAJOR "." VERSION_MINOR "." VERSION_PATCH
+
 #define ALARM_Pin GPIO_PIN_1
 #define ALARM_GPIO_Port GPIOA
 #define GNSS_EN_Pin GPIO_PIN_4

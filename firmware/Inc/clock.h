@@ -8,4 +8,5 @@
 
 struct tm getTime();
 inputEvent_t needTimeUpdate(applicationState_t *state);
-void getTimeZoneName(uint32_t num, char* s);
+void getWeekdayName(uint32_t weekdaynum, char *s);
+void getTimeZoneName(uint32_t timezonenum, char* s);
