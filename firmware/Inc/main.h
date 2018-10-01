@@ -7,8 +7,10 @@
 
 #define ALARM_Pin GPIO_PIN_1
 #define ALARM_GPIO_Port GPIOA
-#define GNSS_EN_Pin GPIO_PIN_4
+#define GNSS_EN_Pin GPIO_PIN_12
 #define GNSS_EN_GPIO_Port GPIOA
+#define DISP_EN_Pin GPIO_PIN_4
+#define DISP_EN_GPIO_Port GPIOA
 #define BUSY_Pin GPIO_PIN_6
 #define BUSY_GPIO_Port GPIOA
 #define DC_Pin GPIO_PIN_0

@@ -82,14 +82,14 @@ void initGPIO(void) {
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /* Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, CS_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, CS_Pin | DISP_EN_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(GPIOA, GNSS_EN_Pin, GPIO_PIN_SET); // Active LOW
   HAL_GPIO_WritePin(
       GPIOB, DC_Pin | RESET_Pin | BTN1_Pin | BTN2_Pin | BTN3_Pin | BTN4_Pin,
       GPIO_PIN_RESET);
 
-  /* Configure GPIO pins : GNSS_EN_Pin CS_Pin */
-  GPIO_InitStruct.Pin = GNSS_EN_Pin | CS_Pin;
+  /* Configure GPIO pins : GNSS_EN_Pin CS_Pin DISP_EN_Pin */
+  GPIO_InitStruct.Pin = GNSS_EN_Pin | CS_Pin | DISP_EN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -270,6 +270,7 @@ void initNormalMode(void) {
   initLPTIM1();
   initRTC();
   initPVD();
+  checkConfig();
 }
 
 void switchSleepMode(void) {

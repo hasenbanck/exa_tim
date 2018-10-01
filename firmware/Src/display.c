@@ -98,7 +98,9 @@ uint8_t u8x8_byte_4wire_sw_spi_stm32(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int,
 }
 
 void initDisplay(applicationState_t *state) {
+  HAL_GPIO_WritePin(GPIOA, DISP_EN_Pin, GPIO_PIN_SET);
   initSPI1();
+
   // Do a full refresh every hour, a fast refresh every other minute
   if (state->activeMenu == menu_watch && state->currentMinutes == 0)
     u8g2_Setup_ssd1607_200x200_f(&u8g2, U8G2_R3, u8x8_byte_4wire_sw_spi_stm32,
@@ -216,7 +218,10 @@ void drawDisplay(applicationState_t *state) {
  * Display need a reset when powering up, since we powered also the clock down
  * TODO: Shut down the whole module via DISP_EN
  */
-void powerOffDisplay(void) { u8g2_SetPowerSave(&u8g2, 1); }
+void powerOffDisplay(void) {
+  u8g2_SetPowerSave(&u8g2, 1);
+  HAL_GPIO_WritePin(GPIOA, DISP_EN_Pin, GPIO_PIN_RESET);
+}
 
 bool isDisplayBusy(void) {
   if (HAL_GPIO_ReadPin(BUSY_GPIO_Port, BUSY_Pin) == GPIO_PIN_RESET) {
